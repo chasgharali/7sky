@@ -241,7 +241,7 @@ export default function AdminPaymentPlanPage() {
               <tbody>
                 {rows.length === 0 ? (
                   <tr>
-                    <td colSpan={10} className="text-center py-10 text-gray-600">No rows yet — click "Add Row" to start</td>
+                    <td colSpan={10} className="text-center py-10 text-gray-600">No rows yet — click &ldquo;Add Row&rdquo; to start</td>
                   </tr>
                 ) : rows.map((row, ri) => (
                   <tr key={ri} className={`border-b border-white/5 ${ri % 2 === 0 ? "bg-[#0d0d0d]" : "bg-[#111]"}`}>

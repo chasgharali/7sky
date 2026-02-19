@@ -184,7 +184,7 @@ export default function BookingsPage() {
                   <p className="text-zinc-400 text-sm">{b.phone}</p>
                   {b.email && <p className="text-zinc-500 text-sm">{b.email}</p>}
                   {b.message && (
-                    <p className="text-zinc-600 text-xs truncate max-w-[200px]">"{b.message}"</p>
+                    <p className="text-zinc-600 text-xs truncate max-w-[200px]">&ldquo;{b.message}&rdquo;</p>
                   )}
                 </div>
               </div>
