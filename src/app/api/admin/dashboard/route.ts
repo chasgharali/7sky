@@ -93,7 +93,7 @@ export async function GET(request: NextRequest) {
       .limit(10)
       .lean();
 
-    const plansByFloor = new Map(plans.map((p) => [p.floor, p]));
+    const plansByFloor = new Map<string, (typeof plans)[number]>(plans.map((p) => [p.floor, p]));
 
     const alertsWithDue = dueAlerts.map((o) => {
       const unit = o.unitId as { unitNumber?: string; floor?: string } | null;

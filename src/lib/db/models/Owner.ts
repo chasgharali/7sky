@@ -50,7 +50,6 @@ const OwnerSchema = new Schema<IOwner>(
   { timestamps: true }
 );
 
-OwnerSchema.index({ registrationNumber: 1 }, { unique: true });
 OwnerSchema.index({ unitId: 1 });
 
 delete mongoose.models.Owner;

@@ -350,7 +350,7 @@ export default function DashboardPage() {
                   </Pie>
                   <Tooltip
                     contentStyle={{ backgroundColor: "#18181b", border: "1px solid #27272a", borderRadius: "12px" }}
-                    formatter={(value: number) => [`${value} units`, ""]}
+                    formatter={(value) => [`${value ?? 0} units`, ""]}
                   />
                   <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: "11px", color: "#71717a", paddingTop: "8px" }} />
                 </PieChart>

@@ -56,11 +56,16 @@ const FALLBACK_PLANS: FloorPlan[] = [
 ];
 
 async function getPaymentPlans(): Promise<FloorPlan[]> {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL ||
+    process.env.NEXT_PUBLIC_URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
+    "http://localhost:3000";
+
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_URL || "http://localhost:3000"}/api/payment-plan`,
-      { next: { revalidate: 60 } }
-    );
+    const res = await fetch(`${baseUrl}/api/payment-plan`, {
+      next: { revalidate: 60 },
+    });
     if (!res.ok) return FALLBACK_PLANS;
     const data = await res.json();
     return Array.isArray(data) && data.length > 0 ? data : FALLBACK_PLANS;

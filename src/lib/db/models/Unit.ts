@@ -41,7 +41,6 @@ const UnitSchema = new Schema<IUnit>(
   { timestamps: true }
 );
 
-UnitSchema.index({ unitNumber: 1 }, { unique: true });
 UnitSchema.index({ floor: 1, status: 1 });
 
 export const Unit: Model<IUnit> =

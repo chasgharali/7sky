@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/db/connection";
 import { Unit } from "@/lib/db/models";
 
+export const dynamic = "force-dynamic";
+
 const FLOOR_VALUES = ["LGF", "GF", "1", "2", "3", "4", "5"] as const;
 const STATUS_VALUES = ["available", "booked", "reserved"] as const;
 

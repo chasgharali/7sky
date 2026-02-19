@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
       PaymentPlan.find({}).lean(),
     ]);
 
-    const plansByFloor = new Map(plans.map((p) => [p.floor, p]));
+    const plansByFloor = new Map<string, (typeof plans)[number]>(plans.map((p) => [p.floor, p]));
 
     const result = owners.map((o) => {
       const unit = o.unitId as { unitNumber?: string; floor?: string } | null;
