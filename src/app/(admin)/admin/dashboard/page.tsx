@@ -42,7 +42,8 @@ interface InstallmentAlert {
   type: "overdue" | "upcoming";
 }
 
-function formatPKR(n: number) {
+function formatPKR(n: number | undefined | null) {
+  if (n == null) return "Rs. 0";
   if (n >= 10000000) return `Rs. ${(n / 10000000).toFixed(2)}Cr`;
   if (n >= 100000) return `Rs. ${(n / 100000).toFixed(1)}L`;
   return `Rs. ${n.toLocaleString()}`;
