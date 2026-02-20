@@ -213,7 +213,7 @@ export default function LandingPage() {
               </div>
               {/* Floating badge */}
               <div className="absolute -bottom-4 -right-4 glass-card-gold rounded-2xl p-4 text-center min-w-[120px] shadow-xl">
-                <p className="text-2xl font-black gradient-text-gold font-display">2026</p>
+                <p className="text-2xl font-black gradient-text-gold font-display">2029</p>
                 <p className="text-xs text-gray-400 font-medium">Completion Year</p>
               </div>
             </div>
@@ -621,7 +621,7 @@ export default function LandingPage() {
               },
               {
                 q: "What is the payment plan for offices at 7Sky G-14?",
-                a: "Executive offices for sale at 7Sky G-14 Markaz follow a structured 3-year installment plan: 25% down payment on booking, 14 quarterly installments covering 55%, and 20% due at possession. Visit our payment plan page for detailed pricing.",
+                a: "Executive offices for sale at 7Sky G-14 Markaz follow a structured 3.5-year installment plan: 25% down payment on booking, 14 quarterly installments covering 55%, and 20% due at possession. Visit our payment plan page for detailed pricing.",
               },
               {
                 q: "What types of commercial property are for sale at 7Sky?",
@@ -684,7 +684,7 @@ export default function LandingPage() {
                   name: "What is the payment plan for offices at 7Sky G-14?",
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text: "Executive offices for sale at 7Sky G-14 Markaz follow a structured 3-year installment plan: 25% down payment on booking, 14 quarterly installments covering 55%, and 20% due at possession.",
+                    text: "Executive offices for sale at 7Sky G-14 Markaz follow a structured 3.5-year installment plan: 25% down payment on booking, 14 quarterly installments covering 55%, and 20% due at possession.",
                   },
                 },
                 {

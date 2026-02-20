@@ -42,7 +42,7 @@ function buildSchedule(
   }
 
   if (planRow.onPossession > 0) {
-    items.push({ label: "On Possession", dueDate: new Date("2027-12-31"), amount: planRow.onPossession });
+    items.push({ label: "On Possession", dueDate: new Date("2029-12-31"), amount: planRow.onPossession });
   }
 
   let remaining = amountPaid;

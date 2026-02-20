@@ -95,7 +95,7 @@ export default async function PaymentPlanPage() {
               </h1>
               <p className="text-gray-400 text-base max-w-xl">
                 Buy shops and offices for sale in G-14 Markaz, Islamabad on easy installments.
-                Transparent pricing with a structured 3-year installment schedule designed for investors.
+                Transparent pricing with a structured 3.5-year installment schedule designed for investors.
               </p>
             </div>
             {/* Payment structure badges */}

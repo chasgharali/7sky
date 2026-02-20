@@ -36,7 +36,7 @@ interface InstallmentAlert {
  * Structure:
  *  - Downpayment: at owner.createdAt
  *  - Quarterly instalments: every 3 months starting from createdAt + 3mo
- *  - On Possession: project completion (Dec 2027, configurable)
+ *  - On Possession: project completion (Dec 2029, configurable)
  *
  * We compute how many quarterly instalments fit:
  *   numQuarterly = round(remaining / quarterlyInstalment)  (capped at 16)
@@ -80,7 +80,7 @@ function buildSchedule(
   if (planRow.onPossession > 0) {
     installments.push({
       label: "On Possession",
-      dueDate: new Date("2027-12-31"),
+      dueDate: new Date("2029-12-31"),
       amount: planRow.onPossession,
     });
   }

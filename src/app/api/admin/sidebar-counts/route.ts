@@ -28,7 +28,7 @@ function countOverdue(
     d.setMonth(d.getMonth() + i * 3);
     installments.push({ dueDate: d, amount: row.quarterlyInstalment });
   }
-  if (row.onPossession > 0) installments.push({ dueDate: new Date("2027-12-31"), amount: row.onPossession });
+  if (row.onPossession > 0) installments.push({ dueDate: new Date("2029-12-31"), amount: row.onPossession });
 
   let remaining = owner.amountPaid;
   let overdue = 0;

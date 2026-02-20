@@ -27,7 +27,7 @@ function getNextDueDate(
   }
 
   if (planRow.onPossession > 0) {
-    installments.push({ dueDate: new Date("2027-12-31"), amount: planRow.onPossession });
+    installments.push({ dueDate: new Date("2029-12-31"), amount: planRow.onPossession });
   }
 
   let remaining = amountPaid;
