@@ -232,11 +232,262 @@ body {
   transform: translateY(-1px);
 }
 
+/* WhatsApp-style CTA (matches ghost sizing; light theme gets brand green) */
+.btn-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: rgba(255, 255, 255, 0.06);
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+}
+.btn-whatsapp:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Public light theme: readable white labels on outline / ghost buttons */
+.public-theme-root[data-public-theme="light"] .btn-gold {
+  color: #ffffff !important;
+  background: rgba(15, 23, 42, 0.9);
+  border-color: #c9a227;
+}
+.public-theme-root[data-public-theme="light"] .btn-gold:hover {
+  background: rgba(15, 23, 42, 0.96);
+  box-shadow: 0 4px 20px rgba(201, 162, 39, 0.25);
+}
+
+.public-theme-root[data-public-theme="light"] .btn-ghost {
+  color: #ffffff !important;
+  background: rgba(15, 23, 42, 0.78);
+  border-color: rgba(15, 23, 42, 0.2);
+}
+.public-theme-root[data-public-theme="light"] .btn-ghost:hover {
+  background: rgba(15, 23, 42, 0.9);
+  border-color: rgba(15, 23, 42, 0.32);
+}
+
+.public-theme-root[data-public-theme="light"] .btn-whatsapp {
+  color: #25d366 !important;
+  border-color: #25d366;
+  background: rgba(37, 211, 102, 0.08);
+}
+.public-theme-root[data-public-theme="light"] .btn-whatsapp:hover {
+  color: #1ebe57 !important;
+  border-color: #1ebe57;
+  background: rgba(37, 211, 102, 0.14);
+}
+
+/* Header / drawer compact gold-outline CTAs — white copy on light theme */
+.public-theme-root[data-public-theme="light"] .public-header-cta-gold {
+  color: #ffffff !important;
+  background: rgba(15, 23, 42, 0.92) !important;
+  border-color: rgba(201, 162, 39, 0.55) !important;
+}
+.public-theme-root[data-public-theme="light"] .public-header-cta-gold:hover {
+  background: rgba(15, 23, 42, 1) !important;
+}
+
 /* ─── Scrollbar ──────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #111; }
 ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #c9a227; }
+
+/* ─── Public Theme (scoped) ──────────────────── */
+.public-theme-root {
+  --public-bg: #f8fafc;
+  --public-surface: #ffffff;
+  --public-surface-soft: #f1f5f9;
+  --public-muted: #f1f5f9;
+  --public-text: #0f172a;
+  --public-text-muted: #334155;
+  --public-text-soft: #64748b;
+  --public-border: rgba(15, 23, 42, 0.12);
+  --public-hover: rgba(15, 23, 42, 0.05);
+}
+
+.public-theme-root[data-public-theme="dark"] {
+  --public-bg: #0a0a0a;
+  --public-surface: #0d0d0d;
+  --public-surface-soft: #1f2937;
+  --public-muted: #111111;
+  --public-text: #ededed;
+  --public-text-muted: #d1d5db;
+  --public-text-soft: #9ca3af;
+  --public-border: rgba(255, 255, 255, 0.1);
+  --public-hover: rgba(255, 255, 255, 0.06);
+}
+
+.public-theme-root.public-page {
+  color: var(--public-text);
+}
+
+/* Page chrome: avoid dark body showing through on overscroll */
+body:has(.public-theme-root[data-public-theme="light"]) {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.public-theme-root[data-public-theme="light"] .glass-card {
+  background: rgba(15, 23, 42, 0.04);
+  border-color: rgba(15, 23, 42, 0.1);
+}
+.public-theme-root[data-public-theme="light"] .glass-card-gold {
+  background: rgba(201, 162, 39, 0.08);
+  border-color: rgba(201, 162, 39, 0.28);
+}
+.public-theme-root[data-public-theme="light"] .hover-gold-border {
+  border-color: rgba(15, 23, 42, 0.1);
+}
+
+/* Core background remaps used heavily on public pages (hex fallbacks) */
+.public-theme-root[data-public-theme="light"] [class*="bg-\\[\\#0a0a0a\\]"] {
+  background-color: var(--public-bg) !important;
+}
+
+/* Solid bg-black only (token match — do not match bg-black/30 etc.) */
+.public-theme-root[data-public-theme="light"] [class~="bg-black"] {
+  background-color: var(--public-bg) !important;
+}
+
+.public-theme-root[data-public-theme="light"] [class*="bg-\\[\\#0d0d0d\\]"] {
+  background-color: var(--public-surface) !important;
+}
+
+.public-theme-root[data-public-theme="light"] [class*="bg-\\[\\#111\\]"] {
+  background-color: var(--public-muted) !important;
+}
+
+.public-theme-root[data-public-theme="light"] [class*="bg-zinc-800"],
+.public-theme-root[data-public-theme="light"] [class*="bg-gray-800"] {
+  background-color: var(--public-surface-soft) !important;
+}
+
+.public-theme-root[data-public-theme="light"] [class*="border-white"] {
+  border-color: var(--public-border) !important;
+}
+
+.public-theme-root[data-public-theme="light"] [class*="text-white"] {
+  color: var(--public-text) !important;
+}
+
+/* Keep white text on solid action buttons in light mode */
+.public-theme-root[data-public-theme="light"] [class*="text-white"][class*="bg-\\[\\#2563eb\\]"],
+.public-theme-root[data-public-theme="light"] [class*="text-white"][class*="bg-\\[\\#3b82f6\\]"],
+.public-theme-root[data-public-theme="light"] [class*="text-white"][class*="bg-\\[\\#25D366\\]"],
+.public-theme-root[data-public-theme="light"] [class*="text-white"][class*="bg-\\[\\#25d366\\]"],
+.public-theme-root[data-public-theme="light"] [class*="text-white"][class*="bg-\\[\\#22c55e\\]"] {
+  color: #ffffff !important;
+}
+
+/* Blue primary chips (e.g. floor-plan tabs): `!text-white` may not pair with bg-* for the global
+   exception above; force white copy on the control and all descendants. */
+.public-theme-root[data-public-theme="light"] .public-blue-chip-active,
+.public-theme-root[data-public-theme="light"] .public-blue-chip-active * {
+  color: #ffffff !important;
+}
+
+/* Payment plan — first header cells: text-white is remapped in light theme; keep white on teal bar */
+.public-theme-root[data-public-theme="light"] .payment-plan-table .payment-plan-thead th:nth-child(-n + 4) {
+  color: #ffffff !important;
+}
+
+/* Payment plan table — money columns: strong contrast on light rows; brand tints on dark */
+.public-theme-root[data-public-theme="light"] .payment-plan-table .payment-plan-money-unit {
+  color: #5c4d0f !important;
+}
+.public-theme-root[data-public-theme="light"] .payment-plan-table .payment-plan-money-down {
+  color: #065f46 !important;
+}
+.public-theme-root[data-public-theme="light"] .payment-plan-table .payment-plan-money-remain {
+  color: #1e40af !important;
+}
+.public-theme-root[data-public-theme="light"] .payment-plan-table .payment-plan-money-quarterly {
+  color: #5b21b6 !important;
+}
+.public-theme-root[data-public-theme="light"] .payment-plan-table .payment-plan-money-possession {
+  color: #78350f !important;
+}
+.public-theme-root[data-public-theme="dark"] .payment-plan-table .payment-plan-money-unit {
+  color: #c9a227 !important;
+}
+.public-theme-root[data-public-theme="dark"] .payment-plan-table .payment-plan-money-down {
+  color: #34d399 !important;
+}
+.public-theme-root[data-public-theme="dark"] .payment-plan-table .payment-plan-money-remain {
+  color: #60a5fa !important;
+}
+.public-theme-root[data-public-theme="dark"] .payment-plan-table .payment-plan-money-quarterly {
+  color: #c084fc !important;
+}
+.public-theme-root[data-public-theme="dark"] .payment-plan-table .payment-plan-money-possession {
+  color: #fbbf24 !important;
+}
+
+.public-theme-root[data-public-theme="light"] [class*="text-gray-300"],
+.public-theme-root[data-public-theme="light"] [class*="text-gray-400"] {
+  color: var(--public-text-muted) !important;
+}
+
+.public-theme-root[data-public-theme="light"] [class*="text-gray-500"],
+.public-theme-root[data-public-theme="light"] [class*="text-gray-600"] {
+  color: var(--public-text-soft) !important;
+}
+
+.public-theme-root[data-public-theme="light"] [class*="hover:text-white"]:hover {
+  color: var(--public-text) !important;
+}
+
+.public-theme-root[data-public-theme="light"] [class*="hover:bg-white"]:hover {
+  background-color: var(--public-hover) !important;
+}
+
+/* Hero always matches dark-theme presentation (video + typography), even in site light mode */
+.public-theme-root[data-public-theme="light"] .public-hero [class*="text-white"] {
+  color: #ffffff !important;
+}
+.public-theme-root[data-public-theme="light"] .public-hero h1 span.font-bold {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+.public-theme-root[data-public-theme="light"] .public-hero [class*="text-gray-300"],
+.public-theme-root[data-public-theme="light"] .public-hero [class*="text-gray-400"] {
+  color: #d1d5db !important;
+}
+.public-theme-root[data-public-theme="light"] .public-hero .animate-scroll-bounce span {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+.public-theme-root[data-public-theme="light"] .public-hero .animate-scroll-bounce svg {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.public-theme-root[data-public-theme="light"] .public-hero .btn-gold {
+  color: #c9a227 !important;
+  background: transparent;
+  border-color: #c9a227;
+  box-shadow: none;
+}
+.public-theme-root[data-public-theme="light"] .public-hero .btn-gold:hover {
+  background: rgba(201, 162, 39, 0.12);
+  box-shadow: 0 4px 20px rgba(201, 162, 39, 0.2);
+}
+
+.public-theme-root[data-public-theme="light"] .public-hero .btn-ghost {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+.public-theme-root[data-public-theme="light"] .public-hero .btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
 
 /* ─── Admin Theme (scoped) ───────────────────── */
 .admin-theme-root {

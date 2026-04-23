@@ -96,7 +96,7 @@ export default function VerifyOwnershipClient({
     : 0;
 
   return (
-    <div className="py-20 px-4">
+    <div className="public-page py-20 px-4">
       <div className="max-w-2xl mx-auto space-y-8">
         <div className="text-center space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#2563eb]/10 border border-[#2563eb]/20 rounded-full text-xs text-[#2563eb] font-semibold uppercase tracking-widest">
@@ -115,13 +115,13 @@ export default function VerifyOwnershipClient({
             value={registrationNumber}
             onChange={(e) => setRegistrationNumber(e.target.value)}
             placeholder="e.g. 7SKY-843993"
-            className="flex-1 px-4 py-3 bg-[#111] border border-white/20 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#2563eb]"
+            className="flex-1 px-4 py-3 bg-[var(--public-muted)] border border-white/20 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#2563eb]"
             required
           />
           <button
             type="submit"
             disabled={loading}
-            className="px-6 py-3 bg-[#2563eb] hover:bg-[#3b82f6] disabled:opacity-50 text-white font-semibold rounded-xl transition shrink-0"
+            className="public-blue-chip-active px-6 py-3 bg-[#2563eb] hover:bg-[#3b82f6] disabled:opacity-50 text-white font-semibold rounded-xl transition shrink-0"
           >
             {loading ? "…" : "Verify"}
           </button>
@@ -135,7 +135,7 @@ export default function VerifyOwnershipClient({
 
         {result && (
           <div className="space-y-5">
-            <div className="bg-[#111] border border-white/10 rounded-2xl overflow-hidden">
+            <div className="bg-[var(--public-muted)] border border-white/10 rounded-2xl overflow-hidden">
               <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between">
                 <div>
                   <h2 className="text-lg font-bold text-white">{result.ownerName}</h2>
@@ -203,7 +203,7 @@ export default function VerifyOwnershipClient({
               </div>
             </div>
 
-            <div className="bg-[#111] border border-white/10 rounded-2xl overflow-hidden">
+            <div className="bg-[var(--public-muted)] border border-white/10 rounded-2xl overflow-hidden">
               <div className="px-6 py-4 border-b border-white/10">
                 <h3 className="text-white font-bold">Instalment Schedule</h3>
                 <p className="text-gray-500 text-xs mt-0.5">Based on your payment plan</p>
@@ -260,7 +260,7 @@ export default function VerifyOwnershipClient({
             </div>
 
             {result.paymentHistorySummary.length > 0 && (
-              <div className="bg-[#111] border border-white/10 rounded-2xl overflow-hidden">
+              <div className="bg-[var(--public-muted)] border border-white/10 rounded-2xl overflow-hidden">
                 <div className="px-6 py-4 border-b border-white/10">
                   <h3 className="text-white font-bold">Payment History</h3>
                   <p className="text-gray-500 text-xs mt-0.5">

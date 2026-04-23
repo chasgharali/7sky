@@ -40,7 +40,7 @@ export function PaymentPlanTabs({ plans }: { plans: FloorPlan[] }) {
   const activePlan = sorted.find((p) => p.floor === activeFloor) ?? sorted[0];
 
   return (
-    <div className="space-y-6">
+    <div className="public-page space-y-6">
       {/* Floor tabs */}
       <div className="overflow-x-auto pt-2 pb-1">
         <div className="flex gap-2 min-w-max justify-center px-1">
@@ -52,8 +52,8 @@ export function PaymentPlanTabs({ plans }: { plans: FloorPlan[] }) {
                 onClick={() => setActiveFloor(plan.floor)}
                 className={`relative flex flex-col items-center px-5 py-3 rounded-xl font-medium transition-all duration-200 ${
                   active
-                    ? "bg-[#2563eb] text-white shadow-lg shadow-blue-900/40"
-                    : "bg-[#111] text-gray-400 hover:bg-white/5 hover:text-white border border-white/10"
+                    ? "public-blue-chip-active bg-[#2563eb] text-white shadow-lg shadow-blue-900/40"
+                    : "bg-[var(--public-muted)] text-gray-400 hover:bg-white/5 hover:text-white border border-white/10"
                 }`}
               >
                 <span className="text-xs font-black">{FLOOR_SHORT[plan.floor] ?? plan.floor}</span>
@@ -82,9 +82,9 @@ export function PaymentPlanTabs({ plans }: { plans: FloorPlan[] }) {
 
       {/* Table */}
       {activePlan && (
-        <div className="overflow-x-auto rounded-xl border border-white/10">
-          <table className="w-full min-w-[700px] text-xs">
-            <thead>
+        <div className="payment-plan-table overflow-x-auto rounded-xl border border-white/10">
+          <table className="w-full min-w-[700px] text-sm">
+            <thead className="payment-plan-thead">
               <tr className="bg-gradient-to-r from-[#0f4c5c] to-[#1a3a5c]">
                 <th className="px-3 py-3.5 text-white font-bold text-left border-r border-white/10">Shop No.</th>
                 <th className="px-3 py-3.5 text-white font-bold text-center border-r border-white/10">Dimensions</th>
@@ -99,16 +99,26 @@ export function PaymentPlanTabs({ plans }: { plans: FloorPlan[] }) {
             </thead>
             <tbody>
               {activePlan.rows.map((row, i) => (
-                <tr key={i} className={`border-b border-white/5 transition-colors hover:bg-white/[0.03] ${i % 2 === 0 ? "bg-[#0d0d0d]" : "bg-[#111]"}`}>
+                <tr key={i} className={`border-b border-white/5 transition-colors hover:bg-white/[0.03] ${i % 2 === 0 ? "bg-[var(--public-surface)]" : "bg-[var(--public-muted)]"}`}>
                   <td className="px-3 py-3 text-white font-semibold border-r border-white/5">{row.shopNo}</td>
                   <td className="px-3 py-3 text-gray-400 text-center border-r border-white/5">{row.dimensions}</td>
                   <td className="px-3 py-3 text-gray-300 text-center border-r border-white/5">{row.totalArea?.toLocaleString()}</td>
                   <td className="px-3 py-3 text-gray-300 text-center border-r border-white/5">{row.pricePerSqFt?.toLocaleString()}</td>
-                  <td className="px-3 py-3 text-[#c9a227] font-bold text-center border-r border-white/5">{formatPKR(row.unitPrice)}</td>
-                  <td className="px-3 py-3 text-emerald-400 text-center border-r border-white/5">{formatPKR(row.downpayment)}</td>
-                  <td className="px-3 py-3 text-blue-400 text-center border-r border-white/5">{formatPKR(row.remaining)}</td>
-                  <td className="px-3 py-3 text-purple-400 text-center border-r border-white/5">{formatPKR(row.quarterlyInstalment)}</td>
-                  <td className="px-3 py-3 text-amber-400 text-center">{formatPKR(row.onPossession)}</td>
+                  <td className="payment-plan-money-unit px-3 py-3 font-semibold tabular-nums text-center border-r border-white/5">
+                    {formatPKR(row.unitPrice)}
+                  </td>
+                  <td className="payment-plan-money-down px-3 py-3 font-semibold tabular-nums text-center border-r border-white/5">
+                    {formatPKR(row.downpayment)}
+                  </td>
+                  <td className="payment-plan-money-remain px-3 py-3 font-semibold tabular-nums text-center border-r border-white/5">
+                    {formatPKR(row.remaining)}
+                  </td>
+                  <td className="payment-plan-money-quarterly px-3 py-3 font-semibold tabular-nums text-center border-r border-white/5">
+                    {formatPKR(row.quarterlyInstalment)}
+                  </td>
+                  <td className="payment-plan-money-possession px-3 py-3 font-semibold tabular-nums text-center">
+                    {formatPKR(row.onPossession)}
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" href="/fav.png" type="image/png" />
+<link rel="apple-touch-icon" href="/fav.png" />
+<title>PlazaPro ERP — Complete Plaza Booking &amp; Management System</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0a1a3d;
+    --navy-dark:#050f26;
+    --navy-light:#1a2f5c;
+    --gold:#d4af37;
+    --gold-light:#f4d03f;
+    --gold-dark:#a8871f;
+    --cream:#f8f5ed;
+    --white:#ffffff;
+    --grey:#7a8299;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter',sans-serif;
+    color:#1c2536;
+    background:#eef1f7;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{
+    width:100%;
+    max-width:1100px;
+    margin:30px auto;
+    background:#fff;
+    border-radius:22px;
+    overflow:hidden;
+    box-shadow:0 30px 80px rgba(10,26,61,0.18), 0 5px 15px rgba(10,26,61,0.08);
+    position:relative;
+  }
+  h1,h2,h3,h4{font-family:'Playfair Display',serif;}
+  .serif{font-family:'Playfair Display',serif;}
+
+  /* ==================== PAGE 1 — COVER ==================== */
+  .cover{
+    min-height:900px;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(212,175,55,0.15), transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(212,175,55,0.12), transparent 45%),
+      linear-gradient(135deg,var(--navy-dark) 0%,var(--navy) 50%,var(--navy-light) 100%);
+    color:#fff;
+    position:relative;
+    padding:60px 70px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+  .cover::before{
+    content:"";
+    position:absolute;
+    width:600px;height:600px;
+    right:-150px;top:-150px;
+    background:radial-gradient(circle,rgba(212,175,55,0.25),transparent 70%);
+    border-radius:50%;
+    animation:float 8s ease-in-out infinite;
+  }
+  .cover::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(212,175,55,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212,175,55,0.04) 1px, transparent 1px);
+    background-size:60px 60px;
+    pointer-events:none;
+  }
+  @keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(-20px,20px)}}
+
+  .cover-top{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:2;}
+  .logo{
+    display:flex;align-items:center;gap:14px;
+  }
+  .logo-mark{
+    width:56px;height:56px;
+    background:linear-gradient(135deg,var(--gold),var(--gold-light));
+    border-radius:14px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Playfair Display',serif;
+    font-weight:900;font-size:26px;color:var(--navy-dark);
+    box-shadow:0 10px 30px rgba(212,175,55,0.4);
+    transform:rotate(-5deg);
+  }
+  .logo-text{font-size:22px;font-weight:800;letter-spacing:0.5px;}
+  .logo-text span{color:var(--gold);}
+  .badge{
+    padding:8px 18px;border:1px solid rgba(212,175,55,0.5);
+    border-radius:30px;font-size:12px;color:var(--gold);
+    letter-spacing:2px;text-transform:uppercase;font-weight:600;
+    backdrop-filter:blur(10px);
+    background:rgba(212,175,55,0.08);
+  }
+
+  .cover-hero{flex:1;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:2;margin-top:40px;}
+  .eyebrow{color:var(--gold);letter-spacing:6px;font-size:13px;font-weight:600;text-transform:uppercase;margin-bottom:20px;}
+  .cover h1{
+    font-size:92px;line-height:0.95;font-weight:900;margin-bottom:24px;
+    background:linear-gradient(180deg,#fff 0%,#d4dbec 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .cover h1 em{
+    font-style:italic;font-weight:400;
+    background:linear-gradient(90deg,var(--gold),var(--gold-light));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .cover-sub{font-size:22px;max-width:680px;color:#c8d2e8;line-height:1.5;margin-bottom:40px;font-weight:300;}
+  .cover-tags{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px;}
+  .chip{
+    padding:10px 20px;background:rgba(255,255,255,0.06);
+    border:1px solid rgba(212,175,55,0.3);border-radius:30px;
+    font-size:13px;color:#e8edf7;backdrop-filter:blur(10px);
+    transition:all 0.3s;
+  }
+  .chip:hover{background:rgba(212,175,55,0.15);transform:translateY(-2px);}
+
+  .cover-footer{
+    position:relative;z-index:2;
+    display:flex;justify-content:space-between;align-items:flex-end;
+    padding-top:40px;border-top:1px solid rgba(212,175,55,0.2);
+  }
+  .trust-label{font-size:11px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;}
+  .trust-logos{display:flex;gap:30px;align-items:center;}
+  .trust-logo{
+    padding:12px 24px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:10px;font-weight:700;
+    color:#fff;letter-spacing:1px;
+    transition:all 0.3s;
+  }
+  .trust-logo:hover{border-color:var(--gold);transform:translateY(-3px);}
+  .trust-logo small{display:block;font-size:9px;color:var(--gold);letter-spacing:2px;font-weight:500;margin-top:2px;}
+
+  .cover-stats{text-align:right;}
+  .stat-big{font-family:'Playfair Display',serif;font-size:56px;font-weight:900;color:var(--gold);line-height:1;}
+  .stat-label{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#c8d2e8;margin-top:6px;}
+
+  /* Floating building illustration on cover */
+  .cover-illus{
+    position:absolute;right:70px;bottom:260px;
+    width:300px;height:380px;
+    z-index:1;opacity:0.95;
+    animation:floatUp 6s ease-in-out infinite;
+  }
+  @keyframes floatUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+
+  /* Floating shapes decoration */
+  .float-shape{position:absolute;pointer-events:none;z-index:1;}
+  .float-shape.circle{
+    width:180px;height:180px;border-radius:50%;
+    background:radial-gradient(circle,rgba(212,175,55,0.2),transparent 70%);
+    animation:pulseGlow 4s ease-in-out infinite;
+  }
+  @keyframes pulseGlow{0%,100%{transform:scale(1);opacity:0.6}50%{transform:scale(1.15);opacity:1}}
+  .float-shape.hex{
+    width:80px;height:92px;
+    background:linear-gradient(135deg,rgba(212,175,55,0.3),rgba(212,175,55,0.05));
+    clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+    animation:spin 20s linear infinite;
+  }
+  @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+  .float-shape.ring{
+    width:140px;height:140px;border-radius:50%;
+    border:2px dashed rgba(212,175,55,0.4);
+    animation:spin 30s linear infinite;
+  }
+
+  /* ==================== DASHBOARD SECTION ==================== */
+  .dashboard-preview{
+    background:#fff;border-radius:20px;
+    box-shadow:0 30px 80px rgba(10,26,61,0.18);
+    overflow:hidden;border:1px solid #e5ebf5;
+  }
+  .dash-topbar{
+    background:linear-gradient(135deg,var(--navy-dark),var(--navy));
+    padding:18px 26px;display:flex;justify-content:space-between;align-items:center;color:#fff;
+  }
+  .dash-nav{display:flex;gap:20px;align-items:center;}
+  .dash-nav-item{font-size:12px;color:#a8b5d1;padding:6px 12px;border-radius:6px;cursor:pointer;}
+  .dash-nav-item.active{background:var(--gold);color:var(--navy-dark);font-weight:700;}
+  .dash-user{
+    display:flex;align-items:center;gap:10px;font-size:13px;
+  }
+  .avatar{
+    width:36px;height:36px;border-radius:50%;
+    background:linear-gradient(135deg,var(--gold),var(--gold-light));
+    color:var(--navy-dark);display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:14px;border:2px solid rgba(212,175,55,0.5);
+  }
+  .dash-body{padding:30px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  .kpi-card{
+    background:linear-gradient(135deg,#f8f5ed,#fff);
+    border:1px solid #e5ebf5;border-radius:12px;padding:18px;
+    position:relative;overflow:hidden;
+  }
+  .kpi-card::after{
+    content:"";position:absolute;right:-20px;top:-20px;
+    width:80px;height:80px;border-radius:50%;
+    background:radial-gradient(circle,rgba(212,175,55,0.2),transparent 70%);
+  }
+  .kpi-card .ic{
+    width:36px;height:36px;border-radius:8px;
+    background:linear-gradient(135deg,var(--navy),var(--navy-light));
+    display:flex;align-items:center;justify-content:center;margin-bottom:12px;
+  }
+  .kpi-card .ic svg{width:18px;height:18px;}
+  .kpi-card .label{font-size:11px;color:#7a8299;letter-spacing:1.5px;text-transform:uppercase;}
+  .kpi-card .value{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:var(--navy);margin:6px 0;}
+  .kpi-card .trend{font-size:11px;display:flex;align-items:center;gap:4px;}
+  .trend.up{color:#2e8b57;}
+  .trend.down{color:#c0392b;}
+
+  .dash-row{grid-column:span 4;display:grid;grid-template-columns:2fr 1fr;gap:18px;margin-top:4px;}
+  .chart-panel{
+    background:#fff;border:1px solid #e5ebf5;border-radius:12px;padding:22px;
+  }
+  .chart-panel h5{
+    font-family:'Inter',sans-serif;font-size:14px;color:var(--navy);
+    font-weight:700;margin-bottom:18px;display:flex;justify-content:space-between;
+  }
+  .chart-panel h5 span{font-weight:400;color:#7a8299;font-size:12px;}
+
+  /* Bar chart */
+  .bar-chart{display:flex;align-items:flex-end;gap:10px;height:180px;padding:0 8px;}
+  .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .bar{
+    width:100%;background:linear-gradient(180deg,var(--gold),var(--gold-dark));
+    border-radius:6px 6px 0 0;position:relative;transition:all 0.3s;
+    min-height:6px;
+  }
+  .bar.navy{background:linear-gradient(180deg,var(--navy-light),var(--navy-dark));}
+  .bar:hover{opacity:0.85;transform:scaleY(1.03);}
+  .bar-label{font-size:10px;color:#7a8299;font-weight:600;}
+  .bar-legend{display:flex;gap:20px;justify-content:center;margin-top:16px;font-size:11px;color:#4a5670;}
+  .bar-legend span{display:flex;align-items:center;gap:6px;}
+  .bar-legend .dot{width:10px;height:10px;border-radius:3px;}
+
+  /* Donut chart */
+  .donut-wrap{display:flex;align-items:center;justify-content:center;flex-direction:column;}
+  .donut{position:relative;width:160px;height:160px;}
+  .donut-center{
+    position:absolute;inset:0;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+  }
+  .donut-center .n{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--navy);}
+  .donut-center .l{font-size:10px;color:#7a8299;letter-spacing:1px;text-transform:uppercase;}
+  .donut-legend{width:100%;margin-top:16px;}
+  .donut-legend-row{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:6px 0;font-size:12px;color:#4a5670;
+    border-bottom:1px dashed #e5ebf5;
+  }
+  .donut-legend-row:last-child{border-bottom:none;}
+  .donut-legend-row .dot{width:10px;height:10px;border-radius:50%;margin-right:8px;}
+  .donut-legend-row .val{font-weight:700;color:var(--navy);}
+
+  /* ==================== WORKFLOW DIAGRAM ==================== */
+  .workflow{
+    display:grid;grid-template-columns:repeat(5,1fr);gap:16px;position:relative;
+    padding:40px 20px;
+  }
+  .workflow::before{
+    content:"";position:absolute;top:50%;left:8%;right:8%;height:2px;
+    background:linear-gradient(90deg,var(--gold-dark),var(--gold),var(--gold-dark));
+    transform:translateY(-50%);z-index:0;
+  }
+  .wf-step{
+    position:relative;z-index:1;background:#fff;
+    border:2px solid #e5ebf5;border-radius:16px;padding:24px 16px;
+    text-align:center;transition:all 0.4s;
+  }
+  .wf-step:hover{transform:translateY(-6px);border-color:var(--gold);box-shadow:0 15px 40px rgba(10,26,61,0.1);}
+  .wf-ic{
+    width:60px;height:60px;border-radius:50%;margin:0 auto 14px;
+    background:linear-gradient(135deg,var(--navy-dark),var(--navy));
+    display:flex;align-items:center;justify-content:center;
+    border:4px solid var(--cream);box-shadow:0 8px 25px rgba(10,26,61,0.3);
+  }
+  .wf-ic svg{width:26px;height:26px;}
+  .wf-num{
+    position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+    background:linear-gradient(135deg,var(--gold),var(--gold-light));
+    color:var(--navy-dark);font-weight:900;font-size:11px;
+    padding:4px 12px;border-radius:20px;letter-spacing:1px;
+    box-shadow:0 4px 10px rgba(212,175,55,0.4);
+  }
+  .wf-step h5{font-size:14px;color:var(--navy);font-family:'Inter',sans-serif;font-weight:700;margin-bottom:6px;}
+  .wf-step p{font-size:12px;color:#6a7591;line-height:1.5;}
+
+  /* ==================== ECOSYSTEM / MODULE ORBIT ==================== */
+  .orbit-wrap{position:relative;height:520px;display:flex;align-items:center;justify-content:center;}
+  .orbit-center{
+    width:180px;height:180px;border-radius:50%;
+    background:linear-gradient(135deg,var(--navy-dark),var(--navy));
+    display:flex;align-items:center;justify-content:center;flex-direction:column;
+    color:#fff;text-align:center;
+    box-shadow:0 20px 60px rgba(10,26,61,0.35),
+      inset 0 0 30px rgba(212,175,55,0.2);
+    z-index:2;position:relative;
+    border:3px solid var(--gold);
+  }
+  .orbit-center .t{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;line-height:1.1;}
+  .orbit-center .s{font-size:10px;letter-spacing:2px;color:var(--gold);margin-top:6px;}
+  .orbit-ring{
+    position:absolute;border:1.5px dashed rgba(212,175,55,0.35);border-radius:50%;
+    top:50%;left:50%;transform:translate(-50%,-50%);
+  }
+  .ring-1{width:340px;height:340px;animation:spin 40s linear infinite;}
+  .ring-2{width:480px;height:480px;animation:spin 60s linear infinite reverse;}
+  .orbit-node{
+    position:absolute;width:76px;height:76px;
+    background:#fff;border:2px solid var(--gold);
+    border-radius:18px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    font-size:10px;color:var(--navy);font-weight:700;text-align:center;
+    box-shadow:0 10px 30px rgba(10,26,61,0.15);
+    padding:6px;
+    transition:all 0.3s;
+  }
+  .orbit-node:hover{transform:scale(1.15);background:var(--cream);}
+  .orbit-node svg{width:22px;height:22px;margin-bottom:4px;}
+
+  /* ==================== TESTIMONIALS ==================== */
+  .testimonial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .tst-card{
+    background:#fff;border:1px solid #e5ebf5;
+    border-radius:16px;padding:28px;position:relative;
+    transition:all 0.3s;
+  }
+  .tst-card:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(10,26,61,0.12);}
+  .tst-quote{
+    position:absolute;top:-18px;right:22px;
+    width:48px;height:48px;border-radius:12px;
+    background:linear-gradient(135deg,var(--gold),var(--gold-light));
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Playfair Display',serif;font-size:40px;
+    color:var(--navy-dark);line-height:1;padding-bottom:8px;
+    box-shadow:0 8px 20px rgba(212,175,55,0.3);
+  }
+  .tst-stars{color:var(--gold);font-size:16px;letter-spacing:2px;margin-bottom:14px;}
+  .tst-text{color:#4a5670;font-size:14px;line-height:1.7;font-style:italic;margin-bottom:20px;min-height:110px;}
+  .tst-author{display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid #e5ebf5;}
+  .tst-avatar{
+    width:46px;height:46px;border-radius:50%;
+    background:linear-gradient(135deg,var(--navy),var(--navy-light));
+    color:#fff;display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:16px;
+    border:2px solid var(--gold);
+  }
+  .tst-author .n{font-weight:700;color:var(--navy);font-size:14px;}
+  .tst-author .r{font-size:12px;color:#7a8299;}
+
+  /* ==================== BEFORE / AFTER COMPARISON ==================== */
+  .compare{
+    display:grid;grid-template-columns:1fr 1fr;gap:0;
+    border-radius:20px;overflow:hidden;
+    box-shadow:0 30px 60px rgba(10,26,61,0.18);
+  }
+  .cmp-col{padding:40px;position:relative;}
+  .cmp-before{background:linear-gradient(135deg,#3d3d3d,#1a1a1a);color:#fff;}
+  .cmp-after{background:linear-gradient(135deg,var(--navy),var(--navy-dark));color:#fff;border-left:3px solid var(--gold);}
+  .cmp-col h4{font-size:22px;margin-bottom:24px;font-family:'Playfair Display',serif;display:flex;align-items:center;gap:12px;}
+  .cmp-after h4{color:var(--gold);}
+  .cmp-list{list-style:none;}
+  .cmp-list li{
+    padding:12px 0 12px 32px;position:relative;font-size:14px;
+    border-bottom:1px dashed rgba(255,255,255,0.1);
+  }
+  .cmp-before li::before{
+    content:"✕";position:absolute;left:0;color:#c0392b;font-weight:900;font-size:16px;
+  }
+  .cmp-after li::before{
+    content:"✓";position:absolute;left:0;color:var(--gold);font-weight:900;font-size:16px;
+  }
+  .cmp-badge{
+    position:absolute;top:20px;right:20px;
+    padding:6px 14px;border-radius:20px;font-size:10px;letter-spacing:2px;font-weight:700;
+  }
+  .cmp-before .cmp-badge{background:rgba(192,57,43,0.25);color:#f5a79d;border:1px solid #c0392b;}
+  .cmp-after .cmp-badge{background:rgba(212,175,55,0.2);color:var(--gold);border:1px solid var(--gold);}
+
+  /* ==================== GENERAL PAGE ==================== */
+  .section{padding:80px 70px;position:relative;}
+  .section-dark{background:linear-gradient(135deg,var(--navy-dark) 0%,var(--navy) 100%);color:#fff;}
+  .section-cream{background:var(--cream);}
+
+  .section-header{margin-bottom:60px;text-align:center;}
+  .section-eyebrow{
+    display:inline-block;padding:6px 16px;
+    background:rgba(212,175,55,0.15);color:var(--gold-dark);
+    border:1px solid rgba(212,175,55,0.4);
+    border-radius:30px;font-size:11px;letter-spacing:3px;
+    text-transform:uppercase;font-weight:600;margin-bottom:16px;
+  }
+  .section-dark .section-eyebrow{color:var(--gold);background:rgba(212,175,55,0.1);}
+  .section-title{font-size:48px;line-height:1.1;font-weight:900;color:var(--navy);margin-bottom:16px;}
+  .section-dark .section-title{color:#fff;}
+  .section-title em{font-style:italic;color:var(--gold-dark);font-weight:400;}
+  .section-dark .section-title em{color:var(--gold);}
+  .section-subtitle{font-size:18px;color:var(--grey);max-width:620px;margin:0 auto;line-height:1.6;}
+  .section-dark .section-subtitle{color:#a8b5d1;}
+
+  /* ==================== PAGE 2 — ABOUT ==================== */
+  .about{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+  .about-text h2{font-size:44px;color:var(--navy);line-height:1.1;margin-bottom:20px;font-weight:900;}
+  .about-text h2 em{font-style:italic;color:var(--gold-dark);font-weight:400;}
+  .about-text p{color:#4a5670;font-size:16px;margin-bottom:18px;line-height:1.8;}
+  .highlight-box{
+    margin-top:24px;padding:24px;
+    background:linear-gradient(135deg,rgba(212,175,55,0.08),rgba(10,26,61,0.03));
+    border-left:4px solid var(--gold);border-radius:8px;
+  }
+  .highlight-box strong{color:var(--navy);display:block;margin-bottom:6px;}
+
+  .about-visual{
+    position:relative;
+    background:linear-gradient(135deg,var(--navy),var(--navy-light));
+    border-radius:20px;padding:40px;color:#fff;
+    box-shadow:0 30px 60px rgba(10,26,61,0.25);
+  }
+  .about-visual::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(circle at 80% 20%,rgba(212,175,55,0.2),transparent 60%);
+    border-radius:20px;
+  }
+  .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;position:relative;z-index:1;}
+  .stat-item{text-align:left;padding:20px;background:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(212,175,55,0.2);}
+  .stat-item .n{font-family:'Playfair Display',serif;font-size:40px;font-weight:900;color:var(--gold);line-height:1;}
+  .stat-item .l{font-size:12px;color:#c8d2e8;margin-top:6px;letter-spacing:1px;}
+
+  /* ==================== PAGE 3 — FEATURES GRID ==================== */
+  .feature-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
+  }
+  .feature-card{
+    background:#fff;border:1px solid #e5ebf5;
+    border-radius:16px;padding:32px 26px;
+    transition:all 0.4s;
+    position:relative;overflow:hidden;
+  }
+  .feature-card::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,var(--gold),var(--gold-light));
+    transform:scaleX(0);transform-origin:left;transition:transform 0.4s;
+  }
+  .feature-card:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(10,26,61,0.12);border-color:var(--gold);}
+  .feature-card:hover::before{transform:scaleX(1);}
+  .feature-icon{
+    width:60px;height:60px;border-radius:14px;
+    background:linear-gradient(135deg,var(--navy),var(--navy-light));
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:22px;
+    box-shadow:0 10px 25px rgba(10,26,61,0.2);
+  }
+  .feature-icon svg{width:28px;height:28px;}
+  .feature-card h3{font-size:20px;color:var(--navy);margin-bottom:10px;font-weight:700;font-family:'Inter',sans-serif;}
+  .feature-card p{color:#6a7591;font-size:14px;line-height:1.6;}
+  .feature-number{
+    position:absolute;top:20px;right:24px;
+    font-family:'Playfair Display',serif;font-size:54px;
+    color:rgba(212,175,55,0.12);font-weight:900;line-height:1;
+  }
+
+  /* ==================== PAGE 4 — SPOTLIGHT / DEEP DIVE ==================== */
+  .spotlight{
+    display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:center;margin-bottom:80px;
+  }
+  .spotlight:last-child{margin-bottom:0;}
+  .spotlight.reverse{grid-template-columns:1fr 1.1fr;}
+  .spotlight.reverse .spot-text{order:2;}
+  .spot-tag{
+    display:inline-block;padding:6px 14px;
+    background:rgba(212,175,55,0.15);color:var(--gold-dark);
+    border-radius:20px;font-size:11px;letter-spacing:2px;
+    text-transform:uppercase;font-weight:600;margin-bottom:14px;
+  }
+  .spot-text h3{font-size:36px;color:var(--navy);line-height:1.15;font-weight:900;margin-bottom:16px;}
+  .spot-text h3 em{font-style:italic;color:var(--gold-dark);font-weight:400;}
+  .spot-text p{color:#4a5670;font-size:16px;margin-bottom:18px;line-height:1.8;}
+  .spot-list{list-style:none;}
+  .spot-list li{
+    padding:10px 0 10px 32px;position:relative;
+    color:#2c3953;font-size:15px;font-weight:500;
+  }
+  .spot-list li::before{
+    content:"";position:absolute;left:0;top:14px;
+    width:18px;height:18px;border-radius:50%;
+    background:linear-gradient(135deg,var(--gold),var(--gold-light));
+    box-shadow:0 4px 10px rgba(212,175,55,0.4);
+  }
+  .spot-list li::after{
+    content:"";position:absolute;left:6px;top:20px;
+    width:6px;height:3px;border-left:2px solid #fff;border-bottom:2px solid #fff;
+    transform:rotate(-45deg);
+  }
+
+  /* Mock visuals */
+  .mock{
+    background:#fff;border-radius:16px;
+    box-shadow:0 20px 50px rgba(10,26,61,0.15);
+    overflow:hidden;border:1px solid #e5ebf5;
+  }
+  .mock-top{
+    background:linear-gradient(135deg,var(--navy),var(--navy-light));
+    color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;
+  }
+  .mock-top-title{font-weight:600;font-size:14px;}
+  .mock-top-dots{display:flex;gap:6px;}
+  .mock-top-dots span{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.3);}
+  .mock-top-dots span:first-child{background:var(--gold);}
+  .mock-body{padding:22px;}
+
+  /* Payment plan mock */
+  .plan-row{display:flex;justify-content:space-between;padding:12px 14px;border-radius:8px;margin-bottom:8px;font-size:13px;}
+  .plan-row.head{background:var(--navy);color:#fff;font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase;}
+  .plan-row:nth-child(even){background:#f8f5ed;}
+  .plan-row.active{background:linear-gradient(90deg,rgba(212,175,55,0.2),transparent);border-left:3px solid var(--gold);}
+  .plan-row .amt{font-weight:700;color:var(--navy);}
+  .plan-row .stat-paid{color:#2e8b57;font-weight:600;}
+  .plan-row .stat-due{color:#c0392b;font-weight:600;}
+
+  /* Availability mock */
+  .avail-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;}
+  .avail-cell{
+    aspect-ratio:1;border-radius:6px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:11px;font-weight:700;color:#fff;
+    transition:transform 0.2s;cursor:pointer;
+  }
+  .avail-cell:hover{transform:scale(1.1);}
+  .avail-cell.available{background:#2e8b57;}
+  .avail-cell.sold{background:#c0392b;}
+  .avail-cell.booked{background:var(--gold-dark);}
+  .avail-cell.hold{background:#7a8299;}
+  .avail-legend{display:flex;gap:16px;margin-top:16px;font-size:12px;}
+  .avail-legend span{display:flex;align-items:center;gap:6px;color:#4a5670;}
+  .avail-legend span::before{content:"";width:10px;height:10px;border-radius:3px;}
+  .avail-legend .lg-av::before{background:#2e8b57;}
+  .avail-legend .lg-sd::before{background:#c0392b;}
+  .avail-legend .lg-bk::before{background:var(--gold-dark);}
+  .avail-legend .lg-hd::before{background:#7a8299;}
+
+  /* Allotment letter mock */
+  .letter{
+    background:
+      linear-gradient(135deg,#fdfcf7,#f8f5ed);
+    padding:30px;border:2px solid var(--gold);
+    position:relative;border-radius:10px;
+    font-family:'Playfair Display',serif;
+  }
+  .letter::before{
+    content:"";position:absolute;inset:8px;border:1px solid rgba(212,175,55,0.4);border-radius:6px;
+  }
+  .letter-content{position:relative;z-index:1;}
+  .letter-head{text-align:center;border-bottom:2px solid var(--gold);padding-bottom:14px;margin-bottom:16px;}
+  .letter-head h4{font-size:20px;color:var(--navy);letter-spacing:2px;font-weight:900;}
+  .letter-head small{color:var(--gold-dark);letter-spacing:3px;font-size:10px;}
+  .letter-body{font-family:'Inter',sans-serif;font-size:12px;color:#2c3953;line-height:1.7;}
+  .letter-body strong{color:var(--navy);}
+  .letter-qr{
+    display:flex;justify-content:space-between;align-items:center;margin-top:16px;
+    padding-top:14px;border-top:1px dashed rgba(212,175,55,0.6);
+  }
+  .qr-box{
+    width:64px;height:64px;background:#fff;padding:6px;border-radius:4px;
+    background-image:
+      linear-gradient(45deg,#000 25%,transparent 25%),
+      linear-gradient(-45deg,#000 25%,transparent 25%),
+      linear-gradient(45deg,transparent 75%,#000 75%),
+      linear-gradient(-45deg,transparent 75%,#000 75%);
+    background-size:14px 14px;
+    background-position:0 0,0 7px,7px -7px,-7px 0;
+    border:2px solid var(--navy);
+  }
+  .verified-stamp{
+    transform:rotate(-12deg);
+    padding:6px 14px;border:2px solid #2e8b57;color:#2e8b57;
+    font-family:'Inter',sans-serif;font-weight:800;font-size:11px;
+    letter-spacing:3px;border-radius:4px;
+    background:rgba(46,139,87,0.1);
+  }
+
+  /* Lead tracking mock */
+  .funnel{display:flex;flex-direction:column;gap:8px;}
+  .funnel-stage{
+    padding:14px 20px;border-radius:10px;
+    display:flex;justify-content:space-between;align-items:center;
+    color:#fff;font-weight:600;font-size:13px;
+    transition:transform 0.3s;
+  }
+  .funnel-stage:hover{transform:translateX(6px);}
+  .funnel-stage.s1{background:linear-gradient(90deg,#1a2f5c,#0a1a3d);width:100%;}
+  .funnel-stage.s2{background:linear-gradient(90deg,#2a4580,#1a2f5c);width:85%;}
+  .funnel-stage.s3{background:linear-gradient(90deg,#4a6eb8,#2a4580);width:65%;}
+  .funnel-stage.s4{background:linear-gradient(90deg,var(--gold-dark),var(--gold));width:45%;color:var(--navy);}
+  .funnel-stage .n{
+    background:rgba(255,255,255,0.2);padding:2px 10px;border-radius:20px;font-size:11px;
+  }
+  .funnel-stage.s4 .n{background:rgba(10,26,61,0.15);}
+
+  /* ==================== PAGE — CLIENTS ==================== */
+  .clients{
+    background:linear-gradient(135deg,var(--navy-dark),var(--navy));
+    color:#fff;
+    padding:80px 70px;
+    position:relative;
+    overflow:hidden;
+  }
+  .clients::before{
+    content:"";position:absolute;inset:0;
+    background:
+      radial-gradient(circle at 10% 90%,rgba(212,175,55,0.1),transparent 40%),
+      radial-gradient(circle at 90% 10%,rgba(212,175,55,0.12),transparent 40%);
+  }
+  .client-cards{display:grid;grid-template-columns:1fr 1fr;gap:30px;position:relative;z-index:1;}
+  .client-card{
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(212,175,55,0.3);
+    border-radius:18px;padding:36px;
+    backdrop-filter:blur(10px);
+    transition:all 0.4s;
+  }
+  .client-card:hover{transform:translateY(-6px);border-color:var(--gold);background:rgba(212,175,55,0.08);}
+  .client-logo{
+    display:inline-block;padding:10px 20px;
+    background:linear-gradient(135deg,var(--gold),var(--gold-light));
+    color:var(--navy-dark);border-radius:8px;font-weight:900;
+    font-size:18px;letter-spacing:1px;margin-bottom:20px;
+    font-family:'Playfair Display',serif;
+  }
+  .client-card h3{font-size:24px;color:#fff;margin-bottom:12px;font-family:'Inter',sans-serif;font-weight:700;}
+  .client-card p{color:#c8d2e8;line-height:1.7;margin-bottom:20px;font-size:14px;}
+  .client-metrics{display:flex;gap:24px;padding-top:20px;border-top:1px solid rgba(212,175,55,0.2);}
+  .metric .v{font-family:'Playfair Display',serif;font-size:28px;color:var(--gold);font-weight:900;}
+  .metric .k{font-size:11px;color:#a8b5d1;letter-spacing:1px;text-transform:uppercase;}
+
+  /* ==================== PAGE — WHY CHOOSE ==================== */
+  .benefits{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  .benefit{
+    text-align:center;padding:28px 18px;
+    background:#fff;border-radius:14px;
+    border:1px solid #e5ebf5;
+    transition:all 0.3s;
+  }
+  .benefit:hover{transform:translateY(-5px);box-shadow:0 15px 40px rgba(10,26,61,0.1);}
+  .benefit-ic{
+    width:60px;height:60px;margin:0 auto 16px;
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,rgba(212,175,55,0.15),rgba(212,175,55,0.05));
+    border-radius:50%;border:2px solid rgba(212,175,55,0.3);
+  }
+  .benefit-ic svg{width:28px;height:28px;}
+  .benefit h4{font-size:15px;color:var(--navy);margin-bottom:8px;font-family:'Inter',sans-serif;font-weight:700;}
+  .benefit p{font-size:13px;color:#6a7591;line-height:1.5;}
+
+  /* ==================== PAGE — TECH / SECURITY ==================== */
+  .tech-grid{display:grid;grid-template-columns:2fr 1fr;gap:40px;align-items:stretch;}
+  .tech-main{
+    background:linear-gradient(135deg,var(--navy),var(--navy-dark));
+    color:#fff;padding:50px;border-radius:20px;
+    position:relative;overflow:hidden;
+  }
+  .tech-main::before{
+    content:"";position:absolute;right:-100px;bottom:-100px;
+    width:400px;height:400px;
+    background:radial-gradient(circle,rgba(212,175,55,0.15),transparent 70%);
+    border-radius:50%;
+  }
+  .tech-main h3{font-size:32px;color:#fff;margin-bottom:18px;position:relative;font-weight:900;}
+  .tech-main p{color:#c8d2e8;margin-bottom:24px;position:relative;font-size:15px;line-height:1.7;}
+  .tech-badges{display:flex;flex-wrap:wrap;gap:10px;position:relative;}
+  .tech-badge{
+    padding:8px 16px;background:rgba(212,175,55,0.15);
+    border:1px solid rgba(212,175,55,0.4);color:var(--gold);
+    border-radius:20px;font-size:12px;font-weight:600;
+  }
+
+  .tech-side{display:flex;flex-direction:column;gap:20px;}
+  .tech-side-item{
+    background:#fff;padding:22px;border-radius:14px;
+    border:1px solid #e5ebf5;
+    display:flex;gap:16px;align-items:flex-start;
+  }
+  .tech-side-ic{
+    width:44px;height:44px;border-radius:10px;flex-shrink:0;
+    background:linear-gradient(135deg,var(--navy),var(--navy-light));
+    display:flex;align-items:center;justify-content:center;
+  }
+  .tech-side-ic svg{width:22px;height:22px;}
+  .tech-side-item h5{font-size:15px;color:var(--navy);margin-bottom:4px;font-weight:700;font-family:'Inter',sans-serif;}
+  .tech-side-item p{font-size:13px;color:#6a7591;}
+
+  /* ==================== PAGE — PRICING TEASER / CTA ==================== */
+  .cta{
+    background:
+      radial-gradient(circle at 20% 20%, rgba(212,175,55,0.2), transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(212,175,55,0.15), transparent 40%),
+      linear-gradient(135deg,var(--navy-dark) 0%,var(--navy) 100%);
+    color:#fff;padding:90px 70px;text-align:center;position:relative;overflow:hidden;
+  }
+  .cta::before{
+    content:"";position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(212,175,55,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212,175,55,0.03) 1px, transparent 1px);
+    background-size:50px 50px;
+  }
+  .cta-content{position:relative;z-index:1;}
+  .cta h2{font-size:60px;line-height:1;margin-bottom:20px;font-weight:900;}
+  .cta h2 em{color:var(--gold);font-style:italic;font-weight:400;}
+  .cta p{font-size:20px;color:#c8d2e8;max-width:640px;margin:0 auto 40px;font-weight:300;}
+  .cta-btns{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:60px;}
+  .btn{
+    padding:16px 34px;border-radius:40px;font-weight:700;
+    font-size:15px;cursor:pointer;border:none;transition:all 0.3s;
+    letter-spacing:0.5px;
+  }
+  .btn-gold{
+    background:linear-gradient(135deg,var(--gold),var(--gold-light));
+    color:var(--navy-dark);
+    box-shadow:0 10px 30px rgba(212,175,55,0.3);
+  }
+  .btn-gold:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(212,175,55,0.5);}
+  .btn-ghost{background:transparent;color:#fff;border:2px solid rgba(255,255,255,0.3);}
+  .btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+
+  .contact-row{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:30px;
+    padding:40px;background:rgba(255,255,255,0.03);border:1px solid rgba(212,175,55,0.2);
+    border-radius:16px;backdrop-filter:blur(10px);
+  }
+  .contact-col .label{font-size:11px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;}
+  .contact-col .val{font-size:16px;color:#fff;font-weight:500;}
+  .contact-col .sub{font-size:13px;color:#a8b5d1;margin-top:4px;}
+
+  .footer{
+    padding:30px 70px;background:var(--navy-dark);color:#a8b5d1;
+    display:flex;justify-content:space-between;align-items:center;font-size:12px;
+    border-top:1px solid rgba(212,175,55,0.15);
+  }
+  .footer .brand{color:var(--gold);font-weight:700;}
+
+  @media(max-width:900px){
+    .cover{padding:40px 30px;}
+    .cover h1{font-size:56px;}
+    .section{padding:50px 30px;}
+    .feature-grid,.benefits,.about,.spotlight,.spotlight.reverse,.client-cards,.tech-grid,.contact-row{grid-template-columns:1fr !important;}
+    .section-title,.cta h2{font-size:34px !important;}
+    .spotlight.reverse .spot-text{order:0;}
+  }
+
+  /* Scroll animations */
+  @keyframes fadeInUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+  .page{animation:fadeInUp 0.8s ease both;}
+  .feature-card,.benefit,.client-card{animation:fadeInUp 0.6s ease both;}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     PAGE 1 — COVER
+============================================================ -->
+<div class="page">
+  <div class="cover">
+    <div class="cover-top">
+      <div class="logo">
+        <div class="logo-mark">P</div>
+        <div class="logo-text">Plaza<span>Pro</span> ERP</div>
+      </div>
+      <div class="badge">Enterprise Edition · 2026</div>
+    </div>
+
+    <div class="cover-hero">
+      <div class="eyebrow">Plaza Booking &amp; Management Suite</div>
+      <h1>The complete<br/><em>plaza ecosystem,</em><br/>all in one place.</h1>
+      <p class="cover-sub">From first lead to final allotment — PlazaPro ERP powers every shop, office &amp; apartment in your plaza with intelligent booking, payment, ownership and inventory control.</p>
+
+      <div class="cover-tags">
+        <div class="chip">✦ Dynamic Payment Plans</div>
+        <div class="chip">✦ Real-time Availability</div>
+        <div class="chip">✦ Verifiable Allotment Letters</div>
+        <div class="chip">✦ Complete ERP</div>
+        <div class="chip">✦ Lead to Lock CRM</div>
+      </div>
+    </div>
+
+    <!-- Floating decorative shapes -->
+    <div class="float-shape hex" style="top:120px;right:40%;"></div>
+    <div class="float-shape ring" style="bottom:280px;left:45%;"></div>
+
+    <!-- Plaza building illustration -->
+    <svg class="cover-illus" viewBox="0 0 300 380" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bldgGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#d4af37" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#a8871f" stop-opacity="0.6"/>
+        </linearGradient>
+        <linearGradient id="winGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#f4d03f"/>
+          <stop offset="100%" stop-color="#d4af37"/>
+        </linearGradient>
+      </defs>
+      <!-- Ground reflection -->
+      <ellipse cx="150" cy="365" rx="120" ry="8" fill="#d4af37" opacity="0.15"/>
+      <!-- Main tower -->
+      <rect x="80" y="40" width="140" height="310" fill="url(#bldgGrad)" stroke="#d4af37" stroke-width="1.5" opacity="0.85"/>
+      <!-- Roof crown -->
+      <polygon points="80,40 150,10 220,40" fill="#d4af37" opacity="0.9"/>
+      <rect x="145" y="0" width="10" height="20" fill="#d4af37"/>
+      <circle cx="150" cy="2" r="3" fill="#f4d03f"/>
+      <!-- Windows grid -->
+      <g opacity="0.95">
+        <!-- Row 1 -->
+        <rect x="95" y="60" width="22" height="28" fill="url(#winGrad)" opacity="0.7" rx="2"/>
+        <rect x="125" y="60" width="22" height="28" fill="url(#winGrad)" opacity="0.3" rx="2"/>
+        <rect x="155" y="60" width="22" height="28" fill="url(#winGrad)" opacity="0.9" rx="2"/>
+        <rect x="185" y="60" width="22" height="28" fill="url(#winGrad)" opacity="0.5" rx="2"/>
+        <!-- Row 2 -->
+        <rect x="95" y="95" width="22" height="28" fill="url(#winGrad)" opacity="0.4" rx="2"/>
+        <rect x="125" y="95" width="22" height="28" fill="url(#winGrad)" opacity="0.85" rx="2"/>
+        <rect x="155" y="95" width="22" height="28" fill="url(#winGrad)" opacity="0.6" rx="2"/>
+        <rect x="185" y="95" width="22" height="28" fill="url(#winGrad)" opacity="0.9" rx="2"/>
+        <!-- Row 3 -->
+        <rect x="95" y="130" width="22" height="28" fill="url(#winGrad)" opacity="0.8" rx="2"/>
+        <rect x="125" y="130" width="22" height="28" fill="url(#winGrad)" opacity="0.5" rx="2"/>
+        <rect x="155" y="130" width="22" height="28" fill="url(#winGrad)" opacity="0.3" rx="2"/>
+        <rect x="185" y="130" width="22" height="28" fill="url(#winGrad)" opacity="0.75" rx="2"/>
+        <!-- Row 4 -->
+        <rect x="95" y="165" width="22" height="28" fill="url(#winGrad)" opacity="0.6" rx="2"/>
+        <rect x="125" y="165" width="22" height="28" fill="url(#winGrad)" opacity="0.9" rx="2"/>
+        <rect x="155" y="165" width="22" height="28" fill="url(#winGrad)" opacity="0.7" rx="2"/>
+        <rect x="185" y="165" width="22" height="28" fill="url(#winGrad)" opacity="0.4" rx="2"/>
+        <!-- Row 5 -->
+        <rect x="95" y="200" width="22" height="28" fill="url(#winGrad)" opacity="0.35" rx="2"/>
+        <rect x="125" y="200" width="22" height="28" fill="url(#winGrad)" opacity="0.65" rx="2"/>
+        <rect x="155" y="200" width="22" height="28" fill="url(#winGrad)" opacity="0.95" rx="2"/>
+        <rect x="185" y="200" width="22" height="28" fill="url(#winGrad)" opacity="0.55" rx="2"/>
+        <!-- Row 6 -->
+        <rect x="95" y="235" width="22" height="28" fill="url(#winGrad)" opacity="0.7" rx="2"/>
+        <rect x="125" y="235" width="22" height="28" fill="url(#winGrad)" opacity="0.45" rx="2"/>
+        <rect x="155" y="235" width="22" height="28" fill="url(#winGrad)" opacity="0.8" rx="2"/>
+        <rect x="185" y="235" width="22" height="28" fill="url(#winGrad)" opacity="0.6" rx="2"/>
+        <!-- Row 7 -->
+        <rect x="95" y="270" width="22" height="28" fill="url(#winGrad)" opacity="0.9" rx="2"/>
+        <rect x="125" y="270" width="22" height="28" fill="url(#winGrad)" opacity="0.5" rx="2"/>
+        <rect x="155" y="270" width="22" height="28" fill="url(#winGrad)" opacity="0.3" rx="2"/>
+        <rect x="185" y="270" width="22" height="28" fill="url(#winGrad)" opacity="0.85" rx="2"/>
+      </g>
+      <!-- Ground floor entrance -->
+      <rect x="130" y="310" width="40" height="40" fill="#0a1a3d" stroke="#d4af37" stroke-width="2"/>
+      <rect x="135" y="315" width="14" height="30" fill="#1a2f5c"/>
+      <rect x="151" y="315" width="14" height="30" fill="#1a2f5c"/>
+      <!-- Side accent columns -->
+      <rect x="78" y="40" width="4" height="310" fill="#f4d03f" opacity="0.6"/>
+      <rect x="218" y="40" width="4" height="310" fill="#f4d03f" opacity="0.6"/>
+      <!-- Sign -->
+      <rect x="105" y="50" width="90" height="6" fill="#0a1a3d"/>
+      <text x="150" y="55" font-family="Inter, sans-serif" font-size="5" fill="#d4af37" text-anchor="middle" font-weight="700">PLAZAPRO</text>
+    </svg>
+
+    <div class="cover-footer">
+      <div>
+        <div class="trust-label">Trusted &amp; Deployed At</div>
+        <div class="trust-logos">
+          <div class="trust-logo">ONE CAPITAL<small>PLAZA SUITES</small></div>
+          <div class="trust-logo">7 SKY<small>BUSINESS TOWER</small></div>
+        </div>
+      </div>
+      <div class="cover-stats">
+        <div class="stat-big">100%</div>
+        <div class="stat-label">Paperless · Verifiable · Real-time</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 2 — ABOUT / INTRO
+============================================================ -->
+<div class="page">
+  <div class="section section-cream">
+    <div class="about">
+      <div class="about-text">
+        <div class="section-eyebrow">About PlazaPro ERP</div>
+        <h2>One system that <em>runs your entire</em> plaza business.</h2>
+        <p>PlazaPro ERP is a purpose-built operating system for multi-floor commercial plazas, business towers and mixed-use developments. It replaces the mess of Excel sheets, WhatsApp updates and manual allotment letters with a single, secure, real-time platform.</p>
+        <p>Built by the team behind successful deployments at <strong>One Capital</strong> and <strong>7Sky</strong>, every feature you see has been battle-tested on live, high-value projects with thousands of bookings flowing through it every month.</p>
+
+        <div class="highlight-box">
+          <strong>Why developers choose PlazaPro</strong>
+          Everything — booking, CRM, finance, inventory, legal paperwork — lives in a single dashboard. No integrations to babysit. No manual reconciliation. No surprises.
+        </div>
+      </div>
+
+      <div class="about-visual">
+        <div class="stat-grid">
+          <div class="stat-item"><div class="n">10+</div><div class="l">Core Modules</div></div>
+          <div class="stat-item"><div class="n">2</div><div class="l">Live Deployments</div></div>
+          <div class="stat-item"><div class="n">24/7</div><div class="l">Cloud Access</div></div>
+          <div class="stat-item"><div class="n">∞</div><div class="l">Units Supported</div></div>
+          <div class="stat-item"><div class="n">0</div><div class="l">Missed Payments*</div></div>
+          <div class="stat-item"><div class="n">QR</div><div class="l">Verifiable Letters</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 3 — FEATURES GRID
+============================================================ -->
+<div class="page">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Core Modules</div>
+      <h2 class="section-title">Everything you need to <em>run &amp; grow</em></h2>
+      <p class="section-subtitle">Ten tightly-integrated modules that talk to each other in real time — so your sales, finance and operations teams finally speak the same language.</p>
+    </div>
+
+    <div class="feature-grid">
+
+      <div class="feature-card">
+        <div class="feature-number">01</div>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M8 15h2M13 15h3"/></svg>
+        </div>
+        <h3>Dynamic Payment Plans</h3>
+        <p>Create custom installment schedules per unit — down payment, monthly, quarterly or milestone-based. Auto-calculates interest, discounts &amp; penalties.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-number">02</div>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        </div>
+        <h3>Live Availability Checking</h3>
+        <p>Floor-plan driven view of every shop, office &amp; apartment. Instantly see what's available, booked, sold or held — across all your plazas.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-number">03</div>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <h3>Ownership Verification</h3>
+        <p>CNIC-backed ownership records with document vault. Verify any unit's rightful owner in one click — ideal for transfers and audits.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-number">04</div>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <h3>Lead Tracking &amp; CRM</h3>
+        <p>Full pipeline from inquiry to lock — source capture, agent assignment, follow-up reminders, conversion analytics, and SMS/WhatsApp blasts.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-number">05</div>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v4H3zM3 10h18v4H3zM3 17h18v4H3z"/></svg>
+        </div>
+        <h3>Complete ERP Backbone</h3>
+        <p>Accounting, HR, vendor payments, voucher system, profit &amp; loss, trial balance — all pre-wired. No separate Tally or QuickBooks needed.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-number">06</div>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13h6M9 17h4"/></svg>
+        </div>
+        <h3>Verifiable Allotment Letters</h3>
+        <p>Auto-generated, QR-coded, tamper-proof allotment letters. Anyone can scan &amp; verify the allotment on your public portal — instantly.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-number">07</div>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+        </div>
+        <h3>Inventory System</h3>
+        <p>Track every unit's status, pricing, size, category &amp; history. Bulk import floor plans, set zone-based pricing, attach brochures &amp; photos.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-number">08</div>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <h3>Multi-Project Handling</h3>
+        <p>Run multiple plazas, towers, phases &amp; societies from one login. Switch projects in a click — all data stays scoped, reports roll up.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-number">09</div>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <h3>End-to-End Booking</h3>
+        <p>Capture booking details, upload documents, auto-assign payment plan, print receipts &amp; trigger allotment workflow — in under 60 seconds.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-number">10</div>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        </div>
+        <h3>Due Payment Alerts</h3>
+        <p>Automated SMS, email &amp; WhatsApp reminders to customers before, on &amp; after due date. Dashboard flags defaulters in real time.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-number">11</div>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <h3>Role-Based Access</h3>
+        <p>Admin, sales, finance, agent, customer — each sees only what they should. Full audit log of every action, every edit, every login.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-number">12</div>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3>Reports &amp; Insights</h3>
+        <p>Daily collection, aging analysis, agent leaderboards, project P&amp;L, unit velocity — a BI-grade dashboard that ships on day one.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 4 — SPOTLIGHTS (DYNAMIC PAYMENT + AVAILABILITY)
+============================================================ -->
+<div class="page">
+  <div class="section section-cream">
+    <div class="section-header">
+      <div class="section-eyebrow">Feature Spotlight</div>
+      <h2 class="section-title">See it <em>in action.</em></h2>
+      <p class="section-subtitle">Three modules that developers, agents and buyers all fall in love with the moment they log in.</p>
+    </div>
+
+    <div class="spotlight">
+      <div class="spot-text">
+        <span class="spot-tag">01 · PAYMENT ENGINE</span>
+        <h3>Dynamic payment plans, <em>tailored per unit.</em></h3>
+        <p>Every customer is different. With PlazaPro's flexible payment engine, you can design a completely custom plan — booking amount, confirmation fee, monthly installments, quarterly milestones, on-possession balloon — all in minutes.</p>
+        <ul class="spot-list">
+          <li>Auto-apply discounts &amp; surcharges</li>
+          <li>Partial payment &amp; post-dated cheque support</li>
+          <li>Automatic late-fee computation</li>
+          <li>One-click rescheduling with audit trail</li>
+        </ul>
+      </div>
+      <div class="mock">
+        <div class="mock-top">
+          <div class="mock-top-title">Unit A-204 · Payment Plan</div>
+          <div class="mock-top-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="mock-body">
+          <div class="plan-row head"><span>Installment</span><span>Due Date</span><span>Amount</span><span>Status</span></div>
+          <div class="plan-row"><span>Booking</span><span>15 Jan 2026</span><span class="amt">₨ 1,500,000</span><span class="stat-paid">Paid</span></div>
+          <div class="plan-row"><span>Confirmation</span><span>15 Feb 2026</span><span class="amt">₨ 750,000</span><span class="stat-paid">Paid</span></div>
+          <div class="plan-row active"><span>Monthly #1</span><span>15 Mar 2026</span><span class="amt">₨ 250,000</span><span class="stat-paid">Paid</span></div>
+          <div class="plan-row"><span>Monthly #2</span><span>15 Apr 2026</span><span class="amt">₨ 250,000</span><span class="stat-due">Due</span></div>
+          <div class="plan-row"><span>Possession</span><span>Dec 2026</span><span class="amt">₨ 2,000,000</span><span style="color:#7a8299">Pending</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spotlight reverse">
+      <div class="mock">
+        <div class="mock-top">
+          <div class="mock-top-title">7Sky Tower · Floor 12 Availability</div>
+          <div class="mock-top-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="mock-body">
+          <div class="avail-grid">
+            <div class="avail-cell available">A1</div>
+            <div class="avail-cell sold">A2</div>
+            <div class="avail-cell sold">A3</div>
+            <div class="avail-cell available">A4</div>
+            <div class="avail-cell booked">A5</div>
+            <div class="avail-cell available">A6</div>
+            <div class="avail-cell sold">B1</div>
+            <div class="avail-cell sold">B2</div>
+            <div class="avail-cell hold">B3</div>
+            <div class="avail-cell available">B4</div>
+            <div class="avail-cell available">B5</div>
+            <div class="avail-cell booked">B6</div>
+            <div class="avail-cell available">C1</div>
+            <div class="avail-cell sold">C2</div>
+            <div class="avail-cell available">C3</div>
+            <div class="avail-cell sold">C4</div>
+            <div class="avail-cell booked">C5</div>
+            <div class="avail-cell available">C6</div>
+          </div>
+          <div class="avail-legend">
+            <span class="lg-av">Available</span>
+            <span class="lg-bk">Booked</span>
+            <span class="lg-sd">Sold</span>
+            <span class="lg-hd">On Hold</span>
+          </div>
+        </div>
+      </div>
+      <div class="spot-text">
+        <span class="spot-tag">02 · LIVE AVAILABILITY</span>
+        <h3>Real-time floor plans <em>your agents can sell from.</em></h3>
+        <p>Stop juggling Excel sheets. Your sales team gets a live, color-coded floor plan that updates the second a booking is confirmed — no double-bookings, no "sorry that one just went", ever again.</p>
+        <ul class="spot-list">
+          <li>Interactive shop-by-shop view</li>
+          <li>Hold &amp; release with time-outs</li>
+          <li>Category &amp; price range filters</li>
+          <li>Exportable availability PDFs for marketing</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 5 — SPOTLIGHT: LEAD + ALLOTMENT
+============================================================ -->
+<div class="page">
+  <div class="section">
+
+    <div class="spotlight">
+      <div class="spot-text">
+        <span class="spot-tag">03 · LEAD PIPELINE</span>
+        <h3>Turn every inquiry into <em>a booked unit.</em></h3>
+        <p>A purpose-built real estate CRM that captures leads from every source — Facebook, landing pages, walk-ins, referrals — and pushes them through a configurable pipeline with automated follow-ups.</p>
+        <ul class="spot-list">
+          <li>Agent assignment &amp; round-robin routing</li>
+          <li>WhatsApp, SMS &amp; call-log integrations</li>
+          <li>Conversion heatmaps &amp; source ROI</li>
+          <li>Reminder &amp; task system for every lead</li>
+        </ul>
+      </div>
+      <div class="mock">
+        <div class="mock-top">
+          <div class="mock-top-title">Lead Conversion Funnel · This Month</div>
+          <div class="mock-top-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="mock-body">
+          <div class="funnel">
+            <div class="funnel-stage s1"><span>New Leads</span><span class="n">847</span></div>
+            <div class="funnel-stage s2"><span>Qualified</span><span class="n">612</span></div>
+            <div class="funnel-stage s3"><span>Site Visits</span><span class="n">298</span></div>
+            <div class="funnel-stage s4"><span>Bookings Closed</span><span class="n">94</span></div>
+          </div>
+          <div style="margin-top:20px;padding:14px;background:rgba(212,175,55,0.1);border-radius:8px;font-size:13px;color:#4a5670;">
+            <strong style="color:var(--navy)">11.1% conversion</strong> · up 3.2% from last month
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spotlight reverse">
+      <div class="mock">
+        <div class="mock-top">
+          <div class="mock-top-title">Digital Allotment Letter · QR Verified</div>
+          <div class="mock-top-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="mock-body" style="padding:14px;">
+          <div class="letter">
+            <div class="letter-content">
+              <div class="letter-head">
+                <small>OFFICIAL · AUTHENTICATED</small>
+                <h4>ALLOTMENT LETTER</h4>
+                <small>REF # AL-2026-07SKY-1249</small>
+              </div>
+              <div class="letter-body">
+                This is to certify that <strong>Mr. Ahmed Raza Khan</strong> (CNIC 42101-XXXXXXX-9) is the duly allotted owner of <strong>Unit 7Sky-A-204</strong> measuring 486 sq.ft on the 2<sup>nd</sup> floor of 7Sky Business Tower.
+                <br/><br/>
+                Booking Date: <strong>15 January 2026</strong> · Total Consideration: <strong>₨ 4,750,000</strong>
+              </div>
+              <div class="letter-qr">
+                <div class="qr-box"></div>
+                <div>
+                  <div style="font-size:10px;color:var(--navy);letter-spacing:2px;font-weight:700;">SCAN TO VERIFY</div>
+                  <div style="font-size:9px;color:#6a7591;margin-top:4px;font-family:'Inter';">verify.plazapro.com</div>
+                </div>
+                <div class="verified-stamp">VERIFIED</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="spot-text">
+        <span class="spot-tag">04 · ALLOTMENT LETTERS</span>
+        <h3>Tamper-proof letters <em>anyone can verify.</em></h3>
+        <p>Every allotment letter carries a unique QR code that points to a public verification page on your branded domain. Customers, banks and regulators can confirm authenticity without picking up the phone.</p>
+        <ul class="spot-list">
+          <li>Auto-generated with your letterhead &amp; seal</li>
+          <li>Unique, non-transferable verification URL</li>
+          <li>Instant revocation on cancellation</li>
+          <li>Full PDF + print workflow built in</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 6 — CASE STUDIES
+============================================================ -->
+<div class="page">
+  <div class="clients">
+    <div class="section-header">
+      <div class="section-eyebrow">Live Deployments</div>
+      <h2 class="section-title">Trusted by <em>landmark projects.</em></h2>
+      <p class="section-subtitle">Two flagship plazas are already running on PlazaPro ERP — together managing thousands of units across sales, finance, and operations.</p>
+    </div>
+
+    <div class="client-cards">
+      <div class="client-card">
+        <div class="client-logo">ONE CAPITAL</div>
+        <h3>One Capital Plaza Suites</h3>
+        <p>A premium mixed-use commercial plaza running PlazaPro ERP end-to-end — from lead capture through final allotment letter. The team replaced 4 separate tools (Excel, Tally, a CRM, and manual letters) with a single platform.</p>
+        <div class="client-metrics">
+          <div class="metric"><div class="v">4→1</div><div class="k">Tools Replaced</div></div>
+          <div class="metric"><div class="v">3×</div><div class="k">Faster Booking</div></div>
+          <div class="metric"><div class="v">100%</div><div class="k">Paperless</div></div>
+        </div>
+      </div>
+
+      <div class="client-card">
+        <div class="client-logo">7 SKY</div>
+        <h3>7Sky Business Tower</h3>
+        <p>A multi-floor business tower using PlazaPro ERP to manage shops, offices and apartments with dynamic payment plans, QR-verified allotment letters and live availability dashboards that their agents love.</p>
+        <div class="client-metrics">
+          <div class="metric"><div class="v">&lt;60s</div><div class="k">Per Booking</div></div>
+          <div class="metric"><div class="v">0</div><div class="k">Double-Bookings</div></div>
+          <div class="metric"><div class="v">24/7</div><div class="k">Agent Access</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE — LIVE DASHBOARD PREVIEW
+============================================================ -->
+<div class="page">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Dashboard Preview</div>
+      <h2 class="section-title">Your entire plaza, <em>one screen.</em></h2>
+      <p class="section-subtitle">The PlazaPro executive dashboard gives owners, directors and managers live visibility into sales, collections and pipeline — the moment they log in.</p>
+    </div>
+
+    <div class="dashboard-preview">
+      <div class="dash-topbar">
+        <div class="logo" style="flex:none;">
+          <div class="logo-mark" style="width:36px;height:36px;font-size:18px;border-radius:8px;">P</div>
+          <div style="font-size:15px;font-weight:800;color:#fff;">PlazaPro</div>
+        </div>
+        <div class="dash-nav">
+          <div class="dash-nav-item active">Dashboard</div>
+          <div class="dash-nav-item">Inventory</div>
+          <div class="dash-nav-item">Bookings</div>
+          <div class="dash-nav-item">Leads</div>
+          <div class="dash-nav-item">Accounts</div>
+          <div class="dash-nav-item">Reports</div>
+        </div>
+        <div class="dash-user">
+          <span style="color:#c8d2e8;">Admin</span>
+          <div class="avatar">AR</div>
+        </div>
+      </div>
+
+      <div class="dash-body">
+        <!-- KPI Cards -->
+        <div class="kpi-card">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+          <div class="label">Total Revenue</div>
+          <div class="value">₨ 284M</div>
+          <div class="trend up">▲ 12.4% vs last month</div>
+        </div>
+        <div class="kpi-card">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><path d="M3 3h18v4H3zM3 10h18v4H3zM3 17h18v4H3z"/></svg></div>
+          <div class="label">Units Sold</div>
+          <div class="value">147 / 240</div>
+          <div class="trend up">▲ 8 new this week</div>
+        </div>
+        <div class="kpi-card">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg></div>
+          <div class="label">Pending Dues</div>
+          <div class="value">₨ 18.2M</div>
+          <div class="trend down">▼ 23 customers flagged</div>
+        </div>
+        <div class="kpi-card">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <div class="label">Active Leads</div>
+          <div class="value">612</div>
+          <div class="trend up">▲ 11.1% conversion</div>
+        </div>
+
+        <!-- Chart row -->
+        <div class="dash-row">
+          <div class="chart-panel">
+            <h5>Monthly Collections <span>Jan – Apr 2026</span></h5>
+            <div class="bar-chart">
+              <div class="bar-col"><div class="bar navy" style="height:45%"></div><div class="bar" style="height:60%"></div><div class="bar-label">Jan</div></div>
+              <div class="bar-col"><div class="bar navy" style="height:55%"></div><div class="bar" style="height:72%"></div><div class="bar-label">Feb</div></div>
+              <div class="bar-col"><div class="bar navy" style="height:68%"></div><div class="bar" style="height:85%"></div><div class="bar-label">Mar</div></div>
+              <div class="bar-col"><div class="bar navy" style="height:75%"></div><div class="bar" style="height:95%"></div><div class="bar-label">Apr</div></div>
+              <div class="bar-col"><div class="bar navy" style="height:50%;opacity:0.4"></div><div class="bar" style="height:70%;opacity:0.4"></div><div class="bar-label">May</div></div>
+              <div class="bar-col"><div class="bar navy" style="height:40%;opacity:0.3"></div><div class="bar" style="height:60%;opacity:0.3"></div><div class="bar-label">Jun</div></div>
+              <div class="bar-col"><div class="bar navy" style="height:35%;opacity:0.2"></div><div class="bar" style="height:50%;opacity:0.2"></div><div class="bar-label">Jul</div></div>
+              <div class="bar-col"><div class="bar navy" style="height:30%;opacity:0.15"></div><div class="bar" style="height:45%;opacity:0.15"></div><div class="bar-label">Aug</div></div>
+            </div>
+            <div class="bar-legend">
+              <span><span class="dot" style="background:#d4af37"></span>Collections</span>
+              <span><span class="dot" style="background:#1a2f5c"></span>Bookings</span>
+              <span><span class="dot" style="background:#e5ebf5"></span>Forecast</span>
+            </div>
+          </div>
+
+          <div class="chart-panel">
+            <h5>Unit Mix <span>7Sky Tower</span></h5>
+            <div class="donut-wrap">
+              <div class="donut">
+                <svg viewBox="0 0 100 100" style="width:100%;height:100%;transform:rotate(-90deg);">
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#e5ebf5" stroke-width="14"/>
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#d4af37" stroke-width="14"
+                    stroke-dasharray="100 251" stroke-dashoffset="0"/>
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#0a1a3d" stroke-width="14"
+                    stroke-dasharray="80 251" stroke-dashoffset="-100"/>
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#4a6eb8" stroke-width="14"
+                    stroke-dasharray="45 251" stroke-dashoffset="-180"/>
+                </svg>
+                <div class="donut-center">
+                  <div class="n">240</div>
+                  <div class="l">Total Units</div>
+                </div>
+              </div>
+              <div class="donut-legend">
+                <div class="donut-legend-row"><span><span class="dot" style="background:#d4af37"></span>Shops</span><span class="val">98</span></div>
+                <div class="donut-legend-row"><span><span class="dot" style="background:#0a1a3d"></span>Offices</span><span class="val">76</span></div>
+                <div class="donut-legend-row"><span><span class="dot" style="background:#4a6eb8"></span>Apartments</span><span class="val">44</span></div>
+                <div class="donut-legend-row"><span><span class="dot" style="background:#e5ebf5"></span>Reserved</span><span class="val">22</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE — WORKFLOW / PROCESS
+============================================================ -->
+<div class="page">
+  <div class="section section-cream" style="position:relative;overflow:hidden;">
+    <div class="float-shape circle" style="top:-60px;right:-60px;"></div>
+    <div class="float-shape circle" style="bottom:-60px;left:-60px;"></div>
+
+    <div class="section-header">
+      <div class="section-eyebrow">How It Works</div>
+      <h2 class="section-title">From first call to <em>final allotment.</em></h2>
+      <p class="section-subtitle">Five clean steps — fully automated, fully auditable, and fully paperless. No missed handoffs between sales, finance and legal.</p>
+    </div>
+
+    <div class="workflow">
+      <div class="wf-step">
+        <div class="wf-num">STEP 01</div>
+        <div class="wf-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <h5>Capture Lead</h5>
+        <p>From web, walk-in, Facebook or referral — auto-assigned.</p>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">STEP 02</div>
+        <div class="wf-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+        <h5>Pick Unit</h5>
+        <p>Interactive floor plan, real-time availability, instant hold.</p>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">STEP 03</div>
+        <div class="wf-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></div>
+        <h5>Payment Plan</h5>
+        <p>Custom schedule generated &amp; confirmed in seconds.</p>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">STEP 04</div>
+        <div class="wf-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <h5>Allotment Letter</h5>
+        <p>QR-verified PDF generated, sealed &amp; emailed.</p>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">STEP 05</div>
+        <div class="wf-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h5>Track &amp; Own</h5>
+        <p>Automated reminders, ownership records, handover tracking.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE — MODULE ECOSYSTEM (ORBIT)
+============================================================ -->
+<div class="page">
+  <div class="section section-dark" style="position:relative;overflow:hidden;">
+    <div class="float-shape circle" style="top:10%;left:8%;"></div>
+    <div class="float-shape circle" style="bottom:5%;right:8%;"></div>
+
+    <div class="section-header">
+      <div class="section-eyebrow">Module Ecosystem</div>
+      <h2 class="section-title">All modules. <em>One source of truth.</em></h2>
+      <p class="section-subtitle">Every PlazaPro module talks to every other in real time — so a single booking updates inventory, accounts, CRM and legal instantly.</p>
+    </div>
+
+    <div class="orbit-wrap">
+      <div class="orbit-ring ring-1"></div>
+      <div class="orbit-ring ring-2"></div>
+
+      <div class="orbit-center">
+        <div class="t">PlazaPro<br/>Core</div>
+        <div class="s">REAL-TIME HUB</div>
+      </div>
+
+      <!-- Inner ring modules (ring-1, radius ~170) -->
+      <div class="orbit-node" style="top:calc(50% - 170px);left:calc(50% - 38px);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0a1a3d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Inventory
+      </div>
+      <div class="orbit-node" style="top:calc(50% + 170px - 76px);left:calc(50% - 38px);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0a1a3d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
+        Booking
+      </div>
+      <div class="orbit-node" style="top:calc(50% - 38px);left:calc(50% - 170px);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0a1a3d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Leads/CRM
+      </div>
+      <div class="orbit-node" style="top:calc(50% - 38px);left:calc(50% + 170px - 76px);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0a1a3d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        Payments
+      </div>
+
+      <!-- Outer ring modules (ring-2, radius ~240) -->
+      <div class="orbit-node" style="top:calc(50% - 170px);left:calc(50% + 130px);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0a1a3d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Allotment
+      </div>
+      <div class="orbit-node" style="top:calc(50% - 170px);left:calc(50% - 200px);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0a1a3d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4z"/></svg>
+        Ownership
+      </div>
+      <div class="orbit-node" style="top:calc(50% + 100px);left:calc(50% + 180px);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0a1a3d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg>
+        Alerts
+      </div>
+      <div class="orbit-node" style="top:calc(50% + 100px);left:calc(50% - 240px);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0a1a3d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><polyline points="7 14 12 9 16 13 21 8"/></svg>
+        Reports
+      </div>
+      <div class="orbit-node" style="top:calc(50% + 180px);left:calc(50% - 130px);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0a1a3d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        Projects
+      </div>
+      <div class="orbit-node" style="top:calc(50% + 180px);left:calc(50% + 70px);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0a1a3d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        Access
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE — TESTIMONIALS + BEFORE/AFTER
+============================================================ -->
+<div class="page">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">What Clients Say</div>
+      <h2 class="section-title">Words from <em>real users.</em></h2>
+      <p class="section-subtitle">Developers, sales heads and finance managers who replaced their old tools with PlazaPro ERP.</p>
+    </div>
+
+    <div class="testimonial-grid">
+      <div class="tst-card">
+        <div class="tst-quote">"</div>
+        <div class="tst-stars">★ ★ ★ ★ ★</div>
+        <div class="tst-text">We went from a mess of Excel sheets and printed receipts to a proper paperless operation. Our sales team now closes a booking in under a minute — something that used to take half a day.</div>
+        <div class="tst-author">
+          <div class="tst-avatar">HR</div>
+          <div>
+            <div class="n">Hassan Raza</div>
+            <div class="r">Director · OneCapital</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tst-card">
+        <div class="tst-quote">"</div>
+        <div class="tst-stars">★ ★ ★ ★ ★</div>
+        <div class="tst-text">The QR-verified allotment letters alone are worth the price. Banks trust them, customers trust them, and we've never had a disputed allotment since we switched.</div>
+        <div class="tst-author">
+          <div class="tst-avatar">SK</div>
+          <div>
+            <div class="n">Saadia Kamran</div>
+            <div class="r">CFO · 7Sky Tower</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tst-card">
+        <div class="tst-quote">"</div>
+        <div class="tst-stars">★ ★ ★ ★ ★</div>
+        <div class="tst-text">I manage three projects now from one dashboard. The due-payment alerts and lead pipeline have genuinely changed how we run the business. Recommended to every developer I know.</div>
+        <div class="tst-author">
+          <div class="tst-avatar">MA</div>
+          <div>
+            <div class="n">Muhammad Asim</div>
+            <div class="r">Sales Head · Plaza Group</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section section-cream">
+    <div class="section-header">
+      <div class="section-eyebrow">The PlazaPro Difference</div>
+      <h2 class="section-title">The old way <em>vs. the PlazaPro way.</em></h2>
+    </div>
+
+    <div class="compare">
+      <div class="cmp-col cmp-before">
+        <div class="cmp-badge">BEFORE</div>
+        <h4>🗂 The old way</h4>
+        <ul class="cmp-list">
+          <li>Dozens of Excel sheets across multiple laptops</li>
+          <li>Manually typed allotment letters (often with typos)</li>
+          <li>Double-bookings from outdated availability info</li>
+          <li>Tally/QuickBooks disconnected from sales</li>
+          <li>No central customer &amp; ownership record</li>
+          <li>Missed due-dates discovered weeks later</li>
+          <li>Lost leads — no follow-up system</li>
+          <li>Month-end reporting takes 3+ days</li>
+        </ul>
+      </div>
+      <div class="cmp-col cmp-after">
+        <div class="cmp-badge">AFTER</div>
+        <h4>✨ With PlazaPro ERP</h4>
+        <ul class="cmp-list">
+          <li>Single cloud dashboard for the whole team</li>
+          <li>Auto-generated, QR-verified allotment letters</li>
+          <li>Live availability — zero double-bookings</li>
+          <li>Accounting built-in, synced in real time</li>
+          <li>Complete customer &amp; ownership vault</li>
+          <li>Auto-reminders trigger before every due date</li>
+          <li>Every lead followed up on schedule</li>
+          <li>Real-time reports — one click, anytime</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 7 — WHY CHOOSE / BENEFITS
+============================================================ -->
+<div class="page">
+  <div class="section section-cream">
+    <div class="section-header">
+      <div class="section-eyebrow">Why PlazaPro</div>
+      <h2 class="section-title">Built for <em>real developers</em>, by real developers.</h2>
+      <p class="section-subtitle">Not another generic CRM. Every feature, screen and workflow was designed for the way Pakistani real-estate developers actually sell plazas.</p>
+    </div>
+
+    <div class="benefits">
+      <div class="benefit">
+        <div class="benefit-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <h4>Deploy in Days</h4>
+        <p>Floor plans imported, users set up, live in under a week.</p>
+      </div>
+
+      <div class="benefit">
+        <div class="benefit-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </div>
+        <h4>Bank-Grade Security</h4>
+        <p>Encrypted data, role-based access, full audit logs.</p>
+      </div>
+
+      <div class="benefit">
+        <div class="benefit-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h4>Runs on Any Device</h4>
+        <p>Browser, tablet, phone — cloud-hosted, no install needed.</p>
+      </div>
+
+      <div class="benefit">
+        <div class="benefit-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        </div>
+        <h4>Local Support</h4>
+        <p>Phone &amp; WhatsApp support in your language, your timezone.</p>
+      </div>
+
+      <div class="benefit">
+        <div class="benefit-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        </div>
+        <h4>Zero Hidden Fees</h4>
+        <p>Transparent pricing. No per-transaction or per-letter costs.</p>
+      </div>
+
+      <div class="benefit">
+        <div class="benefit-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><polyline points="7 14 12 9 16 13 21 8"/></svg>
+        </div>
+        <h4>Built-in BI</h4>
+        <p>Executive dashboards ship on day one — no analyst needed.</p>
+      </div>
+
+      <div class="benefit">
+        <div class="benefit-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <h4>Real-time Sync</h4>
+        <p>Change in one place, updated everywhere — instantly.</p>
+      </div>
+
+      <div class="benefit">
+        <div class="benefit-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <h4>Battle-tested</h4>
+        <p>Live &amp; stable at OneCapital and 7Sky deployments.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 8 — TECH / SECURITY + CTA
+============================================================ -->
+<div class="page">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Technology</div>
+      <h2 class="section-title">Modern stack. <em>Zero headaches.</em></h2>
+      <p class="section-subtitle">Cloud-hosted, auto-backed-up, and built on battle-tested technologies your IT team already trusts.</p>
+    </div>
+
+    <div class="tech-grid">
+      <div class="tech-main">
+        <h3>Enterprise-grade infrastructure, priced for plaza owners.</h3>
+        <p>PlazaPro ERP runs on top-tier cloud infrastructure with 99.9% uptime, automated nightly backups, and disaster-recovery-ready architecture. Your data is yours — encrypted at rest, encrypted in transit, and always exportable.</p>
+        <div class="tech-badges">
+          <span class="tech-badge">Next.js 14</span>
+          <span class="tech-badge">PostgreSQL</span>
+          <span class="tech-badge">256-bit SSL</span>
+          <span class="tech-badge">Auto-backups</span>
+          <span class="tech-badge">API Ready</span>
+          <span class="tech-badge">Multi-tenant</span>
+          <span class="tech-badge">Mobile-first UI</span>
+        </div>
+      </div>
+
+      <div class="tech-side">
+        <div class="tech-side-item">
+          <div class="tech-side-ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4z"/></svg>
+          </div>
+          <div>
+            <h5>End-to-end Encryption</h5>
+            <p>Every byte of data protected in transit and at rest.</p>
+          </div>
+        </div>
+        <div class="tech-side-item">
+          <div class="tech-side-ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+          </div>
+          <div>
+            <h5>Auto-backups</h5>
+            <p>Nightly snapshots with 30-day rollback window.</p>
+          </div>
+        </div>
+        <div class="tech-side-item">
+          <div class="tech-side-ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <div>
+            <h5>Open API</h5>
+            <p>REST API for custom integrations &amp; reporting tools.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <div class="cta-content">
+      <div class="section-eyebrow">Ready to Upgrade?</div>
+      <h2>Let's run your plaza<br/><em>like 2026, not 2006.</em></h2>
+      <p>Book a 30-minute demo and see your own floor plans, payment plans and leads inside PlazaPro ERP — live.</p>
+      <div class="cta-btns">
+        <button class="btn btn-gold">Book Free Demo →</button>
+        <button class="btn btn-ghost">Download Datasheet</button>
+      </div>
+
+      <div class="contact-row">
+        <div class="contact-col">
+          <div class="label">Call Sales</div>
+          <div class="val">+92 (XXX) XXXX-XXX</div>
+          <div class="sub">Mon–Sat · 9am–8pm PKT</div>
+        </div>
+        <div class="contact-col">
+          <div class="label">Write To Us</div>
+          <div class="val">sales@plazapro.pk</div>
+          <div class="sub">Replies within 2 business hours</div>
+        </div>
+        <div class="contact-col">
+          <div class="label">Visit Online</div>
+          <div class="val">www.plazapro.pk</div>
+          <div class="sub">Live demo · pricing · case studies</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div>© 2026 <span class="brand">PlazaPro ERP</span> · All rights reserved</div>
+    <div>Proudly powering One Capital &amp; 7Sky</div>
+  </div>
+</div>
+
+</body>
+</html>

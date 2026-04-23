@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function FloorPlanPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="public-page min-h-screen bg-[var(--public-bg)]">
       {/* Page header */}
       <div className="relative pt-28 pb-14 px-4 overflow-hidden">
         {/* Subtle background gradient */}
@@ -19,12 +19,12 @@ export default function FloorPlanPage() {
           <div className="gold-divider mb-6" />
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
             <div>
-              <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-3">
+              <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-[var(--public-text)] mb-3">
                 Floor Plan — Shops &amp; Offices for Sale
                 <br />
                 <span className="gradient-text-gold text-2xl sm:text-3xl">7Sky Commercial Plaza, G-14 Markaz Islamabad</span>
               </h1>
-              <p className="text-gray-400 text-base max-w-xl">
+              <p className="text-[var(--public-text-muted)] text-base max-w-xl">
                 Browse all 7 floors of shops and offices for sale in G-14 Markaz, Islamabad.
                 Check real-time availability and request a booking directly. Available on easy installments.
               </p>
@@ -36,7 +36,10 @@ export default function FloorPlanPage() {
                 { dot: "bg-amber-500",   label: "Reserved" },
                 { dot: "bg-red-500",     label: "Sold" },
               ].map((s) => (
-                <div key={s.label} className="flex items-center gap-2 px-3 py-1.5 rounded-full glass-card border border-white/10 text-xs font-medium text-gray-300">
+                <div
+                  key={s.label}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-full glass-card border border-[color:var(--public-border)] text-xs font-medium text-[var(--public-text-muted)]"
+                >
                   <span className={`w-2 h-2 rounded-full ${s.dot}`} />
                   {s.label}
                 </div>

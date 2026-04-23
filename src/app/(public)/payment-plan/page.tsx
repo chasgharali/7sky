@@ -73,7 +73,7 @@ export default async function PaymentPlanPage() {
   const plans = await getPaymentPlans();
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="public-page min-h-screen bg-[var(--public-bg)]">
       {/* Page header — matches Floor Plan style */}
       <div className="relative pt-28 pb-14 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#2563eb]/5 to-transparent" />
@@ -130,7 +130,7 @@ export default async function PaymentPlanPage() {
         <PaymentPlanTabs plans={plans} />
 
         {/* Disclaimer */}
-        <div className="mt-12 p-6 bg-[#111] border border-white/10 rounded-2xl text-center">
+        <div className="mt-12 p-6 bg-[var(--public-muted)] border border-white/10 rounded-2xl text-center">
           <p className="text-xs text-gray-500 max-w-3xl mx-auto leading-relaxed">
             * All prices are in PKR. Prices subject to change without prior notice. The above payment schedule is indicative.
             For exact terms and availability please contact our sales team directly.

@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">("light");
   const pathname = usePathname();
 
   useEffect(() => {
@@ -20,6 +21,25 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
     setMobileOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("public-theme");
+      if (saved === "light" || saved === "dark") {
+        setTheme(saved);
+      }
+    } catch {
+      // ignore local storage failures
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("public-theme", theme);
+    } catch {
+      // ignore local storage failures
+    }
+  }, [theme]);
+
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
@@ -28,12 +48,16 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
     { href: "/verify-ownership", label: "Verify Ownership" },
   ];
 
+  const headerLogoSrc = "/ONE%20CAPITAL%20NEW%20BLACK%20FONT.png";
+
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="public-theme-root public-page min-h-screen bg-[var(--public-bg)]" data-public-theme={theme}>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           scrolled
-            ? "bg-black/95 backdrop-blur-xl border-b border-[#c9a227]/20 shadow-lg shadow-black/50"
+            ? theme === "light"
+              ? "bg-white/90 backdrop-blur-xl border-b border-slate-200/80 shadow-lg shadow-slate-900/10"
+              : "bg-black/95 backdrop-blur-xl border-b border-[#c9a227]/20 shadow-lg shadow-black/50"
             : "bg-transparent"
         }`}
       >
@@ -41,7 +65,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
           {/* Logo — One Capital Builders only */}
           <Link href="/" className="flex-shrink-0">
             <Image
-              src="/media/logos/one-capital-logo.png"
+              src={headerLogoSrc}
               alt="One Capital Builders – Shops and Offices for Sale in Islamabad"
               width={240}
               height={88}
@@ -75,15 +99,31 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-2">
+            <button
+              onClick={() => setTheme((prev) => (prev === "light" ? "dark" : "light"))}
+              className="p-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 border border-white/10 transition"
+              title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+              aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+            >
+              {theme === "light" ? (
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              ) : (
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m8.66-9H21M3 12h-.34m15.02 6.02l.71.71M5.63 5.63l.71.71m11.34 0l-.71.71M6.34 17.66l-.71.71M12 7a5 5 0 100 10 5 5 0 000-10z" />
+                </svg>
+              )}
+            </button>
             <Link
               href="/verify-ownership"
-              className="px-3 py-2 text-sm font-semibold text-[#c9a227] border border-[#c9a227]/50 rounded-lg hover:bg-[#c9a227]/10 transition-all duration-200"
+              className="public-header-cta-gold px-3 py-2 text-sm font-semibold text-[#c9a227] border border-[#c9a227]/50 rounded-lg hover:bg-[#c9a227]/10 transition-all duration-200"
             >
               Verify Ownership
             </Link>
             <Link
               href="/floor-plan"
-              className="px-3 py-2 text-sm font-semibold text-white bg-[#2563eb] hover:bg-[#3b82f6] rounded-lg transition-all duration-200 shadow-lg shadow-blue-900/30"
+              className="public-blue-chip-active px-3 py-2 text-sm font-semibold text-white bg-[#2563eb] hover:bg-[#3b82f6] rounded-lg transition-all duration-200 shadow-lg shadow-blue-900/30"
             >
               View Floor Plan
             </Link>
@@ -112,14 +152,14 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
       />
       {/* Drawer panel */}
       <div
-        className={`fixed top-0 right-0 bottom-0 z-[70] w-72 bg-[#0d0d0d] border-l border-white/10 flex flex-col md:hidden transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 right-0 bottom-0 z-[70] w-72 bg-[var(--public-surface)] border-l border-white/10 flex flex-col md:hidden transition-transform duration-300 ease-in-out ${
           mobileOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         {/* Drawer header */}
         <div className="flex items-center justify-between px-5 py-5 border-b border-white/10">
           <Image
-            src="/media/logos/one-capital-logo.png"
+            src={headerLogoSrc}
             alt="One Capital Builders – Shops and Offices for Sale in Islamabad"
             width={120}
             height={44}
@@ -133,6 +173,15 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
+          </button>
+        </div>
+
+        <div className="px-4 pt-4">
+          <button
+            onClick={() => setTheme((prev) => (prev === "light" ? "dark" : "light"))}
+            className="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-xl border border-white/10 text-gray-300 hover:text-white hover:bg-white/5 transition"
+          >
+            {theme === "light" ? "Switch to Dark" : "Switch to Light"}
           </button>
         </div>
 
@@ -161,13 +210,13 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
         <div className="px-4 pb-8 pt-4 border-t border-white/10 space-y-3">
           <Link
             href="/floor-plan"
-            className="flex items-center justify-center w-full py-3 text-sm font-semibold text-white bg-[#2563eb] hover:bg-[#3b82f6] rounded-xl transition"
+            className="public-blue-chip-active flex items-center justify-center w-full py-3 text-sm font-semibold text-white bg-[#2563eb] hover:bg-[#3b82f6] rounded-xl transition"
           >
             View Floor Plan
           </Link>
           <Link
             href="/verify-ownership"
-            className="flex items-center justify-center w-full py-3 text-sm font-semibold text-[#c9a227] border border-[#c9a227]/40 hover:bg-[#c9a227]/5 rounded-xl transition"
+            className="public-header-cta-gold flex items-center justify-center w-full py-3 text-sm font-semibold text-[#c9a227] border border-[#c9a227]/40 hover:bg-[#c9a227]/5 rounded-xl transition"
           >
             Verify Ownership
           </Link>

@@ -187,13 +187,15 @@ export function InteractiveFloorPlan() {
   };
 
   const unitCardColor = {
-    available: "bg-emerald-500/20 border-emerald-500/40 hover:bg-emerald-500/30 hover:border-emerald-400",
-    booked:    "bg-red-500/20 border-red-500/40 hover:bg-red-500/25",
-    reserved:  "bg-amber-500/20 border-amber-500/40 hover:bg-amber-500/30 hover:border-amber-400",
+    available:
+      "bg-emerald-500/15 border-emerald-500/35 hover:bg-emerald-500/25 hover:border-emerald-400",
+    booked: "bg-red-500/15 border-red-500/35 hover:bg-red-500/25",
+    reserved:
+      "bg-amber-500/15 border-amber-500/35 hover:bg-amber-500/25 hover:border-amber-400",
   };
 
   return (
-    <div className="space-y-6">
+    <div className="public-page space-y-6">
       {/* ─── Floor Selector ─── */}
       <div className="overflow-x-auto pt-2 pb-1">
         <div className="flex gap-2 min-w-max px-1">
@@ -205,16 +207,16 @@ export function InteractiveFloorPlan() {
               <button
                 key={f.id}
                 onClick={() => handleFloorChange(f.id)}
-                className={`relative flex flex-col items-center px-5 py-3 rounded-xl font-medium transition-all duration-200 ${
+                className={`relative flex flex-col items-center px-5 py-3 rounded-xl font-medium transition-all duration-200 border ${
                   active
-                    ? "bg-[#2563eb] text-white shadow-lg shadow-blue-900/40"
-                    : "bg-[#111] text-gray-400 hover:bg-white/5 hover:text-white border border-white/10"
+                    ? "public-blue-chip-active bg-[#2563eb] text-white border-blue-600 shadow-lg shadow-blue-900/40"
+                    : "bg-[var(--public-muted)] text-[var(--public-text-muted)] border-[color:var(--public-border)] hover:bg-[var(--public-hover)] hover:text-[var(--public-text)]"
                 }`}
               >
                 <span className="text-xs font-black">{f.short}</span>
                 <span className="text-[10px] mt-0.5 opacity-80">{f.label}</span>
                 {avail > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-emerald-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                  <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-emerald-500 !text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-sm">
                     {avail}
                   </span>
                 )}
@@ -227,34 +229,36 @@ export function InteractiveFloorPlan() {
       {/* ─── Main Grid ─── */}
       <div className="grid xl:grid-cols-3 gap-5 xl:h-[680px]">
         {/* Floor Plan Image Viewer */}
-        <div className="xl:col-span-2 bg-[#111] rounded-2xl border border-white/10 overflow-hidden flex flex-col">
+        <div className="xl:col-span-2 bg-[var(--public-surface)] rounded-2xl border border-[color:var(--public-border)] overflow-hidden flex flex-col shadow-sm">
           {/* Header with zoom controls */}
-          <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-[color:var(--public-border)]">
             <div>
-              <h3 className="font-semibold text-white text-sm">{currentFloor.label} – Floor Plan</h3>
-              <p className="text-xs text-gray-500 mt-0.5">
+              <h3 className="font-semibold text-[var(--public-text)] text-sm">
+                {currentFloor.label} – Floor Plan
+              </h3>
+              <p className="text-xs text-[var(--public-text-soft)] mt-0.5">
                 {zoom === FIT_ZOOM
                   ? "Full view — zoom in to explore details"
                   : "Drag to pan · use controls to zoom"}
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <div className="flex items-center bg-[#0a0a0a] rounded-lg border border-white/10">
+              <div className="flex items-center bg-[var(--public-bg)] rounded-lg border border-[color:var(--public-border)]">
                 <button
                   onClick={handleZoomOut}
                   disabled={!canZoomOut && zoom === FIT_ZOOM}
-                  className="px-3 py-1.5 text-gray-400 hover:text-white disabled:opacity-30 transition text-base font-bold"
+                  className="px-3 py-1.5 text-[var(--public-text-muted)] hover:text-[var(--public-text)] disabled:opacity-30 transition text-base font-bold"
                   aria-label="Zoom out"
                 >
                   −
                 </button>
-                <span className="px-3 py-1.5 text-xs font-mono text-gray-300 border-x border-white/10 min-w-[52px] text-center">
+                <span className="px-3 py-1.5 text-xs font-mono text-[var(--public-text-muted)] border-x border-[color:var(--public-border)] min-w-[52px] text-center">
                   {zoomLabel}
                 </span>
                 <button
                   onClick={handleZoomIn}
                   disabled={!canZoomIn}
-                  className="px-3 py-1.5 text-gray-400 hover:text-white disabled:opacity-30 transition text-base font-bold"
+                  className="px-3 py-1.5 text-[var(--public-text-muted)] hover:text-[var(--public-text)] disabled:opacity-30 transition text-base font-bold"
                   aria-label="Zoom in"
                 >
                   +
@@ -262,7 +266,7 @@ export function InteractiveFloorPlan() {
               </div>
               <button
                 onClick={handleReset}
-                className="px-3 py-1.5 text-xs text-gray-400 hover:text-white bg-[#0a0a0a] border border-white/10 rounded-lg transition"
+                className="px-3 py-1.5 text-xs text-[var(--public-text-muted)] hover:text-[var(--public-text)] bg-[var(--public-bg)] border border-[color:var(--public-border)] rounded-lg transition"
               >
                 Fit
               </button>
@@ -311,9 +315,9 @@ export function InteractiveFloorPlan() {
         </div>
 
         {/* Unit list panel — same height as the grid row, internal scroll */}
-        <div className="bg-[#111] rounded-2xl border border-white/10 overflow-hidden flex flex-col h-72 xl:h-full">
-          <div className="px-5 py-4 border-b border-white/10">
-            <h3 className="font-semibold text-white text-sm mb-3">
+        <div className="bg-[var(--public-surface)] rounded-2xl border border-[color:var(--public-border)] overflow-hidden flex flex-col h-72 xl:h-full shadow-sm">
+          <div className="px-5 py-4 border-b border-[color:var(--public-border)]">
+            <h3 className="font-semibold text-[var(--public-text)] text-sm mb-3">
               Units – {currentFloor.label}
             </h3>
             <div className="flex flex-wrap gap-2 mb-3">
@@ -324,8 +328,10 @@ export function InteractiveFloorPlan() {
               ].map((s) => (
                 <div key={s.key} className="flex items-center gap-1.5">
                   <span className={`w-2 h-2 rounded-full ${s.dot}`} />
-                  <span className="text-xs text-gray-400">{s.label}</span>
-                  {!loading && <span className="text-xs font-bold text-white">({s.count})</span>}
+                  <span className="text-xs text-[var(--public-text-muted)]">{s.label}</span>
+                  {!loading && (
+                    <span className="text-xs font-bold text-[var(--public-text)]">({s.count})</span>
+                  )}
                 </div>
               ))}
             </div>
@@ -334,10 +340,10 @@ export function InteractiveFloorPlan() {
                 <button
                   key={f}
                   onClick={() => setFilterStatus(f)}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-medium transition capitalize ${
+                  className={`px-2.5 py-1 rounded-lg text-xs font-medium transition capitalize border border-transparent ${
                     filterStatus === f
-                      ? "bg-[#2563eb] text-white"
-                      : "bg-white/5 text-gray-400 hover:text-white"
+                      ? "public-blue-chip-active bg-[#2563eb] text-white"
+                      : "bg-[var(--public-muted)] text-[var(--public-text-muted)] border-[color:var(--public-border)] hover:bg-[var(--public-hover)] hover:text-[var(--public-text)]"
                   }`}
                 >
                   {f === "booked" ? "sold" : f}
@@ -350,16 +356,21 @@ export function InteractiveFloorPlan() {
             {loading ? (
               <div className="space-y-2">
                 {[...Array(6)].map((_, i) => (
-                  <div key={i} className="h-14 bg-white/5 rounded-lg animate-pulse" />
+                  <div key={i} className="h-14 bg-[var(--public-muted)] rounded-lg animate-pulse" />
                 ))}
               </div>
             ) : filteredUnits.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 text-center">
-                <svg className="w-10 h-10 text-gray-700 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className="w-10 h-10 text-[var(--public-text-soft)] mb-3"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
-                <p className="text-gray-500 text-sm">No units found</p>
-                <p className="text-gray-600 text-xs mt-1">
+                <p className="text-[var(--public-text-muted)] text-sm">No units found</p>
+                <p className="text-[var(--public-text-soft)] text-xs mt-1">
                   {filterStatus !== "all" ? "Try changing the filter" : "No units loaded yet"}
                 </p>
               </div>
@@ -371,9 +382,9 @@ export function InteractiveFloorPlan() {
                     onClick={() => setSelectedUnit(unit)}
                     className={`p-3 rounded-xl text-left border transition-all duration-200 ${unitCardColor[unit.status]}`}
                   >
-                    <p className="font-bold text-white text-sm">{unit.unitNumber}</p>
-                    <p className="text-xs text-white/60 capitalize">{unit.type}</p>
-                    <p className="text-xs text-white/70 mt-1 font-medium">
+                    <p className="font-bold text-[var(--public-text)] text-sm">{unit.unitNumber}</p>
+                    <p className="text-xs text-[var(--public-text-muted)] capitalize">{unit.type}</p>
+                    <p className="text-xs text-[var(--public-text-soft)] mt-1 font-medium">
                       Rs. {(unit.price / 1000000).toFixed(1)}M
                     </p>
                   </button>
@@ -387,11 +398,11 @@ export function InteractiveFloorPlan() {
       {/* ─── Unit Detail Modal ─── */}
       {selectedUnit && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4"
           onClick={(e) => { if (e.target === e.currentTarget) setSelectedUnit(null); }}
         >
-          <div className="bg-[#0f0f0f] rounded-2xl border border-white/10 max-w-md w-full shadow-2xl overflow-hidden">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+          <div className="bg-[var(--public-surface)] rounded-2xl border border-[color:var(--public-border)] max-w-md w-full shadow-2xl overflow-hidden">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[color:var(--public-border)]">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-[#2563eb]/20 flex items-center justify-center">
                   <svg className="w-5 h-5 text-[#2563eb]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -399,13 +410,13 @@ export function InteractiveFloorPlan() {
                   </svg>
                 </div>
                 <div>
-                  <p className="font-bold text-white">Unit {selectedUnit.unitNumber}</p>
+                  <p className="font-bold text-[var(--public-text)]">Unit {selectedUnit.unitNumber}</p>
                   <UnitStatusBadge status={selectedUnit.status} />
                 </div>
               </div>
               <button
                 onClick={() => setSelectedUnit(null)}
-                className="p-2 text-gray-500 hover:text-white rounded-lg hover:bg-white/5 transition"
+                className="p-2 text-[var(--public-text-soft)] hover:text-[var(--public-text)] rounded-lg hover:bg-[var(--public-hover)] transition"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -420,9 +431,11 @@ export function InteractiveFloorPlan() {
                 { label: "Size", value: `${selectedUnit.size} sqft` },
                 { label: "Price", value: `Rs. ${selectedUnit.price.toLocaleString()}`, accent: true },
               ].map((row) => (
-                <div key={row.label} className="flex justify-between items-center py-2 border-b border-white/5">
-                  <span className="text-sm text-gray-500">{row.label}</span>
-                  <span className={`text-sm ${row.capitalize ? "capitalize" : ""} ${row.accent ? "text-[#c9a227] font-bold" : "text-white"}`}>
+                <div key={row.label} className="flex justify-between items-center py-2 border-b border-[color:var(--public-border)]">
+                  <span className="text-sm text-[var(--public-text-soft)]">{row.label}</span>
+                  <span
+                    className={`text-sm ${row.capitalize ? "capitalize" : ""} ${row.accent ? "text-[#c9a227] font-bold" : "text-[var(--public-text)]"}`}
+                  >
                     {row.value}
                   </span>
                 </div>
@@ -443,31 +456,31 @@ export function InteractiveFloorPlan() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <p className="text-emerald-400 font-semibold text-sm">Booking request submitted!</p>
-                  <p className="text-gray-500 text-xs">Our team will contact you shortly.</p>
+                  <p className="text-[var(--public-text-soft)] text-xs">Our team will contact you shortly.</p>
                 </div>
               ) : (
                 <form onSubmit={handleBooking} className="space-y-3">
-                  <p className="text-sm font-semibold text-white mb-3">Request a Booking</p>
+                  <p className="text-sm font-semibold text-[var(--public-text)] mb-3">Request a Booking</p>
                   <input type="text" placeholder="Full Name *" required value={bookingForm.name}
                     onChange={(e) => setBookingForm((p) => ({ ...p, name: e.target.value }))}
-                    className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb]" />
+                    className="w-full px-4 py-2.5 bg-[var(--public-bg)] border border-[color:var(--public-border)] rounded-xl text-[var(--public-text)] placeholder:text-[var(--public-text-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb]" />
                   <input type="tel" placeholder="Phone Number *" required value={bookingForm.phone}
                     onChange={(e) => setBookingForm((p) => ({ ...p, phone: e.target.value }))}
-                    className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb]" />
+                    className="w-full px-4 py-2.5 bg-[var(--public-bg)] border border-[color:var(--public-border)] rounded-xl text-[var(--public-text)] placeholder:text-[var(--public-text-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb]" />
                   <input type="email" placeholder="Email (optional)" value={bookingForm.email}
                     onChange={(e) => setBookingForm((p) => ({ ...p, email: e.target.value }))}
-                    className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb]" />
+                    className="w-full px-4 py-2.5 bg-[var(--public-bg)] border border-[color:var(--public-border)] rounded-xl text-[var(--public-text)] placeholder:text-[var(--public-text-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb]" />
                   <textarea placeholder="Message (optional)" value={bookingForm.message}
                     onChange={(e) => setBookingForm((p) => ({ ...p, message: e.target.value }))}
-                    className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb] resize-none"
+                    className="w-full px-4 py-2.5 bg-[var(--public-bg)] border border-[color:var(--public-border)] rounded-xl text-[var(--public-text)] placeholder:text-[var(--public-text-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb] resize-none"
                     rows={2} />
                   <div className="flex gap-2 pt-1">
                     <button type="submit" disabled={bookingSubmitting}
-                      className="flex-1 py-2.5 bg-[#2563eb] hover:bg-[#3b82f6] disabled:opacity-50 text-white text-sm font-semibold rounded-xl transition">
+                      className="public-blue-chip-active flex-1 py-2.5 bg-[#2563eb] hover:bg-[#3b82f6] disabled:opacity-50 text-white text-sm font-semibold rounded-xl transition">
                       {bookingSubmitting ? "Submitting…" : "Submit Request"}
                     </button>
                     <button type="button" onClick={() => setSelectedUnit(null)}
-                      className="px-4 py-2.5 border border-white/20 text-gray-400 hover:text-white rounded-xl text-sm transition">
+                      className="px-4 py-2.5 border border-[color:var(--public-border)] text-[var(--public-text-muted)] hover:text-[var(--public-text)] rounded-xl text-sm transition hover:bg-[var(--public-hover)]">
                       Cancel
                     </button>
                   </div>

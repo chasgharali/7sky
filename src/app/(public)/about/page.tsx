@@ -8,10 +8,10 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="py-20 px-4">
+    <div className="public-page py-20 px-4">
       <div className="max-w-4xl mx-auto">
         <Image
-          src="/media/logos/one-capital-logo.png"
+          src="/ONE%20CAPITAL%20NEW%20BLACK%20FONT.png"
           alt="One Capital Builders – Real Estate Developer in Islamabad"
           width={200}
           height={100}
@@ -20,7 +20,7 @@ export default function AboutPage() {
         <h1 className="text-3xl font-bold text-white mb-6">
           About One Capital Builders – Real Estate Developer in Islamabad
         </h1>
-        <div className="prose prose-invert max-w-none space-y-6 text-gray-400">
+        <div className="prose max-w-none space-y-6 text-gray-400">
           <p>
             One Capital Builders is the result of a powerful partnership between
             two seasoned builders, combining decades of experience in
