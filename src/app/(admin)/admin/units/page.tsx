@@ -10,6 +10,7 @@ interface Unit {
   size: number;
   price: number;
   status: string;
+  currentOwnerName?: string | null;
 }
 
 const FLOORS = ["LGF", "GF", "1", "2", "3", "4", "5"];
@@ -17,6 +18,15 @@ const TYPES = ["shop", "office"];
 const STATUSES = ["available", "booked", "reserved"];
 
 const EMPTY_FORM = { unitNumber: "", floor: "LGF", type: "shop", size: "", price: "", status: "available" };
+const EMPTY_BOOK_FORM = {
+  ownerName: "",
+  cnic: "",
+  phone: "",
+  residentOf: "",
+  totalAmount: "",
+  amountPaid: "0",
+  discount: "0",
+};
 
 function statusStyle(s: string) {
   if (s === "available") return "bg-emerald-500/20 text-emerald-400";
@@ -39,6 +49,12 @@ export default function UnitsPage() {
 
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [bookingId, setBookingId] = useState<string | null>(null);
+  const [bookUnit, setBookUnit] = useState<Unit | null>(null);
+  const [bookForm, setBookForm] = useState(EMPTY_BOOK_FORM);
+  const [bookError, setBookError] = useState("");
+  const [bookPhoto, setBookPhoto] = useState<File | null>(null);
+  const [cancelBookingUnit, setCancelBookingUnit] = useState<Unit | null>(null);
 
   async function loadUnits() {
     setLoading(true);
@@ -89,6 +105,115 @@ export default function UnitsPage() {
     setDeleteId(null);
     setDeleting(false);
     loadUnits();
+  }
+
+  function openBookModal(u: Unit) {
+    if (u.status === "booked") return;
+    setBookUnit(u);
+    setBookError("");
+    setBookForm({
+      ownerName: "",
+      cnic: "",
+      phone: "",
+      residentOf: "",
+      totalAmount: String(u.price || 0),
+      amountPaid: "0",
+      discount: "0",
+    });
+    setBookPhoto(null);
+  }
+
+  async function handleConfirmBook() {
+    if (!bookUnit) return;
+    if (!bookForm.ownerName.trim() || !bookForm.cnic.trim()) {
+      setBookError("Owner name and CNIC are required.");
+      return;
+    }
+
+    setBookingId(bookUnit._id);
+    setBookError("");
+
+    const ownerRes = await fetch("/api/admin/owners", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ownerName: bookForm.ownerName.trim(),
+        cnic: bookForm.cnic.trim(),
+        phone: bookForm.phone.trim(),
+        residentOf: bookForm.residentOf.trim(),
+        unitId: bookUnit._id,
+        totalAmount: Number(bookForm.totalAmount) || 0,
+        amountPaid: Number(bookForm.amountPaid) || 0,
+        discount: Number(bookForm.discount) || 0,
+      }),
+    });
+
+    const ownerData = await ownerRes.json().catch(() => ({}));
+    if (!ownerRes.ok) {
+      setBookError(ownerData?.error || "Failed to create owner booking.");
+      setBookingId(null);
+      return;
+    }
+
+    if (bookPhoto && ownerData?._id) {
+      const fd = new FormData();
+      fd.append("file", bookPhoto);
+      const photoRes = await fetch(`/api/admin/owners/${ownerData._id}/photo`, {
+        method: "POST",
+        credentials: "include",
+        body: fd,
+      });
+      if (!photoRes.ok) {
+        const photoData = await photoRes.json().catch(() => ({}));
+        alert(photoData?.error || "Owner created, but photo upload failed.");
+      }
+    }
+
+    setUnits((prev) =>
+      prev.map((item) =>
+        item._id === bookUnit._id
+          ? { ...item, status: "booked", currentOwnerName: bookForm.ownerName.trim() }
+          : item
+      )
+    );
+    setBookUnit(null);
+    setBookPhoto(null);
+    setBookingId(null);
+    if (ownerData?._id) {
+      window.open(`/api/admin/owners/${ownerData._id}/letter?type=transfer`, "_blank");
+    }
+  }
+
+  async function handleCancelBooking(u: Unit) {
+    if (u.status !== "booked") return;
+    setCancelBookingUnit(u);
+  }
+
+  async function confirmCancelBooking() {
+    if (!cancelBookingUnit) return;
+    setBookingId(cancelBookingUnit._id);
+    const res = await fetch(`/api/admin/units/${cancelBookingUnit._id}`, {
+      method: "PATCH",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: "available" }),
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      alert(data?.error || "Failed to cancel booking");
+      setBookingId(null);
+      return;
+    }
+    setUnits((prev) =>
+      prev.map((item) =>
+        item._id === cancelBookingUnit._id
+          ? { ...item, status: "available", currentOwnerName: null }
+          : item
+      )
+    );
+    setBookingId(null);
+    setCancelBookingUnit(null);
   }
 
   const filtered = units.filter((u) => {
@@ -156,6 +281,7 @@ export default function UnitsPage() {
                   <div>
                     <p className="text-white font-bold font-mono text-base">{u.unitNumber}</p>
                     <p className="text-zinc-500 text-xs mt-0.5">{u.floor} · <span className="capitalize">{u.type}</span></p>
+                    <p className="text-zinc-500 text-xs mt-0.5">Owner: {u.currentOwnerName || "—"}</p>
                   </div>
                   <span className={`px-2.5 py-1 rounded-lg text-xs font-semibold capitalize ${statusStyle(u.status)}`}>{u.status}</span>
                 </div>
@@ -170,6 +296,23 @@ export default function UnitsPage() {
                   </div>
                 </div>
                 <div className="flex gap-2">
+                  {u.status === "booked" ? (
+                    <button
+                      onClick={() => handleCancelBooking(u)}
+                      disabled={bookingId === u._id}
+                      className="flex-1 py-1.5 text-xs bg-amber-600/20 hover:bg-amber-600/40 text-amber-400 rounded-lg transition disabled:opacity-50"
+                    >
+                      {bookingId === u._id ? "Cancelling..." : "Cancel Booking"}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => openBookModal(u)}
+                      disabled={bookingId === u._id}
+                      className="flex-1 py-1.5 text-xs bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-400 rounded-lg transition disabled:opacity-50"
+                    >
+                      {bookingId === u._id ? "Booking..." : "Book"}
+                    </button>
+                  )}
                   <button onClick={() => openEdit(u)} className="flex-1 py-1.5 text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg transition">Edit</button>
                   <button onClick={() => setDeleteId(u._id)} className="flex-1 py-1.5 text-xs bg-red-600/20 hover:bg-red-600/40 text-red-400 rounded-lg transition">Delete</button>
                 </div>
@@ -180,10 +323,10 @@ export default function UnitsPage() {
           {/* Desktop table */}
           <div className="hidden md:block bg-zinc-900 border border-white/[0.06] rounded-2xl overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[600px] text-sm">
+              <table className="w-full min-w-[760px] text-sm">
                 <thead>
                   <tr className="text-left border-b border-white/[0.06]">
-                    {["Unit", "Floor", "Type", "Size", "Price", "Status", "Actions"].map((h) => (
+                    {["Unit", "Floor", "Type", "Size", "Price", "Owner", "Status", "Actions"].map((h) => (
                       <th key={h} className="px-5 py-3 text-[11px] font-semibold text-zinc-500 uppercase tracking-wider whitespace-nowrap">{h}</th>
                     ))}
                   </tr>
@@ -196,11 +339,29 @@ export default function UnitsPage() {
                       <td className="px-5 py-3 text-zinc-400 capitalize whitespace-nowrap">{u.type}</td>
                       <td className="px-5 py-3 text-zinc-400 whitespace-nowrap">{u.size.toLocaleString()} sqft</td>
                       <td className="px-5 py-3 text-zinc-300 whitespace-nowrap">Rs. {u.price.toLocaleString()}</td>
+                      <td className="px-5 py-3 text-zinc-400 whitespace-nowrap">{u.currentOwnerName || "—"}</td>
                       <td className="px-5 py-3">
                         <span className={`px-2.5 py-0.5 rounded-lg text-xs font-medium capitalize ${statusStyle(u.status)}`}>{u.status}</span>
                       </td>
                       <td className="px-5 py-3">
                         <div className="flex gap-2">
+                          {u.status === "booked" ? (
+                            <button
+                              onClick={() => handleCancelBooking(u)}
+                              disabled={bookingId === u._id}
+                              className="px-3 py-1 text-xs bg-amber-600/20 hover:bg-amber-600/40 text-amber-400 rounded-lg transition disabled:opacity-50"
+                            >
+                              {bookingId === u._id ? "Cancelling..." : "Cancel Booking"}
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => openBookModal(u)}
+                              disabled={bookingId === u._id}
+                              className="px-3 py-1 text-xs bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-400 rounded-lg transition disabled:opacity-50"
+                            >
+                              {bookingId === u._id ? "Booking..." : "Book"}
+                            </button>
+                          )}
                           <button onClick={() => openEdit(u)} className="px-3 py-1 text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg transition">Edit</button>
                           <button onClick={() => setDeleteId(u._id)} className="px-3 py-1 text-xs bg-red-600/20 hover:bg-red-600/40 text-red-400 rounded-lg transition">Delete</button>
                         </div>
@@ -265,6 +426,70 @@ export default function UnitsPage() {
         </div>
       )}
 
+      {/* Book Unit Modal */}
+      {bookUnit && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-zinc-900 border border-white/10 rounded-2xl w-full max-w-md shadow-2xl">
+            <div className="px-6 py-4 border-b border-white/[0.06] flex items-center justify-between">
+              <div>
+                <h2 className="text-white font-bold">Book Unit</h2>
+                <p className="text-zinc-500 text-xs mt-0.5">
+                  {bookUnit.unitNumber} ({bookUnit.floor}) - Rs. {bookUnit.price.toLocaleString()}
+                </p>
+              </div>
+              <button onClick={() => setBookUnit(null)} className="text-zinc-500 hover:text-white transition">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
+            <div className="px-6 py-4 space-y-3">
+              {bookError && <p className="text-red-400 text-sm bg-red-500/10 px-3 py-2 rounded-lg">{bookError}</p>}
+              {[
+                { key: "ownerName", label: "Owner Name *", placeholder: "Full name", type: "text" },
+                { key: "cnic", label: "CNIC *", placeholder: "37302-1234567-1", type: "text" },
+                { key: "phone", label: "Phone", placeholder: "0300-1234567", type: "text" },
+                { key: "residentOf", label: "Resident Of", placeholder: "e.g. Islamabad", type: "text" },
+                { key: "totalAmount", label: "Total Amount (Rs.)", placeholder: "0", type: "number" },
+                { key: "discount", label: "Discount (Rs.)", placeholder: "0", type: "number" },
+                { key: "amountPaid", label: "Amount Paid (Rs.)", placeholder: "0", type: "number" },
+              ].map((field) => (
+                <div key={field.key}>
+                  <label className="block text-xs font-semibold text-zinc-400 mb-1.5">{field.label}</label>
+                  <input
+                    type={field.type}
+                    value={bookForm[field.key as keyof typeof bookForm]}
+                    placeholder={field.placeholder}
+                    onChange={(e) => setBookForm((prev) => ({ ...prev, [field.key]: e.target.value }))}
+                    className="w-full px-3 py-2 bg-zinc-800 border border-white/10 rounded-xl text-white text-sm placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-blue-600"
+                  />
+                </div>
+              ))}
+              <div>
+                <label className="block text-xs font-semibold text-zinc-400 mb-1.5">Owner Photo (optional)</label>
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={(e) => setBookPhoto(e.target.files?.[0] || null)}
+                  className="w-full px-3 py-2 bg-zinc-800 border border-white/10 rounded-xl text-white text-sm file:mr-3 file:px-3 file:py-1.5 file:rounded-lg file:border-0 file:bg-zinc-700 file:text-zinc-200"
+                />
+                {bookPhoto && (
+                  <p className="text-[11px] text-zinc-500 mt-1 truncate">{bookPhoto.name}</p>
+                )}
+              </div>
+            </div>
+            <div className="px-6 py-4 border-t border-white/[0.06] flex justify-end gap-2">
+              <button onClick={() => setBookUnit(null)} className="px-4 py-2 text-sm text-zinc-400 hover:text-white transition">Cancel</button>
+              <button
+                onClick={handleConfirmBook}
+                disabled={bookingId === bookUnit._id}
+                className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white text-sm font-semibold rounded-xl transition"
+              >
+                {bookingId === bookUnit._id ? "Confirming..." : "Confirm & Generate Transfer Letter"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Delete Confirm */}
       {deleteId && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -279,6 +504,36 @@ export default function UnitsPage() {
               <button onClick={handleDelete} disabled={deleting}
                 className="px-5 py-2 bg-red-600 hover:bg-red-500 disabled:opacity-50 text-white text-sm font-semibold rounded-xl transition">
                 {deleting ? "Deleting…" : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Cancel Booking Confirm */}
+      {cancelBookingUnit && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-zinc-900 border border-white/10 rounded-2xl w-full max-w-sm shadow-2xl p-6 text-center">
+            <div className="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center mx-auto mb-4">
+              <svg className="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            </div>
+            <h3 className="text-white font-bold mb-1">Cancel Booking?</h3>
+            <p className="text-zinc-500 text-sm mb-5">
+              Unit {cancelBookingUnit.unitNumber} will be marked available again.
+            </p>
+            <div className="flex gap-2 justify-center">
+              <button
+                onClick={() => setCancelBookingUnit(null)}
+                className="px-4 py-2 text-sm text-zinc-400 hover:text-white bg-zinc-800 rounded-xl transition"
+              >
+                No
+              </button>
+              <button
+                onClick={confirmCancelBooking}
+                disabled={bookingId === cancelBookingUnit._id}
+                className="px-5 py-2 bg-amber-600 hover:bg-amber-500 disabled:opacity-50 text-white text-sm font-semibold rounded-xl transition"
+              >
+                {bookingId === cancelBookingUnit._id ? "Cancelling..." : "Yes, Cancel"}
               </button>
             </div>
           </div>

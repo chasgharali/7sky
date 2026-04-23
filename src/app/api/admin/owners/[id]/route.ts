@@ -83,6 +83,7 @@ export async function PATCH(
       if (updateData.ownerName !== undefined) identityFields.ownerName = updateData.ownerName;
       if (updateData.cnic !== undefined) identityFields.cnic = updateData.cnic;
       if (updateData.phone !== undefined) identityFields.phone = updateData.phone;
+      if (updateData.residentOf !== undefined) identityFields.residentOf = updateData.residentOf;
 
       owner = await Owner.findByIdAndUpdate(
         id,

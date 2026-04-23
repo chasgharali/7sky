@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/db/connection";
-import { Unit } from "@/lib/db/models";
+import { Owner, Unit } from "@/lib/db/models";
 import { requireAuth } from "@/lib/middleware/apiAuth";
 import { unitSchema } from "@/validations/unit";
 import { createAuditLog } from "@/lib/audit";
@@ -12,10 +12,22 @@ export async function GET(request: NextRequest) {
 
   try {
     await dbConnect();
-    const units = await Unit.find({})
-      .sort({ floor: 1, unitNumber: 1 })
-      .lean();
-    return NextResponse.json(units);
+    const [units, owners] = await Promise.all([
+      Unit.find({}).sort({ floor: 1, unitNumber: 1 }).lean(),
+      Owner.find({}).select("unitId ownerName").lean(),
+    ]);
+
+    const ownerMap = new Map<string, string>();
+    owners.forEach((o) => {
+      ownerMap.set(String(o.unitId), o.ownerName);
+    });
+
+    const enrichedUnits = units.map((u) => ({
+      ...u,
+      currentOwnerName: ownerMap.get(String(u._id)) || null,
+    }));
+
+    return NextResponse.json(enrichedUnits);
   } catch (err) {
     console.error("Admin units list error:", err);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

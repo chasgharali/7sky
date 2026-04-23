@@ -10,7 +10,17 @@ interface Booking {
   message?: string;
   status: "pending" | "approved" | "rejected" | "reserved";
   createdAt: string;
-  unitId: { unitNumber: string; floor: string; price: number } | null;
+  unitId: { _id: string; unitNumber: string; floor: string; price: number } | null;
+}
+
+interface FinalizeForm {
+  ownerName: string;
+  cnic: string;
+  phone: string;
+  residentOf: string;
+  totalAmount: string;
+  amountPaid: string;
+  discount: string;
 }
 
 type FilterTab = "all" | "pending" | "approved" | "rejected" | "reserved";
@@ -38,6 +48,17 @@ export default function BookingsPage() {
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState<Booking | null>(null);
   const [updating, setUpdating] = useState<string | null>(null);
+  const [finalizeBooking, setFinalizeBooking] = useState<Booking | null>(null);
+  const [finalizeError, setFinalizeError] = useState("");
+  const [finalizeForm, setFinalizeForm] = useState<FinalizeForm>({
+    ownerName: "",
+    cnic: "",
+    phone: "",
+    residentOf: "",
+    totalAmount: "",
+    amountPaid: "0",
+    discount: "0",
+  });
 
   async function loadBookings() {
     setLoading(true);
@@ -49,19 +70,67 @@ export default function BookingsPage() {
 
   useEffect(() => { loadBookings(); }, []);
 
-  async function updateStatus(id: string, status: "approved" | "rejected" | "reserved" | "pending") {
+  async function updateStatus(
+    id: string,
+    status: "approved" | "rejected" | "reserved" | "pending",
+    finalizeOwner?: {
+      ownerName: string;
+      cnic: string;
+      phone?: string;
+      residentOf?: string;
+      totalAmount: number;
+      amountPaid: number;
+      discount: number;
+    }
+  ) {
     setUpdating(id);
     const res = await fetch(`/api/admin/bookings/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status }),
+      body: JSON.stringify({ status, finalizeOwner }),
       credentials: "include",
     });
+    const data = await res.json().catch(() => ({}));
     if (res.ok) {
       setBookings((prev) => prev.map((b) => (b._id === id ? { ...b, status } : b)));
       if (selected?._id === id) setSelected((s) => s ? { ...s, status } : null);
+      if (data?.letterUrl) window.open(data.letterUrl, "_blank");
+      if (finalizeOwner) setFinalizeBooking(null);
+    } else if (finalizeOwner) {
+      setFinalizeError(data?.error || "Finalize failed");
     }
     setUpdating(null);
+  }
+
+  function openFinalizeModal(booking: Booking) {
+    setFinalizeBooking(booking);
+    setFinalizeError("");
+    setFinalizeForm({
+      ownerName: booking.name || "",
+      cnic: "",
+      phone: booking.phone || "",
+      residentOf: "",
+      totalAmount: String(booking.unitId?.price || 0),
+      amountPaid: "0",
+      discount: "0",
+    });
+  }
+
+  async function confirmFinalize() {
+    if (!finalizeBooking) return;
+    if (!finalizeForm.ownerName.trim() || !finalizeForm.cnic.trim()) {
+      setFinalizeError("Owner name and CNIC are required");
+      return;
+    }
+    await updateStatus(finalizeBooking._id, "approved", {
+      ownerName: finalizeForm.ownerName.trim(),
+      cnic: finalizeForm.cnic.trim(),
+      phone: finalizeForm.phone.trim(),
+      residentOf: finalizeForm.residentOf.trim(),
+      totalAmount: Number(finalizeForm.totalAmount) || 0,
+      amountPaid: Number(finalizeForm.amountPaid) || 0,
+      discount: Number(finalizeForm.discount) || 0,
+    });
   }
 
   const counts = {
@@ -196,11 +265,11 @@ export default function BookingsPage() {
                   <div className="flex gap-1.5" onClick={(e) => e.stopPropagation()}>
                     {b.status === "pending" && (
                       <button
-                        onClick={() => updateStatus(b._id, "approved")}
+                        onClick={() => openFinalizeModal(b)}
                         disabled={updating === b._id}
                         className="px-3 py-1.5 bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-400 text-xs font-semibold rounded-xl transition disabled:opacity-50"
                       >
-                        {updating === b._id ? "…" : "Approve"}
+                        Finalize
                       </button>
                     )}
                     {b.status !== "reserved" && (
@@ -315,11 +384,11 @@ export default function BookingsPage() {
               <div className="px-6 py-4 border-t border-white/[0.06] flex gap-2">
                 {selected.status === "pending" && (
                   <button
-                    onClick={() => updateStatus(selected._id, "approved")}
+                    onClick={() => openFinalizeModal(selected)}
                     disabled={updating === selected._id}
                     className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white text-sm font-bold rounded-xl transition"
                   >
-                    {updating === selected._id ? "Updating…" : "Approve"}
+                    Finalize Booking
                   </button>
                 )}
                 {selected.status !== "reserved" && (
@@ -351,6 +420,56 @@ export default function BookingsPage() {
                 )}
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Finalize booking modal */}
+      {finalizeBooking && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-zinc-900 border border-white/10 rounded-2xl w-full max-w-md shadow-2xl">
+            <div className="px-6 py-4 border-b border-white/[0.06] flex items-center justify-between">
+              <h2 className="text-white font-bold">Finalize Booking</h2>
+              <button onClick={() => setFinalizeBooking(null)} className="text-zinc-500 hover:text-white transition">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
+            <div className="px-6 py-4 space-y-3">
+              <p className="text-zinc-500 text-xs">Unit: {finalizeBooking.unitId?.unitNumber || "—"}</p>
+              {finalizeError && <p className="text-red-400 text-sm bg-red-500/10 px-3 py-2 rounded-lg">{finalizeError}</p>}
+              {([
+                { key: "ownerName", label: "Owner Name *", placeholder: "Full name" },
+                { key: "cnic", label: "CNIC *", placeholder: "37302-1234567-1" },
+                { key: "phone", label: "Phone", placeholder: "0300-1234567" },
+                { key: "residentOf", label: "Resident Of", placeholder: "e.g. Islamabad" },
+                { key: "totalAmount", label: "Total Amount", placeholder: "0" },
+                { key: "discount", label: "Discount", placeholder: "0" },
+                { key: "amountPaid", label: "Amount Paid", placeholder: "0" },
+              ] as { key: keyof FinalizeForm; label: string; placeholder: string }[]).map((field) => (
+                <div key={field.key}>
+                  <label className="block text-xs font-semibold text-zinc-400 mb-1.5">{field.label}</label>
+                  <input
+                    type={["totalAmount", "discount", "amountPaid"].includes(field.key) ? "number" : "text"}
+                    value={finalizeForm[field.key as keyof FinalizeForm]}
+                    placeholder={field.placeholder}
+                    onChange={(e) =>
+                      setFinalizeForm((prev) => ({ ...prev, [field.key]: e.target.value }))
+                    }
+                    className="w-full px-3 py-2 bg-zinc-800 border border-white/10 rounded-xl text-white text-sm placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-blue-600"
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="px-6 py-4 border-t border-white/[0.06] flex justify-end gap-2">
+              <button onClick={() => setFinalizeBooking(null)} className="px-4 py-2 text-sm text-zinc-400 hover:text-white transition">Cancel</button>
+              <button
+                onClick={confirmFinalize}
+                disabled={updating === finalizeBooking._id}
+                className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white text-sm font-semibold rounded-xl transition"
+              >
+                {updating === finalizeBooking._id ? "Finalizing…" : "Finalize & Generate Letter"}
+              </button>
+            </div>
           </div>
         </div>
       )}

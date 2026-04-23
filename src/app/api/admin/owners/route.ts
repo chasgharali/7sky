@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/db/connection";
-import { Owner, PaymentPlan } from "@/lib/db/models";
+import { Owner, PaymentPlan, Unit } from "@/lib/db/models";
 import { requireAuth } from "@/lib/middleware/apiAuth";
 import { ownerSchema } from "@/validations/owner";
 import { createAuditLog } from "@/lib/audit";
@@ -90,6 +90,14 @@ export async function POST(request: NextRequest) {
 
     await dbConnect();
 
+    const existingOwnerForUnit = await Owner.findOne({ unitId: parsed.data.unitId }).lean();
+    if (existingOwnerForUnit) {
+      return NextResponse.json(
+        { error: "This unit already has an owner record." },
+        { status: 400 }
+      );
+    }
+
     const regNo = parsed.data.registrationNumber ||
       `7SKY-${Math.floor(100000 + Math.random() * 900000)}`;
 
@@ -98,6 +106,8 @@ export async function POST(request: NextRequest) {
       registrationNumber: regNo,
       pendingAmount: parsed.data.totalAmount - (parsed.data.amountPaid || 0),
     });
+
+    await Unit.findByIdAndUpdate(parsed.data.unitId, { status: "booked" });
 
     await createAuditLog({
       userId: auth.payload.userId,

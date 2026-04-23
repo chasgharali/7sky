@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document, Model, Types } from "mongoose";
+import { randomBytes } from "crypto";
 
 export interface ITransferRecord {
   previousOwnerName: string;
@@ -13,6 +14,10 @@ export interface IOwner extends Document {
   ownerName: string;
   cnic: string;
   phone?: string;
+  residentOf?: string;
+  photoUrl?: string;
+  photoPublicId?: string;
+  verificationToken: string;
   unitId: Types.ObjectId;
   totalAmount: number;
   discount: number;
@@ -40,6 +45,15 @@ const OwnerSchema = new Schema<IOwner>(
     ownerName: { type: String, required: true },
     cnic: { type: String, required: true },
     phone: { type: String },
+    residentOf: { type: String, default: "" },
+    photoUrl: { type: String },
+    photoPublicId: { type: String },
+    verificationToken: {
+      type: String,
+      required: true,
+      unique: true,
+      default: () => randomBytes(18).toString("hex"),
+    },
     unitId: { type: Schema.Types.ObjectId, ref: "Unit", required: true },
     totalAmount: { type: Number, required: true },
     discount: { type: Number, default: 0 },
@@ -51,6 +65,7 @@ const OwnerSchema = new Schema<IOwner>(
 );
 
 OwnerSchema.index({ unitId: 1 });
+OwnerSchema.index({ verificationToken: 1 });
 
 delete mongoose.models.Owner;
 export const Owner: Model<IOwner> = mongoose.model<IOwner>("Owner", OwnerSchema);

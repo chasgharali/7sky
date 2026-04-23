@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { PaymentPlanTabs } from "./PaymentPlanTabs";
+import dbConnect from "@/lib/db/connection";
+import { PaymentPlan } from "@/lib/db/models";
 
 export const metadata: Metadata = {
   title: "Payment Plan – Shop & Office for Sale on Installment in G-14 Islamabad",
@@ -56,19 +58,12 @@ const FALLBACK_PLANS: FloorPlan[] = [
 ];
 
 async function getPaymentPlans(): Promise<FloorPlan[]> {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_APP_URL ||
-    process.env.NEXT_PUBLIC_URL ||
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
-    "http://localhost:3000";
-
   try {
-    const res = await fetch(`${baseUrl}/api/payment-plan`, {
-      next: { revalidate: 60 },
-    });
-    if (!res.ok) return FALLBACK_PLANS;
-    const data = await res.json();
-    return Array.isArray(data) && data.length > 0 ? data : FALLBACK_PLANS;
+    await dbConnect();
+    const plans = await PaymentPlan.find().sort({ floor: 1 }).lean();
+    return Array.isArray(plans) && plans.length > 0
+      ? (plans as unknown as FloorPlan[])
+      : FALLBACK_PLANS;
   } catch {
     return FALLBACK_PLANS;
   }

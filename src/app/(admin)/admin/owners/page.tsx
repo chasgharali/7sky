@@ -17,6 +17,10 @@ interface Owner {
   ownerName: string;
   cnic: string;
   phone?: string;
+  residentOf?: string;
+  photoUrl?: string;
+  photoPublicId?: string;
+  verificationToken: string;
   unitId: { _id: string; unitNumber: string; floor: string } | null;
   totalAmount: number;
   discount: number;
@@ -68,10 +72,10 @@ interface OwnerSchedule {
 }
 
 const EMPTY_FORM = {
-  ownerName: "", cnic: "", phone: "", unitId: "", totalAmount: "", amountPaid: "", discount: "",
+  ownerName: "", cnic: "", phone: "", residentOf: "", unitId: "", totalAmount: "", amountPaid: "", discount: "",
 };
 
-const EMPTY_TRANSFER = { ownerName: "", cnic: "", phone: "", transferNote: "" };
+const EMPTY_TRANSFER = { ownerName: "", cnic: "", phone: "", residentOf: "", transferNote: "" };
 
 function formatPKR(n: number) {
   if (n >= 10000000) return `Rs. ${(n / 10000000).toFixed(2)}Cr`;
@@ -100,6 +104,7 @@ export default function OwnersPage() {
   const [planDownpayment, setPlanDownpayment] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [photoUploadingId, setPhotoUploadingId] = useState<string | null>(null);
 
   // Delete
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -177,7 +182,7 @@ export default function OwnersPage() {
   function openEdit(o: Owner) {
     setEditing(o);
     setForm({
-      ownerName: o.ownerName, cnic: o.cnic, phone: o.phone || "",
+      ownerName: o.ownerName, cnic: o.cnic, phone: o.phone || "", residentOf: o.residentOf || "",
       unitId: o.unitId?._id || "", totalAmount: String(o.totalAmount),
       amountPaid: String(o.amountPaid), discount: String(o.discount || 0),
     });
@@ -220,6 +225,7 @@ export default function OwnersPage() {
       ownerName: form.ownerName,
       cnic: form.cnic,
       phone: form.phone,
+      residentOf: form.residentOf,
       unitId: form.unitId,
       totalAmount: Number(form.totalAmount),
       amountPaid: Number(form.amountPaid),
@@ -260,6 +266,7 @@ export default function OwnersPage() {
       ownerName: transferForm.ownerName,
       cnic: transferForm.cnic,
       phone: transferForm.phone,
+      residentOf: transferForm.residentOf,
       transferNote: transferForm.transferNote || "Ownership transferred",
     };
     const res = await fetch(`/api/admin/owners/${transferOwner._id}`, {
@@ -269,9 +276,30 @@ export default function OwnersPage() {
     });
     const data = await res.json();
     if (!res.ok) { setTransferError(data.error || "Transfer failed"); setTransferSaving(false); return; }
+    if (data?._id) {
+      window.open(`/api/admin/owners/${data._id}/letter?type=transfer`, "_blank");
+    }
     setTransferOwner(null);
     loadOwners();
     setTransferSaving(false);
+  }
+
+  async function handlePhotoUpload(ownerId: string, file: File) {
+    setPhotoUploadingId(ownerId);
+    const fd = new FormData();
+    fd.append("file", file);
+    const res = await fetch(`/api/admin/owners/${ownerId}/photo`, {
+      method: "POST",
+      body: fd,
+      credentials: "include",
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      alert(data?.error || "Photo upload failed");
+    } else {
+      loadOwners();
+    }
+    setPhotoUploadingId(null);
   }
 
   const filtered = owners.filter((o) =>
@@ -386,6 +414,22 @@ export default function OwnersPage() {
                     <button onClick={() => openPayments(o)} className="flex-1 py-1.5 text-xs bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-400 rounded-lg transition">Payments</button>
                     <button onClick={() => openSchedule(o)} className="flex-1 py-1.5 text-xs bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-400 rounded-lg transition">Schedule</button>
                     <button onClick={() => openTransfer(o)} className="flex-1 py-1.5 text-xs bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 rounded-lg transition">Transfer</button>
+                    <label className="flex-1 py-1.5 text-center text-xs bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-400 rounded-lg transition cursor-pointer">
+                      {photoUploadingId === o._id ? "Uploading..." : "Photo"}
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        className="hidden"
+                        disabled={photoUploadingId === o._id}
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) void handlePhotoUpload(o._id, file);
+                          e.currentTarget.value = "";
+                        }}
+                      />
+                    </label>
+                    <button onClick={() => window.open(`/api/admin/owners/${o._id}/letter?type=allotment`, "_blank")} className="flex-1 py-1.5 text-xs bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-400 rounded-lg transition">Allotment</button>
+                    <button onClick={() => window.open(`/api/admin/owners/${o._id}/letter?type=transfer`, "_blank")} className="flex-1 py-1.5 text-xs bg-cyan-600/20 hover:bg-cyan-600/40 text-cyan-400 rounded-lg transition">Transfer Letter</button>
                     {(o.transferHistory?.length ?? 0) > 0 && (
                       <button onClick={() => setHistoryOwner(o)} className="flex-1 py-1.5 text-xs bg-purple-600/20 hover:bg-purple-600/40 text-purple-400 rounded-lg transition">History</button>
                     )}
@@ -466,6 +510,22 @@ export default function OwnersPage() {
                             <button onClick={() => openPayments(o)} className="px-2.5 py-1 text-xs bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-400 rounded-lg transition">Payments</button>
                             <button onClick={() => openSchedule(o)} className="px-2.5 py-1 text-xs bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-400 rounded-lg transition">Schedule</button>
                             <button onClick={() => openTransfer(o)} className="px-2.5 py-1 text-xs bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 rounded-lg transition">Transfer</button>
+                            <label className="px-2.5 py-1 text-xs bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-400 rounded-lg transition cursor-pointer">
+                              {photoUploadingId === o._id ? "Uploading..." : "Photo"}
+                              <input
+                                type="file"
+                                accept="image/jpeg,image/png,image/webp"
+                                className="hidden"
+                                disabled={photoUploadingId === o._id}
+                                onChange={(e) => {
+                                  const file = e.target.files?.[0];
+                                  if (file) void handlePhotoUpload(o._id, file);
+                                  e.currentTarget.value = "";
+                                }}
+                              />
+                            </label>
+                            <button onClick={() => window.open(`/api/admin/owners/${o._id}/letter?type=allotment`, "_blank")} className="px-2.5 py-1 text-xs bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-400 rounded-lg transition">Allotment</button>
+                            <button onClick={() => window.open(`/api/admin/owners/${o._id}/letter?type=transfer`, "_blank")} className="px-2.5 py-1 text-xs bg-cyan-600/20 hover:bg-cyan-600/40 text-cyan-400 rounded-lg transition">Transfer Letter</button>
                             {(o.transferHistory?.length ?? 0) > 0 && (
                               <button onClick={() => setHistoryOwner(o)} className="px-2.5 py-1 text-xs bg-purple-600/20 hover:bg-purple-600/40 text-purple-400 rounded-lg transition">History</button>
                             )}
@@ -498,6 +558,7 @@ export default function OwnersPage() {
                 { label: "Owner Name *", key: "ownerName", placeholder: "Full name" },
                 { label: "CNIC *", key: "cnic", placeholder: "e.g. 37302-1234567-1" },
                 { label: "Phone", key: "phone", placeholder: "e.g. 0300-1234567" },
+                { label: "Resident Of", key: "residentOf", placeholder: "e.g. Islamabad" },
               ].map(({ label, key, placeholder }) => (
                 <div key={key}>
                   <label className="block text-xs font-semibold text-zinc-400 mb-1.5">{label}</label>
@@ -635,6 +696,7 @@ export default function OwnersPage() {
                 { label: "New Owner Name *", key: "ownerName", placeholder: "Full name" },
                 { label: "New CNIC *", key: "cnic", placeholder: "e.g. 37302-1234567-1" },
                 { label: "New Phone", key: "phone", placeholder: "e.g. 0300-1234567" },
+                { label: "Resident Of", key: "residentOf", placeholder: "e.g. Islamabad" },
               ].map(({ label, key, placeholder }) => (
                 <div key={key}>
                   <label className="block text-xs font-semibold text-zinc-400 mb-1.5">{label}</label>
