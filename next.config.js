@@ -3,6 +3,12 @@ const nextConfig = {
   images: {
     remotePatterns: [],
   },
+  async rewrites() {
+    return [
+      { source: "/plazapro", destination: "/plazapro-brochure.html" },
+      { source: "/plazapro/", destination: "/plazapro-brochure.html" },
+    ];
+  },
   async headers() {
     return [
       {
