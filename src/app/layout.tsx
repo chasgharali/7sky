@@ -9,9 +9,9 @@ const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://7sky.com";
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   icons: {
-    icon: "/ONE%20CAPITAL%20NEW%20BLACK%20FONT.png",
-    shortcut: "/ONE%20CAPITAL%20NEW%20BLACK%20FONT.png",
-    apple: "/ONE%20CAPITAL%20NEW%20BLACK%20FONT.png",
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
   },
   title: {
     default:
