@@ -150,7 +150,7 @@ export default function AdminPaymentPlanPage() {
   const rows = currentPlan.rows;
 
   return (
-    <div className="space-y-6">
+    <div className="admin-page space-y-6">
       {/* Toast */}
       {toast && (
         <div className={`fixed top-5 right-5 z-50 px-5 py-3 rounded-xl text-sm font-semibold shadow-xl ${

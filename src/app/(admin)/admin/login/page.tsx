@@ -36,7 +36,7 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-4">
+    <div className="admin-page min-h-screen bg-[#0a0a0a] flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Image
@@ -58,7 +58,7 @@ export default function AdminLoginPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 bg-black/40 border border-white/20 rounded-lg text-white"
+              className="w-full px-4 py-2 bg-zinc-800 border border-white/20 rounded-lg text-white"
               required
             />
           </div>
@@ -68,7 +68,7 @@ export default function AdminLoginPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 bg-black/40 border border-white/20 rounded-lg text-white"
+              className="w-full px-4 py-2 bg-zinc-800 border border-white/20 rounded-lg text-white"
               required
             />
           </div>

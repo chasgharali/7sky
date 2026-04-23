@@ -238,6 +238,139 @@ body {
 ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #c9a227; }
 
+/* ─── Admin Theme (scoped) ───────────────────── */
+.admin-theme-root {
+  --admin-bg: #f3f4f6;
+  --admin-surface: #ffffff;
+  --admin-surface-soft: #f1f5f9;
+  --admin-border: rgba(15, 23, 42, 0.12);
+  --admin-border-strong: rgba(15, 23, 42, 0.18);
+  --admin-text: #0f172a;
+  /* Darker muted tones for readable secondary copy on white cards */
+  --admin-text-muted: #334155;
+  --admin-text-soft: #475569;
+  --admin-hover: rgba(15, 23, 42, 0.06);
+}
+
+.admin-theme-root[data-admin-theme="dark"] {
+  --admin-bg: #09090b;
+  --admin-surface: #18181b;
+  --admin-surface-soft: #27272a;
+  --admin-border: rgba(255, 255, 255, 0.08);
+  --admin-border-strong: rgba(255, 255, 255, 0.12);
+  --admin-text: #f4f4f5;
+  --admin-text-muted: #a1a1aa;
+  --admin-text-soft: #71717a;
+  --admin-hover: rgba(255, 255, 255, 0.05);
+}
+
+.admin-theme-root[class],
+.admin-theme-root .admin-page {
+  color: var(--admin-text);
+}
+
+.admin-theme-root [class*="bg-zinc-950"],
+.admin-theme-root [class*="bg-\\[\\#0a0a0a\\]"] {
+  background-color: var(--admin-bg) !important;
+}
+
+.admin-theme-root [class*="bg-zinc-900"],
+.admin-theme-root [class*="bg-\\[\\#111\\]"] {
+  background-color: var(--admin-surface) !important;
+}
+
+.admin-theme-root [class*="bg-zinc-800"] {
+  background-color: var(--admin-surface-soft) !important;
+}
+
+.admin-theme-root [class*="border-white"] {
+  border-color: var(--admin-border) !important;
+}
+
+.admin-theme-root [class*="hover:bg-white"] {
+  background-color: transparent;
+}
+
+.admin-theme-root [class*="hover:bg-white"]:hover {
+  background-color: var(--admin-hover) !important;
+}
+
+.admin-theme-root [class*="text-zinc-500"],
+.admin-theme-root [class*="text-zinc-600"],
+.admin-theme-root [class*="text-gray-500"],
+.admin-theme-root [class*="text-gray-400"] {
+  color: var(--admin-text-soft) !important;
+}
+
+.admin-theme-root [class*="text-zinc-400"],
+.admin-theme-root [class*="text-zinc-300"],
+.admin-theme-root [class*="text-zinc-200"] {
+  color: var(--admin-text-muted) !important;
+}
+
+/* Map “white” headings/body to admin text. Exclude solid CTAs by skipping opacity utilities (e.g. bg-blue-600/15). */
+.admin-theme-root [class*="text-white"]:not([class*="bg-blue-600/"]):not([class*="bg-red-600/"]):not([class*="bg-emerald-600/"]):not([class*="bg-amber-600/"]):not([class*="bg-purple-600/"]):not([class*="bg-cyan-600/"]) {
+  color: var(--admin-text) !important;
+}
+
+/* Solid coloured buttons: keep white label text in light mode */
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-blue-600"]:not([class*="bg-blue-600/"]),
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-emerald-600"]:not([class*="bg-emerald-600/"]),
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-purple-600"]:not([class*="bg-purple-600/"]),
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-red-600"]:not([class*="bg-red-600/"]),
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-amber-600"]:not([class*="bg-amber-600/"]),
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-zinc-700"]:not([class*="bg-zinc-700/"]),
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-zinc-800"]:not([class*="bg-zinc-800/"]),
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-red-500"]:not([class*="bg-red-500/"]),
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-amber-500"]:not([class*="bg-amber-500/"]) {
+  color: #ffffff !important;
+}
+
+/* Muted labels that use white at low opacity: readable on light surfaces */
+.admin-theme-root[data-admin-theme="light"] [class*="text-white/50"] {
+  color: #64748b !important;
+}
+
+.admin-theme-root[data-admin-theme="light"] .admin-page [class*="text-blue-400"] {
+  color: #1d4ed8 !important;
+}
+
+.admin-theme-root[data-admin-theme="light"] .admin-page [class*="text-emerald-400"] {
+  color: #047857 !important;
+}
+
+.admin-theme-root[data-admin-theme="light"] .admin-page [class*="text-amber-400"] {
+  color: #b45309 !important;
+}
+
+.admin-theme-root[data-admin-theme="light"] .admin-page [class*="text-red-400"] {
+  color: #dc2626 !important;
+}
+
+.admin-theme-root[data-admin-theme="light"] .admin-page [class*="text-purple-400"] {
+  color: #7c3aed !important;
+}
+
+.admin-theme-root[data-admin-theme="light"] .admin-page [class*="text-cyan-400"] {
+  color: #0e7490 !important;
+}
+
+.admin-theme-root .admin-counter-badge {
+  color: #ffffff !important;
+}
+
+.admin-theme-root[data-admin-theme="light"] .admin-page [class*="group-hover:text-blue-300"] {
+  color: #1d4ed8 !important;
+}
+
+.admin-theme-root[data-admin-theme="dark"] .admin-page [class*="group-hover:text-blue-300"] {
+  color: #93c5fd !important;
+}
+
+.admin-theme-root [class*="ring-blue-600"] {
+  --tw-ring-color: rgba(37, 99, 235, 0.55) !important;
+}
+
 @layer utilities {
   .text-balance { text-wrap: balance; }
 }

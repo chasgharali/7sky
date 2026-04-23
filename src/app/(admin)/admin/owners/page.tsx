@@ -310,7 +310,7 @@ export default function OwnersPage() {
   );
 
   return (
-    <div className="space-y-5">
+    <div className="admin-page space-y-5">
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>

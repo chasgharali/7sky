@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
   CartesianGrid, PieChart, Pie, Cell, Legend,
 } from "recharts";
+import { useAdminTheme } from "../admin-theme";
 
 interface DashboardData {
   totalUnits: number;
@@ -49,13 +50,13 @@ function formatPKR(n: number | undefined | null) {
   return `Rs. ${n.toLocaleString()}`;
 }
 
-function RadialProgress({ pct, size = 120 }: { pct: number; size?: number }) {
+function RadialProgress({ pct, size = 120, trackColor = "#27272a" }: { pct: number; size?: number; trackColor?: string }) {
   const r = (size - 16) / 2;
   const circ = 2 * Math.PI * r;
   const dash = (pct / 100) * circ;
   return (
     <svg width={size} height={size} className="-rotate-90">
-      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#27272a" strokeWidth={10} />
+      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={trackColor} strokeWidth={10} />
       <circle
         cx={size / 2} cy={size / 2} r={r} fill="none"
         stroke="url(#grad)" strokeWidth={10}
@@ -116,6 +117,20 @@ export default function DashboardPage() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [installments, setInstallments] = useState<{ overdue: InstallmentAlert[]; upcoming30Days: InstallmentAlert[] } | null>(null);
   const [loading, setLoading] = useState(true);
+  const adminTheme = useAdminTheme();
+  const chart = useMemo(() => {
+    const light = adminTheme === "light";
+    return {
+      grid: light ? "#e2e8f0" : "#27272a",
+      axis: light ? "#94a3b8" : "#52525b",
+      tick: light ? "#475569" : "#71717a",
+      tooltipBg: light ? "#ffffff" : "#18181b",
+      tooltipBorder: light ? "#e2e8f0" : "#27272a",
+      tooltipLabel: light ? "#64748b" : "#a1a1aa",
+      legend: light ? "#475569" : "#71717a",
+      radialTrack: light ? "#e2e8f0" : "#27272a",
+    };
+  }, [adminTheme]);
 
   useEffect(() => {
     Promise.all([
@@ -215,7 +230,7 @@ export default function DashboardPage() {
   const upcomingAlerts = installments?.upcoming30Days ?? [];
 
   return (
-    <div className="space-y-6">
+    <div className="admin-page space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -238,7 +253,7 @@ export default function DashboardPage() {
         {/* Booking progress ring */}
         <div className="bg-zinc-900 border border-white/[0.06] rounded-2xl p-5 flex items-center gap-5">
           <div className="relative shrink-0">
-            <RadialProgress pct={data.bookingPct} size={100} />
+            <RadialProgress pct={data.bookingPct} size={100} trackColor={chart.radialTrack} />
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center">
                 <p className="text-white font-black text-lg leading-none">{data.bookingPct}%</p>
@@ -317,13 +332,13 @@ export default function DashboardPage() {
             <div className="h-56">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={data.revenueByMonth} barSize={22}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
-                  <XAxis dataKey="_id" stroke="#52525b" tick={{ fill: "#71717a", fontSize: 11 }} axisLine={false} tickLine={false} />
-                  <YAxis stroke="#52525b" tick={{ fill: "#71717a", fontSize: 11 }} axisLine={false} tickLine={false}
+                  <CartesianGrid strokeDasharray="3 3" stroke={chart.grid} vertical={false} />
+                  <XAxis dataKey="_id" stroke={chart.axis} tick={{ fill: chart.tick, fontSize: 11 }} axisLine={false} tickLine={false} />
+                  <YAxis stroke={chart.axis} tick={{ fill: chart.tick, fontSize: 11 }} axisLine={false} tickLine={false}
                     tickFormatter={(v) => v >= 1000000 ? `${(v / 1000000).toFixed(0)}M` : String(v)} />
                   <Tooltip
-                    contentStyle={{ backgroundColor: "#18181b", border: "1px solid #27272a", borderRadius: "12px" }}
-                    labelStyle={{ color: "#a1a1aa", fontSize: 11 }}
+                    contentStyle={{ backgroundColor: chart.tooltipBg, border: `1px solid ${chart.tooltipBorder}`, borderRadius: "12px" }}
+                    labelStyle={{ color: chart.tooltipLabel, fontSize: 11 }}
                     formatter={(value: number | undefined) => [formatPKR(value ?? 0), "Revenue"]}
                   />
                   <Bar dataKey="total" fill="#2563eb" radius={[6, 6, 0, 0]} />
@@ -350,10 +365,10 @@ export default function DashboardPage() {
                     ))}
                   </Pie>
                   <Tooltip
-                    contentStyle={{ backgroundColor: "#18181b", border: "1px solid #27272a", borderRadius: "12px" }}
+                    contentStyle={{ backgroundColor: chart.tooltipBg, border: `1px solid ${chart.tooltipBorder}`, borderRadius: "12px" }}
                     formatter={(value) => [`${value ?? 0} units`, ""]}
                   />
-                  <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: "11px", color: "#71717a", paddingTop: "8px" }} />
+                  <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: "11px", color: chart.legend, paddingTop: "8px" }} />
                 </PieChart>
               </ResponsiveContainer>
             </div>

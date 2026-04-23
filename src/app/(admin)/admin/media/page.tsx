@@ -77,7 +77,7 @@ export default function MediaPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="admin-page space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-white">Media</h1>
         <label className="px-4 py-2 bg-[#2563eb] hover:bg-[#3b82f6] text-white text-sm font-medium rounded-lg cursor-pointer">

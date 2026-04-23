@@ -21,6 +21,7 @@ function buildLetterHtml(params: {
   qrDataUrl: string;
   photoUrl?: string;
   logoUrl: string;
+  watermarkUrl: string;
 }) {
   const letterTitle = "Provisional Allotment Letter";
   return `<!DOCTYPE html>
@@ -54,16 +55,27 @@ function buildLetterHtml(params: {
     }
     .topContent { }
     .logo { text-align:center; margin-bottom:6px; line-height:1.1; }
-    .logo img { width:96px; height:auto; object-fit:contain; }
+    .logo img { width:140px; height:auto; object-fit:contain; }
     .metaRow { display:grid; grid-template-columns:1fr 1px 1fr; background:#f1f4fa; margin-top:4px; }
     .metaCell { padding:8px 12px; font-size:13px; font-weight:700; color:#9c7a27; }
     .metaCell span { color:#111; font-weight:600; }
     .metaDivider { background:#8f8f8f; }
-    .lineField { display:inline-block; min-width:138px; border-bottom:1px solid #808080; line-height:1; transform:translateY(-2px); margin-left:3px; }
-    .title { text-align:center; font-size:49px; font-family: "Brush Script MT", "Lucida Handwriting", cursive; margin:6px 0 10px; color:#10243f; text-decoration:underline; font-weight:600; }
+    .lineField {
+      display:inline-flex;
+      min-width:90px;
+      border-bottom:1px solid #808080;
+      line-height:1;
+      transform:translateY(-2px);
+      margin-left:2px;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      vertical-align:middle;
+    }
+    .title { text-align:center; font-size:40px; font-family: "Brush Script MT", "Lucida Handwriting", cursive; margin:18px 0 10px; color:#10243f; text-decoration:underline; font-weight:600; }
     .row { display:flex; gap:10px; }
     .panel { border:2px solid #2d2d2d; flex:1; background:#fff; }
-    .panel h3 { margin:0; padding:7px 10px; background:#dbe7f4; font-size:36px; line-height:1.1; letter-spacing:0.2px; }
+    .panel h3 { margin:0; padding:7px 10px; background:#fadfb1; font-size:22px; line-height:1.1; letter-spacing:0.2px; }
     .grid { display:grid; grid-template-columns:220px 1fr; border-top:1px solid #b5a15f; }
     .cell { padding:8px 10px; border-bottom:1px solid #b5a15f; border-right:1px solid #b5a15f; font-size:17px; min-height:34px; }
     .cell:last-child { border-right:none; }
@@ -71,14 +83,27 @@ function buildLetterHtml(params: {
     .photoBox { width:188px; border:2px solid #2d2d2d; display:flex; align-items:center; justify-content:center; background:#eef4fc; overflow:hidden; height:196px; }
     .photoBox img { width:100%; height:100%; object-fit:cover; object-position:center; }
     .unitPanel { border:2px solid #2d2d2d; margin-top:14px; }
-    .unitPanel h3 { margin:0; padding:7px 10px; background:#dbe7f4; font-size:36px; line-height:1.1; letter-spacing:0.2px; }
+    .unitPanel h3 { margin:0; padding:7px 10px; background:#fadfb1; font-size:22px; line-height:1.1; letter-spacing:0.2px; }
     .unitGrid { display:grid; grid-template-columns:repeat(4, 1fr); border-top:1px solid #b7a26a; }
     .unitCell { padding:9px 10px; border-right:1px solid #b7a26a; min-height:76px; }
     .unitCell:last-child { border-right:none; }
     .unitCell .k { font-size:14px; font-weight:700; }
     .unitCell .v { font-size:14px; margin-top:12px; }
     .unitCell .line { display:inline-block; width:100px; border-bottom:1px solid #7f7f7f; transform:translateY(-2px); }
-    .watermark { text-align:center; font-size:145px; color:#eaf1fb; font-weight:700; line-height:0.9; margin-top:8px; user-select:none; }
+    .watermark {
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      margin-top:20px;
+      user-select:none;
+      opacity:0.14;
+    }
+    .watermark img {
+      width:auto;
+      /* max-width: 92%; */
+      height:215px;
+      object-fit:cover;
+    }
     .bottomSection { margin-top:auto; }
     .footRow { display:flex; justify-content:space-between; align-items:flex-end; margin-top:8px; }
     .signature { width:300px; border-top:1px solid #999; padding-top:8px; font-size:14px; }
@@ -130,7 +155,9 @@ function buildLetterHtml(params: {
       </div>
     </div>
 
-    <div class="watermark">7sky</div>
+    <div class="watermark">
+      <img src="${params.watermarkUrl}" alt="7Sky watermark" />
+    </div>
     </div>
 
     <div class="bottomSection">
@@ -189,6 +216,7 @@ export async function GET(
     const latestTransfer = owner.transferHistory?.[owner.transferHistory.length - 1];
 
     const logoUrl = `${appBaseUrl}/ONE%20CAPITAL%20NEW%20BLACK%20FONT.png`;
+    const watermarkUrl = `${appBaseUrl}/7Sky%20300%20DPI.png`;
 
     const html = buildLetterHtml({
       ownerName: owner.ownerName,
@@ -208,6 +236,7 @@ export async function GET(
       qrDataUrl,
       photoUrl: owner.photoUrl || "",
       logoUrl,
+      watermarkUrl,
     });
 
     return new NextResponse(html, {
