@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useAdminTheme } from "../admin-theme";
 
 const FLOOR_META = [
   { id: "LGF", label: "Lower Ground Floor", short: "LGF" },
@@ -40,6 +41,8 @@ function fmt(n: number) {
 }
 
 export default function AdminPaymentPlanPage() {
+  const theme = useAdminTheme();
+  const isLight = theme === "light";
   const [plans, setPlans] = useState<FloorPlan[]>([]);
   const [activeFloor, setActiveFloor] = useState("LGF");
   const [loading, setLoading] = useState(true);
@@ -150,7 +153,7 @@ export default function AdminPaymentPlanPage() {
   const rows = currentPlan.rows;
 
   return (
-    <div className="admin-page space-y-6">
+    <div className="admin-page admin-payment-plan-page space-y-6">
       {/* Toast */}
       {toast && (
         <div className={`fixed top-5 right-5 z-50 px-5 py-3 rounded-xl text-sm font-semibold shadow-xl ${
@@ -170,7 +173,11 @@ export default function AdminPaymentPlanPage() {
           <button
             onClick={seedAll}
             disabled={seeding}
-            className="px-4 py-2 text-sm font-semibold text-[#c9a227] border border-[#c9a227]/40 rounded-lg hover:bg-[#c9a227]/10 transition disabled:opacity-50"
+            className={`px-4 py-2 text-sm font-semibold border rounded-lg transition disabled:opacity-50 ${
+              isLight
+                ? "text-white bg-amber-600 hover:bg-amber-500 border-amber-600"
+                : "text-[#c9a227] border-[#c9a227]/40 hover:bg-[#c9a227]/10"
+            }`}
           >
             {seeding ? "Seeding…" : "Reset to Defaults"}
           </button>
@@ -196,7 +203,9 @@ export default function AdminPaymentPlanPage() {
               className={`flex flex-col items-center px-5 py-3 rounded-xl text-xs font-medium whitespace-nowrap transition ${
                 active
                   ? "bg-[#2563eb] text-white shadow-lg shadow-blue-900/40"
-                  : "bg-[#111] text-gray-400 border border-white/10 hover:text-white hover:bg-white/5"
+                  : isLight
+                    ? "bg-white text-slate-600 border border-slate-200 hover:text-slate-900 hover:bg-slate-50"
+                    : "bg-[#111] text-gray-400 border border-white/10 hover:text-white hover:bg-white/5"
               }`}
             >
               <span className="font-black">{f.short}</span>
@@ -207,11 +216,15 @@ export default function AdminPaymentPlanPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-[#111] rounded-2xl border border-white/10 overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
+      <div className={`admin-payment-plan-table rounded-2xl border overflow-hidden ${
+        isLight ? "bg-white border-slate-200" : "bg-[#111] border-white/10"
+      }`}>
+        <div className={`flex items-center justify-between px-5 py-4 border-b ${
+          isLight ? "border-slate-200" : "border-white/10"
+        }`}>
           <div>
-            <h2 className="font-semibold text-white">{currentPlan.label}</h2>
-            <p className="text-xs text-gray-500 mt-0.5">{rows.length} rows — click any cell to edit</p>
+            <h2 className={`font-semibold ${isLight ? "text-slate-900" : "text-white"}`}>{currentPlan.label}</h2>
+            <p className={`text-xs mt-0.5 ${isLight ? "text-slate-500" : "text-gray-500"}`}>{rows.length} rows — click any cell to edit</p>
           </div>
           <button
             onClick={addRow}
@@ -244,18 +257,24 @@ export default function AdminPaymentPlanPage() {
                     <td colSpan={10} className="text-center py-10 text-gray-600">No rows yet — click &ldquo;Add Row&rdquo; to start</td>
                   </tr>
                 ) : rows.map((row, ri) => (
-                  <tr key={ri} className={`border-b border-white/5 ${ri % 2 === 0 ? "bg-[#0d0d0d]" : "bg-[#111]"}`}>
+                  <tr key={ri} className={`border-b ${isLight ? "border-slate-200" : "border-white/5"} ${
+                    ri % 2 === 0
+                      ? (isLight ? "bg-white" : "bg-[#0d0d0d]")
+                      : (isLight ? "bg-slate-50" : "bg-[#111]")
+                  }`}>
                     {(["shopNo", "dimensions", "totalArea", "pricePerSqFt", "unitPrice", "downpayment", "remaining", "quarterlyInstalment", "onPossession"] as (keyof PlanRow)[]).map((field) => (
-                      <td key={field} className="px-1 py-1 border-r border-white/5">
+                      <td key={field} className={`px-1 py-1 border-r ${isLight ? "border-slate-200" : "border-white/5"}`}>
                         <input
                           type="text"
                           value={["totalArea","pricePerSqFt","unitPrice","downpayment","remaining","quarterlyInstalment","onPossession"].includes(field)
                             ? fmt(row[field] as number)
                             : (row[field] as string)}
                           onChange={(e) => updateRow(ri, field, e.target.value)}
-                          className={`w-full bg-transparent px-2 py-1.5 text-xs rounded focus:outline-none focus:ring-1 focus:ring-[#2563eb] focus:bg-white/5 transition ${
-                            field === "unitPrice" ? "text-[#c9a227] font-bold" : "text-gray-300"
-                          } ${field === "shopNo" ? "text-white font-semibold" : ""}`}
+                          className={`w-full bg-transparent px-2 py-1.5 text-xs rounded focus:outline-none focus:ring-1 focus:ring-[#2563eb] transition ${
+                            isLight ? "focus:bg-slate-100" : "focus:bg-white/5"
+                          } ${
+                            field === "unitPrice" ? (isLight ? "text-amber-700 font-bold" : "text-[#c9a227] font-bold") : (isLight ? "text-slate-700" : "text-gray-300")
+                          } ${field === "shopNo" ? (isLight ? "text-slate-900 font-semibold" : "text-white font-semibold") : ""}`}
                         />
                       </td>
                     ))}
@@ -277,8 +296,10 @@ export default function AdminPaymentPlanPage() {
           </div>
         )}
 
-        <div className="px-5 py-3 border-t border-white/10 flex items-center justify-between">
-          <span className="text-xs text-gray-600">All prices in PKR · Changes are not saved until you click Save</span>
+        <div className={`px-5 py-3 border-t flex items-center justify-between ${
+          isLight ? "border-slate-200" : "border-white/10"
+        }`}>
+          <span className={`text-xs ${isLight ? "text-slate-500" : "text-gray-600"}`}>All prices in PKR · Changes are not saved until you click Save</span>
           <button
             onClick={saveFloor}
             disabled={saving}

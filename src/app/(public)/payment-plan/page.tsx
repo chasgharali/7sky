@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { PaymentPlanTabs } from "./PaymentPlanTabs";
 import dbConnect from "@/lib/db/connection";
 import { PaymentPlan } from "@/lib/db/models";
+import { unstable_noStore as noStore } from "next/cache";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Payment Plan – Shop & Office for Sale on Installment in G-14 Islamabad",
@@ -59,11 +62,32 @@ const FALLBACK_PLANS: FloorPlan[] = [
 
 async function getPaymentPlans(): Promise<FloorPlan[]> {
   try {
+    noStore();
     await dbConnect();
     const plans = await PaymentPlan.find().sort({ floor: 1 }).lean();
-    return Array.isArray(plans) && plans.length > 0
-      ? (plans as unknown as FloorPlan[])
-      : FALLBACK_PLANS;
+    if (!Array.isArray(plans) || plans.length === 0) {
+      return FALLBACK_PLANS;
+    }
+
+    // Convert mongoose documents/lean objects into plain JSON-safe objects
+    // before passing to a Client Component.
+    return plans.map((plan) => ({
+      floor: String(plan.floor ?? ""),
+      label: String(plan.label ?? ""),
+      rows: Array.isArray(plan.rows)
+        ? plan.rows.map((row) => ({
+            shopNo: String(row.shopNo ?? ""),
+            dimensions: String(row.dimensions ?? ""),
+            totalArea: Number(row.totalArea ?? 0),
+            pricePerSqFt: Number(row.pricePerSqFt ?? 0),
+            unitPrice: Number(row.unitPrice ?? 0),
+            downpayment: Number(row.downpayment ?? 0),
+            remaining: Number(row.remaining ?? 0),
+            quarterlyInstalment: Number(row.quarterlyInstalment ?? 0),
+            onPossession: Number(row.onPossession ?? 0),
+          }))
+        : [],
+    }));
   } catch {
     return FALLBACK_PLANS;
   }

@@ -17,7 +17,6 @@ function buildLetterHtml(params: {
   netArea: string;
   type: "allotment" | "transfer";
   transferDate?: string;
-  verifyUrl: string;
   qrDataUrl: string;
   photoUrl?: string;
   logoUrl: string;
@@ -175,7 +174,6 @@ function buildLetterHtml(params: {
 
     <div class="note">
       <strong>Note:</strong> This allotment is subject to the terms and conditions of One Capital Builders. The allottee is required to comply with all payment schedules and construction regulations of 7Sky Commercial Plaza, G-14 Markaz, Islamabad.
-      <div class="verify">Verification URL: ${params.verifyUrl}</div>
     </div>
     <div class="site">
       7Sky Plot 19-A G-14 Markaz Islamabad<br/>
@@ -232,7 +230,6 @@ export async function GET(
       transferDate: latestTransfer?.transferredAt
         ? new Date(latestTransfer.transferredAt).toISOString().split("T")[0]
         : undefined,
-      verifyUrl,
       qrDataUrl,
       photoUrl: owner.photoUrl || "",
       logoUrl,

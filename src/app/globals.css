@@ -559,21 +559,28 @@ body:has(.public-theme-root[data-public-theme="light"]) {
   color: var(--admin-text-muted) !important;
 }
 
-/* Map “white” headings/body to admin text. Exclude solid CTAs by skipping opacity utilities (e.g. bg-blue-600/15). */
-.admin-theme-root [class*="text-white"]:not([class*="bg-blue-600/"]):not([class*="bg-red-600/"]):not([class*="bg-emerald-600/"]):not([class*="bg-amber-600/"]):not([class*="bg-purple-600/"]):not([class*="bg-cyan-600/"]) {
+/* Map “white” headings/body to admin text in light mode only (dark mode keeps natural text-white). */
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"] {
   color: var(--admin-text) !important;
 }
 
-/* Solid coloured buttons: keep white label text in light mode */
-.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-blue-600"]:not([class*="bg-blue-600/"]),
-.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-emerald-600"]:not([class*="bg-emerald-600/"]),
-.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-purple-600"]:not([class*="bg-purple-600/"]),
-.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-red-600"]:not([class*="bg-red-600/"]),
-.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-amber-600"]:not([class*="bg-amber-600/"]),
-.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-zinc-700"]:not([class*="bg-zinc-700/"]),
-.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-zinc-800"]:not([class*="bg-zinc-800/"]),
-.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-red-500"]:not([class*="bg-red-500/"]),
-.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-amber-500"]:not([class*="bg-amber-500/"]) {
+/* Solid coloured buttons, badges, and highlighted cells: keep white text in light mode */
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-blue-600"],
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-emerald-600"],
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-purple-600"],
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-red-600"],
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-amber-600"],
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-zinc-700"],
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-zinc-800"],
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-red-500"],
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-amber-500"],
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-\\[\\#2563eb\\]"],
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-\\[\\#3b82f6\\]"],
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-\\[\\#0f4c5c\\]"],
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-blue-500"],
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-sky-500"],
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-indigo-600"],
+.admin-theme-root[data-admin-theme="light"] [class*="text-white"][class*="bg-indigo-500"] {
   color: #ffffff !important;
 }
 
@@ -606,7 +613,21 @@ body:has(.public-theme-root[data-public-theme="light"]) {
   color: #0e7490 !important;
 }
 
+
 .admin-theme-root .admin-counter-badge {
+  color: #ffffff !important;
+}
+
+.admin-theme-root[data-admin-theme="light"] .admin-counter-badge {
+  color: #ffffff !important;
+}
+
+.admin-theme-root[data-admin-theme="light"] .admin-page .admin-counter-badge,
+.admin-theme-root[data-admin-theme="light"] .admin-page .admin-counter-badge * {
+  color: #ffffff !important;
+}
+
+.admin-theme-root[data-admin-theme="light"] .admin-page table thead th {
   color: #ffffff !important;
 }
 
@@ -616,6 +637,39 @@ body:has(.public-theme-root[data-public-theme="light"]) {
 
 .admin-theme-root[data-admin-theme="dark"] .admin-page [class*="group-hover:text-blue-300"] {
   color: #93c5fd !important;
+}
+
+/* Admin payment plan table should follow light theme surface colors */
+.admin-theme-root[data-admin-theme="light"] .admin-payment-plan-table {
+  background-color: var(--admin-surface) !important;
+}
+
+.admin-theme-root[data-admin-theme="light"] .admin-payment-plan-table tbody tr:nth-child(odd) {
+  background-color: #ffffff !important;
+}
+
+.admin-theme-root[data-admin-theme="light"] .admin-payment-plan-table tbody tr:nth-child(even) {
+  background-color: var(--admin-surface-soft) !important;
+}
+
+.admin-theme-root[data-admin-theme="light"] .admin-payment-plan-table input {
+  color: var(--admin-text) !important;
+}
+
+.admin-theme-root[data-admin-theme="light"] .admin-payment-plan-table input[class*="text-\\[\\#c9a227\\]"] {
+  color: #5c4d0f !important;
+}
+
+.admin-theme-root[data-admin-theme="light"] .admin-payment-plan-table thead th {
+  color: #ffffff !important;
+}
+
+.admin-theme-root[data-admin-theme="light"] .admin-payment-plan-page button[class*="bg-\\[\\#2563eb\\]"],
+.admin-theme-root[data-admin-theme="light"] .admin-payment-plan-page button[class*="bg-\\[\\#3b82f6\\]"],
+.admin-theme-root[data-admin-theme="light"] .admin-payment-plan-page button[class*="bg-emerald-600"],
+.admin-theme-root[data-admin-theme="light"] .admin-payment-plan-page button[class*="bg-amber-600"],
+.admin-theme-root[data-admin-theme="light"] .admin-payment-plan-page button[class*="bg-amber-500"] {
+  color: #ffffff !important;
 }
 
 .admin-theme-root [class*="ring-blue-600"] {
