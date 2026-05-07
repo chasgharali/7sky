@@ -13,6 +13,16 @@ const FLOOR_META = [
   { id: "5",   label: "5th Floor",           short: "5F" },
 ];
 
+const FLOOR_IMAGE_FALLBACK: Record<string, string> = {
+  LGF: "/media/floor-plans/lgf.png",
+  GF: "/media/floor-plans/gf.png",
+  "1": "/media/floor-plans/1f.png",
+  "2": "/media/floor-plans/2f-3f.png",
+  "3": "/media/floor-plans/3f.png",
+  "4": "/media/floor-plans/4f.png",
+  "5": "/media/floor-plans/5f.png",
+};
+
 interface PlanRow {
   shopNo: string;
   dimensions: string;
@@ -30,6 +40,8 @@ interface FloorPlan {
   floor: string;
   label: string;
   rows: PlanRow[];
+  floorImageUrl?: string;
+  floorImagePublicId?: string;
 }
 
 function emptyRow(): PlanRow {
@@ -48,6 +60,8 @@ export default function AdminPaymentPlanPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [seeding, setSeeding] = useState(false);
+  const [imageUploading, setImageUploading] = useState(false);
+  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
   const [toast, setToast] = useState<{ msg: string; type: "success" | "error" } | null>(null);
 
   const showToast = (msg: string, type: "success" | "error" = "success") => {
@@ -151,6 +165,39 @@ export default function AdminPaymentPlanPage() {
   };
 
   const rows = currentPlan.rows;
+  const currentFloorImage = currentPlan.floorImageUrl || FLOOR_IMAGE_FALLBACK[activeFloor];
+
+  const replaceFloorImage = async () => {
+    if (!selectedImageFile) {
+      showToast("Please select an image first", "error");
+      return;
+    }
+
+    setImageUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", selectedImageFile);
+
+      const res = await fetch(`/api/admin/payment-plan/${activeFloor}/image`, {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      });
+
+      if (res.ok) {
+        showToast(`${currentPlan.label} image updated`);
+        setSelectedImageFile(null);
+        fetchPlans();
+      } else {
+        const data = await res.json().catch(() => null);
+        showToast(data?.error || "Failed to upload floor image", "error");
+      }
+    } catch {
+      showToast("Failed to upload floor image", "error");
+    } finally {
+      setImageUploading(false);
+    }
+  };
 
   return (
     <div className="admin-page admin-payment-plan-page space-y-6">
@@ -213,6 +260,47 @@ export default function AdminPaymentPlanPage() {
             </button>
           );
         })}
+      </div>
+
+      <div className={`rounded-2xl border p-5 ${isLight ? "bg-white border-slate-200" : "bg-[#111] border-white/10"}`}>
+        <div className="flex flex-col lg:flex-row gap-5">
+          <div className="w-full lg:w-72">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={currentFloorImage}
+              alt={`${currentPlan.label} floor image`}
+              className={`w-full h-44 object-cover rounded-xl border ${isLight ? "border-slate-200" : "border-white/10"}`}
+            />
+            <p className={`text-xs mt-2 ${isLight ? "text-slate-500" : "text-gray-500"}`}>
+              {currentPlan.floorImageUrl ? "Source: Cloudinary" : "Source: local fallback"}
+            </p>
+          </div>
+          <div className="flex-1 space-y-3">
+            <h3 className={`text-sm font-semibold ${isLight ? "text-slate-900" : "text-white"}`}>
+              Replace {currentPlan.label} Image
+            </h3>
+            <input
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              onChange={(e) => setSelectedImageFile(e.target.files?.[0] ?? null)}
+              className={`w-full text-sm file:mr-3 file:px-3 file:py-1.5 file:rounded-lg file:border-0 file:font-semibold file:cursor-pointer ${
+                isLight
+                  ? "text-slate-600 file:bg-slate-200 file:text-slate-900"
+                  : "text-gray-300 file:bg-white/10 file:text-white"
+              }`}
+            />
+            <p className={`text-xs ${isLight ? "text-slate-500" : "text-gray-500"}`}>
+              PNG, JPG, or WEBP up to 10MB.
+            </p>
+            <button
+              onClick={replaceFloorImage}
+              disabled={imageUploading || !selectedImageFile}
+              className="px-4 py-2 text-sm font-semibold text-white bg-[#2563eb] hover:bg-[#3b82f6] rounded-lg transition disabled:opacity-50"
+            >
+              {imageUploading ? "Uploading…" : "Replace Floor Image"}
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Table */}

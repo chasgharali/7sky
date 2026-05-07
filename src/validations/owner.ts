@@ -2,10 +2,10 @@ import { z } from "zod";
 
 export const ownerSchema = z.object({
   registrationNumber: z.string().min(1).max(50).optional(),
-  ownerName: z.string().min(1).max(100),
-  cnic: z.string().min(1).max(20),
-  phone: z.string().max(20).optional(),
-  residentOf: z.string().max(200).optional(),
+  ownerName: z.string().min(1),
+  cnic: z.string().min(1),
+  phone: z.string().optional(),
+  residentOf: z.string().optional(),
   photoUrl: z.string().url().optional(),
   photoPublicId: z.string().min(1).optional(),
   verificationToken: z.string().min(10).optional(),

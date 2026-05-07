@@ -113,7 +113,19 @@ export async function PUT(request: NextRequest) {
   if (!auth.success) return auth.response;
 
   const body = await request.json();
-  const { floor, label, rows } = body;
+  const {
+    floor,
+    label,
+    rows,
+    floorImageUrl,
+    floorImagePublicId,
+  }: {
+    floor?: string;
+    label?: string;
+    rows?: unknown[];
+    floorImageUrl?: string;
+    floorImagePublicId?: string;
+  } = body;
 
   if (!floor || !Array.isArray(rows)) {
     return NextResponse.json({ error: "floor and rows required" }, { status: 400 });
@@ -121,11 +133,25 @@ export async function PUT(request: NextRequest) {
 
   await dbConnect();
 
-  const updated = await PaymentPlan.findOneAndUpdate(
-    { floor },
-    { floor, label: label || floor, rows },
-    { upsert: true, new: true }
-  );
+  const updateDoc: {
+    floor: string;
+    label: string;
+    rows: unknown[];
+    floorImageUrl?: string;
+    floorImagePublicId?: string;
+  } = {
+    floor,
+    label: label || floor,
+    rows,
+  };
+
+  if (typeof floorImageUrl === "string") updateDoc.floorImageUrl = floorImageUrl;
+  if (typeof floorImagePublicId === "string") updateDoc.floorImagePublicId = floorImagePublicId;
+
+  const updated = await PaymentPlan.findOneAndUpdate({ floor }, updateDoc, {
+    upsert: true,
+    new: true,
+  });
 
   return NextResponse.json({ success: true, plan: updated });
 }

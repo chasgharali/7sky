@@ -1,6 +1,8 @@
 import { v2 as cloudinary } from "cloudinary";
 
 let configured = false;
+export const FLOOR_IDS = ["LGF", "GF", "1", "2", "3", "4", "5"] as const;
+export type FloorId = (typeof FLOOR_IDS)[number];
 
 function ensureCloudinaryConfigured() {
   if (configured) return;
@@ -39,6 +41,30 @@ export async function uploadOwnerPhoto(fileBuffer: Buffer, ownerId: string, mime
 }
 
 export async function deleteOwnerPhoto(publicId?: string) {
+  if (!publicId) return;
+  ensureCloudinaryConfigured();
+  await cloudinary.uploader.destroy(publicId, { resource_type: "image" });
+}
+
+export async function uploadFloorPlanImage(fileBuffer: Buffer, floor: FloorId, mimeType: string) {
+  ensureCloudinaryConfigured();
+  const base64 = fileBuffer.toString("base64");
+  const dataUri = `data:${mimeType};base64,${base64}`;
+
+  const uploaded = await cloudinary.uploader.upload(dataUri, {
+    folder: "7sky/floor-plans",
+    public_id: `floor-${floor}`,
+    resource_type: "image",
+    overwrite: true,
+  });
+
+  return {
+    secureUrl: uploaded.secure_url,
+    publicId: uploaded.public_id,
+  };
+}
+
+export async function deleteFloorPlanImage(publicId?: string) {
   if (!publicId) return;
   ensureCloudinaryConfigured();
   await cloudinary.uploader.destroy(publicId, { resource_type: "image" });

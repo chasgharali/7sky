@@ -3,14 +3,24 @@
 import { useState, useEffect, useRef } from "react";
 
 const FLOORS = [
-  { id: "LGF", label: "Lower Ground", short: "LGF", img: "/media/floor-plans/lgf.png" },
-  { id: "GF",  label: "Ground Floor", short: "GF",  img: "/media/floor-plans/gf.png" },
-  { id: "1",   label: "1st Floor",    short: "1F",  img: "/media/floor-plans/1f.png" },
-  { id: "2",   label: "2nd Floor",    short: "2F",  img: "/media/floor-plans/2f-3f.png" },
-  { id: "3",   label: "3rd Floor",    short: "3F",  img: "/media/floor-plans/3f.png" },
-  { id: "4",   label: "4th Floor",    short: "4F",  img: "/media/floor-plans/4f.png" },
-  { id: "5",   label: "5th Floor",    short: "5F",  img: "/media/floor-plans/5f.png" },
+  { id: "LGF", label: "Lower Ground", short: "LGF" },
+  { id: "GF",  label: "Ground Floor", short: "GF" },
+  { id: "1",   label: "1st Floor",    short: "1F" },
+  { id: "2",   label: "2nd Floor",    short: "2F" },
+  { id: "3",   label: "3rd Floor",    short: "3F" },
+  { id: "4",   label: "4th Floor",    short: "4F" },
+  { id: "5",   label: "5th Floor",    short: "5F" },
 ];
+
+const FLOOR_IMAGE_FALLBACK: Record<string, string> = {
+  LGF: "/media/floor-plans/lgf.png",
+  GF: "/media/floor-plans/gf.png",
+  "1": "/media/floor-plans/1f.png",
+  "2": "/media/floor-plans/2f-3f.png",
+  "3": "/media/floor-plans/3f.png",
+  "4": "/media/floor-plans/4f.png",
+  "5": "/media/floor-plans/5f.png",
+};
 
 // Scale multipliers against a 1100px base width
 const ZOOM_LEVELS = [0.6, 0.8, 1, 1.25, 1.5, 2];
@@ -24,6 +34,11 @@ interface Unit {
   size: number;
   price: number;
   status: "available" | "booked" | "reserved";
+}
+
+interface FloorPlanImage {
+  floor: string;
+  floorImageUrl?: string;
 }
 
 function UnitStatusBadge({ status }: { status: Unit["status"] }) {
@@ -42,6 +57,7 @@ function UnitStatusBadge({ status }: { status: Unit["status"] }) {
 export function InteractiveFloorPlan() {
   const [selectedFloor, setSelectedFloor] = useState("LGF");
   const [units, setUnits] = useState<Unit[]>([]);
+  const [floorImageById, setFloorImageById] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   // zoom index into ZOOM_LEVELS, or FIT_ZOOM for fit-to-width
   const [zoom, setZoom] = useState<number>(FIT_ZOOM);
@@ -56,6 +72,7 @@ export function InteractiveFloorPlan() {
   const dragState = useRef({ active: false, startX: 0, startY: 0, scrollL: 0, scrollT: 0 });
 
   const currentFloor = FLOORS.find((f) => f.id === selectedFloor)!;
+  const currentFloorImage = floorImageById[selectedFloor] || FLOOR_IMAGE_FALLBACK[selectedFloor];
   const floorUnits = units.filter((u) => u.floor === selectedFloor);
   const filteredUnits = filterStatus === "all"
     ? floorUnits
@@ -73,6 +90,23 @@ export function InteractiveFloorPlan() {
       .then((d) => setUnits(Array.isArray(d) ? d : []))
       .catch(() => setUnits([]))
       .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/payment-plan")
+      .then((r) => r.json())
+      .then((d) => {
+        if (!Array.isArray(d)) {
+          setFloorImageById({});
+          return;
+        }
+        const map = d.reduce<Record<string, string>>((acc, plan: FloorPlanImage) => {
+          if (plan.floorImageUrl) acc[plan.floor] = plan.floorImageUrl;
+          return acc;
+        }, {});
+        setFloorImageById(map);
+      })
+      .catch(() => setFloorImageById({}));
   }, []);
 
   const handleFloorChange = (id: string) => {
@@ -299,7 +333,7 @@ export function InteractiveFloorPlan() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 key={selectedFloor}
-                src={currentFloor.img}
+                src={currentFloorImage}
                 alt={`${currentFloor.label} – Floor Plan`}
                 style={{
                   display: "block",

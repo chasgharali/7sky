@@ -584,6 +584,20 @@ body:has(.public-theme-root[data-public-theme="light"]) {
   color: #ffffff !important;
 }
 
+/* Form controls often use bg-zinc-800 + text-white in admin pages.
+   In light theme bg-zinc-800 maps to a light surface, so force readable input text. */
+.admin-theme-root[data-admin-theme="light"] .admin-page input[class*="text-white"],
+.admin-theme-root[data-admin-theme="light"] .admin-page select[class*="text-white"],
+.admin-theme-root[data-admin-theme="light"] .admin-page textarea[class*="text-white"] {
+  color: var(--admin-text) !important;
+}
+
+.admin-theme-root[data-admin-theme="light"] .admin-page input[class*="placeholder-zinc-600"]::placeholder,
+.admin-theme-root[data-admin-theme="light"] .admin-page select[class*="placeholder-zinc-600"]::placeholder,
+.admin-theme-root[data-admin-theme="light"] .admin-page textarea[class*="placeholder-zinc-600"]::placeholder {
+  color: var(--admin-text-soft) !important;
+}
+
 /* Muted labels that use white at low opacity: readable on light surfaces */
 .admin-theme-root[data-admin-theme="light"] [class*="text-white/50"] {
   color: #64748b !important;

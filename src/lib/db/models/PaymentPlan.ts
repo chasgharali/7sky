@@ -16,6 +16,8 @@ export interface IPaymentPlan extends Document {
   floor: "LGF" | "GF" | "1" | "2" | "3" | "4" | "5";
   label: string;
   rows: IPaymentPlanRow[];
+  floorImageUrl?: string;
+  floorImagePublicId?: string;
   updatedAt: Date;
 }
 
@@ -44,6 +46,8 @@ const PaymentPlanSchema = new Schema<IPaymentPlan>(
     },
     label: { type: String, required: true },
     rows: { type: [PaymentPlanRowSchema], default: [] },
+    floorImageUrl: { type: String },
+    floorImagePublicId: { type: String },
   },
   { timestamps: true }
 );
