@@ -1,5 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
+import CertificateViewer, {
+  CERT_PDF,
+} from "@/components/approval/CertificateViewer";
 
 export default function LandingPage() {
   return (
@@ -119,6 +122,87 @@ export default function LandingPage() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          OFFICIAL FGEHA APPROVAL
+      ══════════════════════════════════════════ */}
+      <section id="approval" className="py-24 px-4 bg-[var(--public-bg)] relative overflow-hidden scroll-mt-28">
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/[0.04] via-transparent to-[#c9a227]/[0.04]" />
+        <div className="max-w-7xl mx-auto relative">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div>
+              <div className="section-label mb-4">Official Approval</div>
+              <div className="gold-divider mb-6" />
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-5 rounded-full bg-emerald-500/10 border border-emerald-500/35">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-xs font-bold tracking-widest uppercase text-emerald-400">
+                  FGEHA Approved
+                </span>
+              </div>
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-white mb-4 leading-tight">
+                Authenticated Building Plan{" "}
+                <span className="gradient-text-gold">Certificate</span>
+              </h2>
+              <p className="text-gray-400 leading-relaxed mb-6">
+                View the official FGEHA Building Control approval for Commercial
+                Plot No. 19-A, Markaz G-14, Islamabad. This government-issued
+                document confirms that building plans for 7Sky have been
+                formally approved — so investors can verify authenticity with
+                confidence.
+              </p>
+
+              <dl className="grid sm:grid-cols-2 gap-3 mb-8">
+                {[
+                  { label: "Authority", value: "FGEHA Building Control" },
+                  { label: "Plot", value: "19-A, Markaz G-14" },
+                  { label: "Approved", value: "21 May 2026" },
+                  { label: "Covered Area", value: "43,188.51 SFT" },
+                ].map((item) => (
+                  <div key={item.label} className="glass-card rounded-xl px-4 py-3">
+                    <dt className="text-[11px] font-semibold uppercase tracking-wider text-gray-500">
+                      {item.label}
+                    </dt>
+                    <dd className="text-sm font-semibold text-white mt-1">{item.value}</dd>
+                  </div>
+                ))}
+              </dl>
+
+              <div className="flex flex-wrap gap-3">
+                <Link href="/approval" className="btn-gold">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                  View Full Certificate
+                </Link>
+                <Link href="/approval#pdf" className="btn-ghost">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  </svg>
+                  View PDF
+                </Link>
+                <a
+                  href={CERT_PDF}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-ghost"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Download PDF
+                </a>
+              </div>
+            </div>
+
+            <div className="relative max-w-md mx-auto lg:max-w-none w-full">
+              <div className="absolute -inset-4 bg-gradient-to-br from-emerald-500/10 to-[#c9a227]/10 rounded-3xl blur-2xl" />
+              <div className="relative">
+                <CertificateViewer />
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -635,6 +719,10 @@ export default function LandingPage() {
                 q: "How do I book a shop for sale in G-14 Markaz Islamabad at 7Sky?",
                 a: "You can book a shop or office for sale at 7Sky by viewing our interactive floor plan, selecting an available unit, and submitting a booking request. Alternatively, contact our sales team via WhatsApp for immediate assistance.",
               },
+              {
+                q: "Is 7Sky officially approved by FGEHA?",
+                a: "Yes. Building plans for Commercial Plot No. 19-A, Markaz G-14, Islamabad have been approved by the FGEHA Building Control Section. You can view and download the official approval certificate on our Approval page.",
+              },
             ].map((faq, i) => (
               <details key={i} className="group glass-card rounded-2xl border border-white/10 overflow-hidden hover-gold-border">
                 <summary className="flex items-center justify-between gap-4 p-6 cursor-pointer list-none">
@@ -711,6 +799,14 @@ export default function LandingPage() {
                     text: "You can book a shop or office for sale at 7Sky by viewing the interactive floor plan, selecting an available unit, and submitting a booking request. Alternatively, contact the sales team via WhatsApp for immediate assistance.",
                   },
                 },
+                {
+                  "@type": "Question",
+                  name: "Is 7Sky officially approved by FGEHA?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Yes. Building plans for Commercial Plot No. 19-A, Markaz G-14, Islamabad have been approved by the FGEHA Building Control Section. You can view and download the official approval certificate on the Approval page.",
+                  },
+                },
               ],
             }),
           }}
@@ -759,6 +855,7 @@ export default function LandingPage() {
                 {[
                   { href: "/", label: "Home" },
                   { href: "/about", label: "About Us" },
+                  { href: "/approval", label: "Approval" },
                   { href: "/floor-plan", label: "Floor Plan" },
                   { href: "/payment-plan", label: "Payment Plan" },
                   { href: "/verify-ownership", label: "Verify Ownership" },

@@ -43,6 +43,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
+    { href: "/approval", label: "Approval" },
     { href: "/floor-plan", label: "Floor Plan" },
     { href: "/payment-plan", label: "Payment Plan" },
     { href: "/verify-ownership", label: "Verify Ownership" },
