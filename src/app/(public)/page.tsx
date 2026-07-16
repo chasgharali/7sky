@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import CertificateViewer, {
-  CERT_PDF,
+import {
+  FbrCertificateViewer,
+  FgehaCertificateViewer,
 } from "@/components/approval/CertificateViewer";
 
 export default function LandingPage() {
@@ -171,28 +172,14 @@ export default function LandingPage() {
               </dl>
 
               <div className="flex flex-wrap gap-3">
-                <Link href="/approval" className="btn-gold">
+                <Link href="/approval#fgeha" className="btn-gold">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
-                  View Full Certificate
+                  View FGEHA Certificate
                 </Link>
-                <Link href="/approval#pdf" className="btn-ghost">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                  </svg>
-                  View PDF
-                </Link>
-                <a
-                  href={CERT_PDF}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-ghost"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  Download PDF
+                <a href="#fbr" className="btn-ghost">
+                  View FBR Certificate
                 </a>
               </div>
             </div>
@@ -200,7 +187,68 @@ export default function LandingPage() {
             <div className="relative max-w-md mx-auto lg:max-w-none w-full">
               <div className="absolute -inset-4 bg-gradient-to-br from-emerald-500/10 to-[#c9a227]/10 rounded-3xl blur-2xl" />
               <div className="relative">
-                <CertificateViewer />
+                <FgehaCertificateViewer />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          FBR CERTIFICATE
+      ══════════════════════════════════════════ */}
+      <section id="fbr" className="py-24 px-4 bg-[var(--public-surface)] relative overflow-hidden scroll-mt-28">
+        <div className="absolute inset-0 bg-gradient-to-br from-sky-500/[0.05] via-transparent to-[#2563eb]/[0.04]" />
+        <div className="max-w-7xl mx-auto relative">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div className="relative max-w-md mx-auto lg:max-w-none w-full order-2 lg:order-1">
+              <div className="absolute -inset-4 bg-gradient-to-br from-sky-500/10 to-[#2563eb]/10 rounded-3xl blur-2xl" />
+              <div className="relative">
+                <FbrCertificateViewer />
+              </div>
+            </div>
+
+            <div className="order-1 lg:order-2">
+              <div className="section-label mb-4">FBR Certificate</div>
+              <div className="gold-divider mb-6" />
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-5 rounded-full bg-sky-500/10 border border-sky-500/35">
+                <span className="w-2 h-2 rounded-full bg-sky-400 animate-pulse" />
+                <span className="text-xs font-bold tracking-widest uppercase text-sky-400">
+                  Federal Board of Revenue
+                </span>
+              </div>
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-white mb-4 leading-tight">
+                Beneficial Owner{" "}
+                <span className="gradient-text-blue">Confirmation</span>
+              </h2>
+              <p className="text-gray-400 leading-relaxed mb-6">
+                Official FBR Certificate of Confirmation for{" "}
+                <span className="text-white font-medium">One Capital Builders</span>{" "}
+                (G334862). Beneficial owner particulars were filed with the
+                Federal Board of Revenue under Rule 83A (6) of the Income Tax
+                Rules, 2002.
+              </p>
+
+              <dl className="grid sm:grid-cols-2 gap-3 mb-8">
+                {[
+                  { label: "Authority", value: "FBR / Inland Revenue" },
+                  { label: "Entity", value: "One Capital Builders" },
+                  { label: "Reg. No.", value: "G334862" },
+                  { label: "Filed On", value: "19 March 2025" },
+                ].map((item) => (
+                  <div key={item.label} className="glass-card rounded-xl px-4 py-3">
+                    <dt className="text-[11px] font-semibold uppercase tracking-wider text-gray-500">
+                      {item.label}
+                    </dt>
+                    <dd className="text-sm font-semibold text-white mt-1">{item.value}</dd>
+                  </div>
+                ))}
+              </dl>
+
+              <div className="flex flex-wrap gap-3">
+                <Link href="/approval#fbr" className="btn-gold">
+                  View Full FBR Certificate
+                </Link>
               </div>
             </div>
           </div>
@@ -721,7 +769,11 @@ export default function LandingPage() {
               },
               {
                 q: "Is 7Sky officially approved by FGEHA?",
-                a: "Yes. Building plans for Commercial Plot No. 19-A, Markaz G-14, Islamabad have been approved by the FGEHA Building Control Section. You can view and download the official approval certificate on our Approval page.",
+                a: "Yes. Building plans for Commercial Plot No. 19-A, Markaz G-14, Islamabad have been approved by the FGEHA Building Control Section. You can view the official approval certificate on our Approval page.",
+              },
+              {
+                q: "Does One Capital Builders have an FBR certificate?",
+                a: "Yes. One Capital Builders (Registration No. G334862) holds an FBR Certificate of Confirmation in Respect of Beneficial Owner under Rule 83A (6) of the Income Tax Rules, 2002. You can view the certificate on our Approval page.",
               },
             ].map((faq, i) => (
               <details key={i} className="group glass-card rounded-2xl border border-white/10 overflow-hidden hover-gold-border">
@@ -804,7 +856,15 @@ export default function LandingPage() {
                   name: "Is 7Sky officially approved by FGEHA?",
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text: "Yes. Building plans for Commercial Plot No. 19-A, Markaz G-14, Islamabad have been approved by the FGEHA Building Control Section. You can view and download the official approval certificate on the Approval page.",
+                    text: "Yes. Building plans for Commercial Plot No. 19-A, Markaz G-14, Islamabad have been approved by the FGEHA Building Control Section. You can view the official approval certificate on the Approval page.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Does One Capital Builders have an FBR certificate?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Yes. One Capital Builders (Registration No. G334862) holds an FBR Certificate of Confirmation in Respect of Beneficial Owner. You can view the certificate on the Approval page.",
                   },
                 },
               ],
